@@ -1,0 +1,7 @@
+let g:solarized_termcolors=256
+color solarized
+let g:solarized_termtrans=1
+
+:highlight SignColumn guibg=darkgrey
+
+:nnoremap <leader>a :Gblame<cr>
