@@ -4,4 +4,8 @@ let g:solarized_termtrans=1
 
 :highlight SignColumn guibg=darkgrey
 
+" Git blame on <leader>a
 :nnoremap <leader>a :Gblame<cr>
+
+" Make NerdCommenter add extra space
+let NERDSpaceDelims=1
