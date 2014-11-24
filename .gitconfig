@@ -32,6 +32,7 @@
   s = status -sb
   c = commit
   d = diff --cached
+  r = rebase
 
 [advice]
 	statusHints = false
