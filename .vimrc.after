@@ -9,8 +9,8 @@ let g:solarized_termtrans=1
 " Git blame on <leader>a
 :nnoremap <leader>a :Gblame<cr>
 
-" Trim trailing spaces on <leader>e
-:nnoremap <leader>e :%s/\s\+$//e<cr>
+" Trim trailing spaces
+:nnoremap <leader>s :%s/\s\+$//e<cr>
 
 " Make NerdCommenter add extra space
 let NERDSpaceDelims=1
