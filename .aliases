@@ -23,3 +23,4 @@ alias h='heroku'
 alias r='rails'
 
 alias gs='git s'
+alias g-='git checkout -'

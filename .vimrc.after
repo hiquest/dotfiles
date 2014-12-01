@@ -1,11 +1,19 @@
+" Make Solarized them to play nicely on mac
 let g:solarized_termcolors=256
 color solarized
 let g:solarized_termtrans=1
 
+" Make GitGutter look nice
 :highlight SignColumn guibg=darkgrey
 
 " Git blame on <leader>a
 :nnoremap <leader>a :Gblame<cr>
 
+" Trim trailing spaces on <leader>e
+:nnoremap <leader>e :%s/\s\+$//e<cr>
+
 " Make NerdCommenter add extra space
 let NERDSpaceDelims=1
+
+" Filetype for eco templates
+au BufRead,BufNewFile *.eco set ft=html
