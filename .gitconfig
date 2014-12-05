@@ -33,7 +33,7 @@
   c = commit
   d = diff --cached
   r = rebase
-  t = checkout -
+  rh = reset --hard
 
 [advice]
 	statusHints = false
