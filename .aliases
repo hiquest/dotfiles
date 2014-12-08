@@ -20,7 +20,10 @@ alias lock="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resourc
 command -v npm > /dev/null && alias npme="npm --registry http://registry.npmjs.eu/"
 
 alias h='heroku'
+
 alias r='rails'
+alias rs='rails server'
+alias rc='rails console'
 
 alias gs='git s'
 alias g-='git checkout -'
