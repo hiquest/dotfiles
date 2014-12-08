@@ -17,3 +17,6 @@ let NERDSpaceDelims=1
 
 " Filetype for eco templates
 au BufRead,BufNewFile *.eco set ft=html
+
+" .aliases is simply sh
+au BufRead,BufNewFile *.aliases set ft=sh

@@ -1,29 +1,24 @@
 # source ./.aliases in your .bashrc/.zshrc file
 
-alias be='bundle exec'
-alias ctags="`brew --prefix`/bin/ctags"
-
-alias p="cd ~/projects"
-alias g="git"
-# alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update'
-
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
 alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
+# System
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl"
 
-alias lock="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
-
-# Faster npm for Europeans
-command -v npm > /dev/null && alias npme="npm --registry http://registry.npmjs.eu/"
-
+# Tools
+alias be='bundle exec'
 alias h='heroku'
+alias ctags="`brew --prefix`/bin/ctags"
 
+# Rails
 alias r='rails'
 alias rs='rails server'
 alias rc='rails console'
 
+# Git
+alias g="git"
 alias gs='git s'
 alias g-='git checkout -'
