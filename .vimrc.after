@@ -3,8 +3,8 @@ let g:solarized_termcolors=256
 color solarized
 let g:solarized_termtrans=1
 
-" Make GitGutter look nice
-:highlight SignColumn guibg=darkgrey
+" Make GitGutter look nice: reset value set by colorized theme
+:highlight clear SignColumn
 
 " Git blame on <leader>a
 :nnoremap <leader>a :Gblame<cr>
@@ -20,3 +20,6 @@ au BufRead,BufNewFile *.eco set ft=html
 
 " .aliases is simply sh
 au BufRead,BufNewFile *.aliases set ft=sh
+
+" Highlight the current line
+set cursorline
