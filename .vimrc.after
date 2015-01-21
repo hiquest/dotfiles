@@ -23,3 +23,6 @@ au BufRead,BufNewFile *.aliases set ft=sh
 
 " Highlight the current line
 set cursorline
+
+" Always open Nerdtree
+autocmd VimEnter * NERDTree

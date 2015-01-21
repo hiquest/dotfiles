@@ -9,11 +9,6 @@ alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[
 # System
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl"
 
-# Tools
-alias be='bundle exec'
-alias ctags="`brew --prefix`/bin/ctags"
-alias serve='python -m SimpleHTTPServer 8000'
-
 # Rails
 alias r='rails'
 alias rs='rails server'
@@ -33,3 +28,10 @@ alias bvconf="heroku config -a bvsandbox"
 alias g="git"
 alias gs='git s'
 alias g-='git checkout -'
+
+# Misc
+alias be='bundle exec'
+alias ctags="`brew --prefix`/bin/ctags"
+alias serve='python -m SimpleHTTPServer 8000'
+alias i='ionic'
+
