@@ -4,7 +4,7 @@ filetype plugin indent on
 " Make Vim more useful
 set nocompatible
 " Use the OS clipboard by default (on versions compiled with `+clipboard`)
-set clipboard=unnamed
+" set clipboard=unnamed
 " Enhance command-line completion
 set wildmenu
 " Allow cursor keys in insert mode
@@ -63,8 +63,8 @@ function! StripWhitespace()
 endfunction
 noremap <leader>ss :call StripWhitespace()<CR>
 
-
-set autoread                    "Reload files changed outside vim
+" Reload files changed outside vim
+set autoread
 
 " ================ Indentation ======================
 set autoindent
@@ -79,6 +79,16 @@ set expandtab
 set foldmethod=indent   "fold based on indent
 set foldnestmax=3       "deepest fold is 3 levels
 set nofoldenable        "dont fold by default
+
+" Centralize backups, swapfiles and undo history
+set backupdir=~/.vim/backups
+set directory=~/.vim/swaps
+if exists("&undodir")
+  set undodir=~/.vim/undo
+endif
+
+" Don’t create backups when editing files in certain directories
+set backupskip=/tmp/*,/private/tmp/*
 
 " PLUGINS
 
@@ -108,3 +118,6 @@ let g:syntastic_check_on_wq = 0
 " NerdCommenter
 let NERDSpaceDelims=1
 map <Leader>/ <plug>NERDCommenterToggle<CR>
+
+" Git blame on <leader>a
+:nnoremap <leader>a :Gblame<cr>

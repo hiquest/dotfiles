@@ -9,6 +9,7 @@ drwxr-xr-x  13 yanis  staff  442 Feb  1 22:54 vim-airline
 drwxr-xr-x  10 yanis  staff  340 Feb  1 22:55 vim-bufferline
 drwxr-xr-x  19 yanis  staff  646 Feb  1 22:24 vim-coffee-script
 drwxr-xr-x   8 yanis  staff  272 Feb  1 21:38 vim-colors-solarized
+drwxr-xr-x   8 yanis  staff  272 Feb  2 15:43 vim-fugitive
 drwxr-xr-x   9 yanis  staff  306 Feb  1 22:46 vim-javascript
 drwxr-xr-x  12 yanis  staff  408 Feb  1 22:57 vim-signify
 drwxr-xr-x   7 yanis  staff  238 Feb  1 22:17 vim-surround
