@@ -121,3 +121,8 @@ map <Leader>/ <plug>NERDCommenterToggle<CR>
 
 " Git blame on <leader>a
 :nnoremap <leader>a :Gblame<cr>
+
+" Custom mapping
+map <Leader>gg :edit Gemfile<CR>
+map <Leader>gr :edit config/routes.rb<CR>
+map <leader><leader> <C-^>

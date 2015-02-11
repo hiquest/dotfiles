@@ -21,8 +21,11 @@ alias rdm='bundle exec rake db:migrate'
 
 # Heroku
 alias h='heroku'
-alias bvlogs="heroku logs --tail -a bvsandbox"
-alias bvconf="heroku config -a bvsandbox"
+hbv() {
+  h "$@" -a bvsandbox
+}
+alias hbvlogs='hbv logs --tail'
+alias hbvconf='hbv config'
 
 # Git
 alias g="git"

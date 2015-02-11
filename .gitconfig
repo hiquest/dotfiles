@@ -34,6 +34,11 @@
   d = diff --cached
   r = rebase
   rh = reset --hard
+  aa = add --all
+  amend = commit --amend
+  pullff = pull --ff-only
+  pullre = pull --rebase
+  show-aliases = config --get-regexp alias
 
 [advice]
 	statusHints = false
