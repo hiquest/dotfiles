@@ -13,7 +13,7 @@ cp ~/.oh-my-zsh/custom/themes/yanis.zsh-theme ./
 ls ~/.vim/bundle |
   xargs -n1 |
   while read l; do
-    cd "/Users/yanis/.vim/bundle/$l" && git remote -v |
+    cd ~/.vim/bundle/$l && git remote -v |
       head -n 1 |
       awk '{print $2}'
   done > vim.plugins
