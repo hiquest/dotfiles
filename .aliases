@@ -27,9 +27,15 @@ hbv() {
 alias hbvlogs='hbv logs --tail'
 alias hbvconf='hbv config'
 
+# Notes
+note() {
+  vim  ~/Dropbox/notes/"$@.note"
+}
+
 # Git
 alias g="git"
 alias gs='git s'
+alias gd='git d'
 alias g-='git checkout -'
 
 # Misc
@@ -37,4 +43,5 @@ alias be='bundle exec'
 alias ctags="`brew --prefix`/bin/ctags"
 alias serve='python -m SimpleHTTPServer 8000'
 alias i='ionic'
+alias mem='top -l1 | grep PhysMem'
 

@@ -29,9 +29,13 @@
 
 [alias]
   h = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  hv = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --stat
+  hmy = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset' --abbrev-commit --author Yanis
   s = status -sb
   c = commit
-  d = diff --cached
+  co = checkout
+  d = diff
+  dc = diff --cached
   r = rebase
   rh = reset --hard
   aa = add --all
