@@ -18,5 +18,5 @@ fi
 cp ../.vimrc ~/
 
 # Installing plugins
-cat ~/../vim.plugins | while read l; do cd ~/.git/bundle/ && git clone $l ; done
+cat ../vim.plugins | while read l; do cd ~/.vim/bundle/ && git clone $l ; done
 
