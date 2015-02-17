@@ -126,3 +126,6 @@ map <Leader>/ <plug>NERDCommenterToggle<CR>
 map <Leader>gg :edit Gemfile<CR>
 map <Leader>gr :edit config/routes.rb<CR>
 map <leader><leader> <C-^>
+
+" Toggle test (By rails.vim)
+:nnoremap <leader>tt :A<cr>

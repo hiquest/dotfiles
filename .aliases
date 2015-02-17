@@ -44,4 +44,3 @@ alias ctags="`brew --prefix`/bin/ctags"
 alias serve='python -m SimpleHTTPServer 8000'
 alias i='ionic'
 alias mem='top -l1 | grep PhysMem'
-
