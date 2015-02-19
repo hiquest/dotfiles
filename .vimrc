@@ -103,7 +103,8 @@ colorscheme solarized
 " NerdTree
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-map <Leader>n :NERDTreeToggle<CR>
+" map <Leader>n :NERDTreeToggle<CR>
+map <Leader>n :NERDTreeFind<CR>
 
 " Syntastic
 set statusline+=%#warningmsg#
@@ -129,3 +130,7 @@ map <leader><leader> <C-^>
 
 " Toggle test (By rails.vim)
 :nnoremap <leader>tt :A<cr>
+
+" Use ag
+let g:ackprg = 'ag --vimgrep'
+noremap <Leader>f :Ack<cr>
