@@ -77,7 +77,6 @@ set expandtab
 
 " ================ Folds ============================
 set foldmethod=indent   "fold based on indent
-set foldnestmax=3       "deepest fold is 3 levels
 set nofoldenable        "dont fold by default
 
 " Centralize backups, swapfiles and undo history
@@ -134,3 +133,5 @@ map <leader><leader> <C-^>
 " Use ag
 let g:ackprg = 'ag --vimgrep'
 noremap <Leader>f :Ack<cr>
+
+noremap <Space> za
