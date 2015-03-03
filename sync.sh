@@ -3,6 +3,7 @@
 set -e
 
 rm -rf src
+mkdir src
 cp ~/.vimrc ./src/
 cp ~/.gitconfig ./src/
 cp ~/.aliases ./src/
