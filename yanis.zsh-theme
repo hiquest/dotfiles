@@ -11,7 +11,11 @@ git_custom_status() {
 }
 
 rbenv_version() {
-  echo "%{$fg[red]%}$(rbenv version | sed -e 's/ (set.*$//')%{$reset_color%}"
+  echo "%{$fg[red]%}[$(rbenv version | sed -e 's/ (set.*$//')]%{$reset_color%}"
+}
+
+node_version() {
+  echo "%{$fg[yellow]%}[$(node --version)]%{$reset_color%}"
 }
 
 # RVM component of prompt
@@ -19,6 +23,6 @@ ZSH_THEME_RVM_PROMPT_PREFIX="%{$fg[red]%}["
 ZSH_THEME_RVM_PROMPT_SUFFIX="]%{$reset_color%}"
 
 # Combine it all into a final right-side prompt
-RPS1='$(git_custom_status) $(rbenv_version) $EPS1'
+RPS1='$(git_custom_status) $(rbenv_version) $(node_version) $EPS1'
 
 PROMPT="%{$fg[cyan]%}[%~% ]%(?.%{$fg[green]%}.%{$fg[red]%})%B$%b "
