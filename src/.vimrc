@@ -1,10 +1,7 @@
 syntax on
 filetype plugin indent on
 
-" Make Vim more useful
 set nocompatible
-" Use the OS clipboard by default (on versions compiled with `+clipboard`)
-" set clipboard=unnamed
 " Enhance command-line completion
 set wildmenu
 " Allow cursor keys in insert mode
@@ -52,6 +49,9 @@ set showmode
 set title
 " Show the (partial) command as it’s being typed
 set showcmd
+
+" Autoload .vimrc whenever it is saved
+au BufWritePost .vimrc so $MYVIMRC
 
 " Strip trailing whitespace (,ss)
 function! StripWhitespace()
