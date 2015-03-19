@@ -2,11 +2,11 @@ https://github.com/mileszs/ack.vim
 https://github.com/tacahiroy/ctrlp-funky.git
 https://github.com/kien/ctrlp.vim.git
 git@github.com:mattn/emmet-vim.git
+git://github.com/roman/golden-ratio.git
 https://github.com/scrooloose/nerdcommenter.git
 https://github.com/scrooloose/nerdtree.git
 git@github.com:ervandew/supertab.git
 https://github.com/scrooloose/syntastic.git
-git@github.com:bling/vim-airline.git
 git@github.com:Townk/vim-autoclose.git
 https://github.com/bling/vim-bufferline
 git://github.com/tpope/vim-bundler.git

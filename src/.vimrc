@@ -2,58 +2,33 @@ syntax on
 filetype plugin indent on
 
 set nocompatible
-" Enhance command-line completion
-set wildmenu
-" Allow cursor keys in insert mode
-set esckeys
-" Allow backspace in insert mode
-set backspace=indent,eol,start
-" Optimize for fast terminal connections
-set ttyfast
-" Add the g flag to search/replace by default
-set gdefault
-" Use UTF-8 without BOM
-set encoding=utf-8 nobomb
-" Enable line numbers
-set number
-" Enable syntax highlighting
-syntax on
-" Highlight current line
-set cursorline
-" Make tabs as wide as two spaces
-set tabstop=2
-" Show “invisible” characters
-set lcs=tab:▸\ ,trail:·,nbsp:_
+set wildmenu " Enhance command-line completion
+set esckeys " Allow cursor keys in insert mode
+set backspace=indent,eol,start " Allow backspace in insert mode
+set ttyfast " Optimize for fast terminal connections
+set gdefault " Add the g flag to search/replace by default
+set encoding=utf-8 nobomb " Use UTF-8 without BOM
+set number " Enable line numbers
+set cursorline " Highlight current line
+set tabstop=2 " Make tabs as wide as two spaces
+set lcs=tab:▸\ ,trail:·,nbsp:_ " Show “invisible” characters
 set list
-" Highlight searches
-set hlsearch
-" Ignore case of searches
-set ignorecase
-" Highlight dynamically as pattern is typed
-set incsearch
-" Always show status line
-set laststatus=2
-" Enable mouse in all modes
-set mouse=a
-" Disable error bells
-set noerrorbells
-" Don’t reset cursor to start of line when moving around.
-set nostartofline
-" Show the cursor position
-set ruler
-" Don’t show the intro message when starting Vim
-set shortmess=atI
-" Show the current mode
-set showmode
-" Show the filename in the window titlebar
-set title
-" Show the (partial) command as it’s being typed
-set showcmd
+set hlsearch " Highlight searches
+set ignorecase " Ignore case of searches
+set incsearch " Highlight dynamically as pattern is typed
+set laststatus=2 " Always show status line
+set mouse=a " Enable mouse in all modes
+set noerrorbells " Disable error bells
+set nostartofline " Don’t reset cursor to start of line when moving around.
+set ruler " Show the cursor position
+set shortmess=atI " Don’t show the intro message when starting Vim
+set showmode " Show the current mode
+set title " Show the filename in the window titlebar
+set showcmd " Show the (partial) command as it’s being typed
 
-" Autoload .vimrc whenever it is saved
-au BufWritePost .vimrc so $MYVIMRC
+au BufWritePost .vimrc so $MYVIMRC " Autoload .vimrc whenever it is saved
 
-" Strip trailing whitespace (,ss)
+" Strip trailing whitespace
 function! StripWhitespace()
   let save_cursor = getpos(".")
   let old_query = getreg('/')
@@ -63,8 +38,7 @@ function! StripWhitespace()
 endfunction
 noremap <leader>ss :call StripWhitespace()<CR>
 
-" Reload files changed outside vim
-set autoread
+set autoread " Reload files changed outside vim
 
 " ================ Indentation ======================
 set autoindent
@@ -74,6 +48,10 @@ set shiftwidth=2
 set softtabstop=2
 set tabstop=2
 set expandtab
+
+" ================ Splits ============================
+set splitbelow
+set splitright
 
 " ================ Folds ============================
 set foldmethod=indent   "fold based on indent
@@ -85,11 +63,24 @@ set directory=~/.vim/swaps
 if exists("&undodir")
   set undodir=~/.vim/undo
 endif
-
 " Don’t create backups when editing files in certain directories
 set backupskip=/tmp/*,/private/tmp/*
 
-" PLUGINS
+" ================ Statusline ============================
+set statusline=
+set statusline+=%7*\[%n]                                  "buffernr
+set statusline+=%1*\ %<%F\                                "File+path"
+set statusline+=%2*\ %y\                                  "FileType
+set statusline+=%8*\ %=\ row:%l/%L\ (%03p%%)\             "Rownumber/total (%)
+set statusline+=%9*\ col:%03c\                            "Colnr
+set statusline+=%0*\ \ %m%r%w\ %P\ \                      "Modified? Readonly?  Top/bot."
+
+hi statusline ctermfg=1 ctermbg=DarkRed
+
+" Ignore this paths
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/build/*,*/node_modules/*,*/bower_components/*
+
+" ================ PLUGINS ============================
 
 " Pathogen
 execute pathogen#infect()
@@ -102,13 +93,11 @@ colorscheme solarized
 " NerdTree
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-" map <Leader>n :NERDTreeToggle<CR>
+" Open file explorer with cursor at current file
 map <Leader>n :NERDTreeFind<CR>
+" map <Leader>n :NERDTreeToggle<CR>
 
 " Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
 " Display long list of errors at the bottom
 " let g:syntastic_auto_loc_list = 1
@@ -122,11 +111,6 @@ map <Leader>/ <plug>NERDCommenterToggle<CR>
 " Git blame on <leader>a
 :nnoremap <leader>a :Gblame<cr>
 
-" Custom mapping
-map <Leader>gg :edit Gemfile<CR>
-map <Leader>gr :edit config/routes.rb<CR>
-map <leader><leader> <C-^>
-
 " Toggle test (By rails.vim)
 :nnoremap <leader>tt :A<cr>
 
@@ -134,4 +118,12 @@ map <leader><leader> <C-^>
 let g:ackprg = 'ag --vimgrep'
 noremap <Leader>f :Ack<cr>
 
+" Fold on space
 noremap <Space> za
+
+" Ctrlp
+let g:ctrlp_map = '<leader><leader>'
+let g:ctrlp_prompt_mappings = {
+    \ 'AcceptSelection("e")': ['<c-t>', '<2-LeftMouse>'],
+    \ 'AcceptSelection("t")': ['<cr>', '<RightMouse>'],
+    \ }
