@@ -16,7 +16,6 @@ set list
 set hlsearch " Highlight searches
 set ignorecase " Ignore case of searches
 set incsearch " Highlight dynamically as pattern is typed
-set laststatus=2 " Always show status line
 set mouse=a " Enable mouse in all modes
 set noerrorbells " Disable error bells
 set nostartofline " Don’t reset cursor to start of line when moving around.
@@ -27,6 +26,10 @@ set title " Show the filename in the window titlebar
 set showcmd " Show the (partial) command as it’s being typed
 
 au BufWritePost .vimrc so $MYVIMRC " Autoload .vimrc whenever it is saved
+
+" change cursor view for insert/normal mode
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 " Strip trailing whitespace
 function! StripWhitespace()
@@ -67,15 +70,14 @@ endif
 set backupskip=/tmp/*,/private/tmp/*
 
 " ================ Statusline ============================
+set laststatus=2 " Always show status line
 set statusline=
-set statusline+=%7*\[%n]                                  "buffernr
-set statusline+=%1*\ %<%F\                                "File+path"
-set statusline+=%2*\ %y\                                  "FileType
-set statusline+=%8*\ %=\ row:%l/%L\ (%03p%%)\             "Rownumber/total (%)
-set statusline+=%9*\ col:%03c\                            "Colnr
+set statusline+=%0*\[%n]                                  "buffernr
+set statusline+=%0*\ %<%F\                                "File+path"
+set statusline+=%0*\ %y\                                  "FileType
+set statusline+=%0*\ %=\ row:%l/%L\ (%03p%%)\             "Rownumber/total (%)
+set statusline+=%0*\ col:%03c\                            "Colnr
 set statusline+=%0*\ \ %m%r%w\ %P\ \                      "Modified? Readonly?  Top/bot."
-
-hi statusline ctermfg=1 ctermbg=DarkRed
 
 " Ignore this paths
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/build/*,*/node_modules/*,*/bower_components/*
