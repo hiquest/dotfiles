@@ -7,6 +7,8 @@ https://github.com/scrooloose/nerdcommenter.git
 https://github.com/scrooloose/nerdtree.git
 git@github.com:ervandew/supertab.git
 https://github.com/scrooloose/syntastic.git
+https://github.com/tomtom/tlib_vim.git
+https://github.com/MarcWeber/vim-addon-mw-utils.git
 git@github.com:Townk/vim-autoclose.git
 https://github.com/bling/vim-bufferline
 git://github.com/tpope/vim-bundler.git
@@ -16,7 +18,12 @@ git://github.com/tpope/vim-endwise.git
 git://github.com/tpope/vim-fugitive.git
 git@github.com:digitaltoad/vim-jade.git
 https://github.com/pangloss/vim-javascript.git
+https://github.com/osyo-manga/vim-monster.git
+https://github.com/terryma/vim-multiple-cursors.git
 git@github.com:tpope/vim-rails.git
 https://github.com/vim-ruby/vim-ruby.git
 https://github.com/mhinz/vim-signify
+https://github.com/garbas/vim-snipmate.git
+https://github.com/honza/vim-snippets.git
 git://github.com/tpope/vim-surround.git
+https://github.com/bronson/vim-trailing-whitespace.git
