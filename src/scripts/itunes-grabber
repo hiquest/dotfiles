@@ -2,12 +2,74 @@
 
 set -e
 
+#
+# Setup
+#
+
 home=~/Music/iTunes/iTunes\ Media/Music
-ls -1 "$home" | while read art
-do
-  ls -1 "$home/$art" | while read alb
-  do
-    count=$(echo -n `ls "$home/$art/$alb" | wc -l`)
-    echo "$art — $alb ($count)"
+UP=$'\033[A'
+DOWN=$'\033[B']']'
+
+#
+# Functions
+#
+
+enter_fullscreen() {
+  tput smcup # Enter alternate screen
+  stty -echo # Do not echo input
+}
+
+leave_fullscreen() {
+  tput rmcup
+  stty echo
+}
+
+handle_sigint() {
+  leave_fullscreen
+  exit $?
+}
+
+handle_sigtstp() {
+  leave_fullscreen
+  kill -s SIGSTOP $$
+}
+
+read_albums() {
+  find "$home" -type d -depth 2 | while read alb; do
+    local count=$(echo -n `ls "$alb" | wc -l`)
+    echo "$alb ($count)\n"
   done
+}
+
+display_albums() {
+  for alb in $(read_albums); do
+    printf "$alb\n"
+  done
+}
+
+
+#
+# Algorithm
+#
+enter_fullscreen
+display_albums
+trap handle_sigint INT
+trap handle_sigtstp SIGTSTP
+
+while true; do
+  read -n 3 c
+  case "$c" in
+    $UP)
+      clear
+      display_albums
+      ;;
+    $DOWN)
+      clear
+      display_albums
+      ;;
+    *)
+      leave_fullscreen
+      exit
+      ;;
+  esac
 done

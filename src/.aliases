@@ -27,9 +27,8 @@ hbv() {
 alias hbvlogs='hbv logs --tail'
 alias hbvconf='hbv config'
 
-# Notes
-note() {
-  vim  ~/Dropbox/notes/"$@.note"
+mkcd() {
+  mkdir $@ && cd $_
 }
 
 # Git
@@ -37,6 +36,8 @@ alias g="git"
 alias gs='git s'
 alias gd='git d'
 alias g-='git checkout -'
+alias pr='~/scripts/pullreq.sh'
+alias mylog='~/scripts/monthly-log.sh Yanis'
 
 # Misc
 alias be='bundle exec'
