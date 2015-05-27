@@ -78,9 +78,15 @@ set statusline+=%0*\ %y\                                  "FileType
 set statusline+=%0*\ %=\ row:%l/%L\ (%03p%%)\             "Rownumber/total (%)
 set statusline+=%0*\ col:%03c\                            "Colnr
 set statusline+=%0*\ \ %m%r%w\ %P\ \                      "Modified? Readonly?  Top/bot."
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 " Ignore this paths
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/build/*,*/node_modules/*,*/bower_components/*
+
+" Autosave
+" :au FocusLost * silent! wa
 
 " ================ PLUGINS ============================
 
@@ -110,18 +116,9 @@ let g:syntastic_check_on_wq = 0
 let NERDSpaceDelims=1
 map <Leader>/ <plug>NERDCommenterToggle<CR>
 
-" Git blame on <leader>a
-:nnoremap <leader>a :Gblame<cr>
-
-" Toggle test (By rails.vim)
-:nnoremap <leader>tt :A<cr>
-
 " Use ag
 let g:ackprg = 'ag --vimgrep'
 noremap <Leader>f :Ack<cr>
-
-" Fold on space
-noremap <Space> za
 
 " Ctrlp
 let g:ctrlp_map = '<leader><leader>'
@@ -129,3 +126,25 @@ let g:ctrlp_prompt_mappings = {
     \ 'AcceptSelection("e")': ['<c-t>', '<2-LeftMouse>'],
     \ 'AcceptSelection("t")': ['<cr>', '<RightMouse>'],
     \ }
+
+" Custom mappings
+
+" Git blame on <leader>a
+:nnoremap <leader>a :Gblame<cr>
+
+" Toggle test (By rails.vim)
+:nnoremap <leader>tt :A<cr>
+
+" Fold on space
+noremap <Space> za
+
+" Navigate tabs
+noremap 11 1gt<CR>
+noremap 22 2gt<CR>
+noremap 33 3gt<CR>
+noremap 44 4gt<CR>
+noremap 55 5gt<CR>
+noremap 66 6gt<CR>
+noremap 77 7gt<CR>
+noremap 88 8gt<CR>
+noremap 99 9gt<CR>
