@@ -20,6 +20,7 @@ alias rs3='rails server -p 3003'
 alias rc='rails console'
 alias rgm='rails g migration'
 alias rdm='bundle exec rake db:migrate'
+alias cucs='bundle exec cucumber'
 
 # Heroku
 alias h='heroku'
@@ -38,6 +39,8 @@ alias g="git"
 alias gs='git s'
 alias gd='git d'
 alias g-='git checkout -'
+
+# Scripts
 alias pr='~/scripts/pullreq.sh'
 alias mylog='~/scripts/monthly-log.sh Yanis'
 

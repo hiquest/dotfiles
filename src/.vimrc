@@ -127,13 +127,13 @@ let g:ctrlp_prompt_mappings = {
     \ 'AcceptSelection("t")': ['<cr>', '<RightMouse>'],
     \ }
 
+" Faster exit to normal mode
+set timeoutlen=1000 ttimeoutlen=0
+
 " Custom mappings
 
 " Git blame on <leader>a
 :nnoremap <leader>a :Gblame<cr>
-
-" Toggle test (By rails.vim)
-:nnoremap <leader>tt :A<cr>
 
 " Fold on space
 noremap <Space> za
@@ -148,3 +148,20 @@ noremap 66 6gt<CR>
 noremap 77 7gt<CR>
 noremap 88 8gt<CR>
 noremap 99 9gt<CR>
+
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+nnoremap <Leader>w :w<CR>
+nnoremap <Leader>q :q<CR>
+
+" Copy & paste to system clipboard with <Space>p and <Space>y:
+vmap <Leader>y "+y
+vmap <Leader>d "+d
+nmap <Leader>p "+p
+nmap <Leader>P "+P
+
+nnoremap <CR> o
+nnoremap <BS> gg
