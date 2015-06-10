@@ -128,7 +128,20 @@ let g:ctrlp_prompt_mappings = {
     \ }
 
 " Faster exit to normal mode
-set timeoutlen=1000 ttimeoutlen=0
+" set timeoutlen=1000 ttimeoutlen=0
+
+" Instantly leave insert mode when pressing <Esc> {{{
+" This works by disabling the mapping timeout completely in normal mode,
+" and enabling it in insert mode with a very low timeout length.
+augroup fastescape
+  autocmd!
+
+  set notimeout
+  set ttimeout
+  set timeoutlen=1000
+  au InsertEnter * set timeout
+  au InsertLeave * set notimeout
+augroup END
 
 " Custom mappings
 
@@ -137,17 +150,6 @@ set timeoutlen=1000 ttimeoutlen=0
 
 " Fold on space
 noremap <Space> za
-
-" Navigate tabs
-noremap 11 1gt<CR>
-noremap 22 2gt<CR>
-noremap 33 3gt<CR>
-noremap 44 4gt<CR>
-noremap 55 5gt<CR>
-noremap 66 6gt<CR>
-noremap 77 7gt<CR>
-noremap 88 8gt<CR>
-noremap 99 9gt<CR>
 
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -165,3 +167,5 @@ nmap <Leader>P "+P
 
 nnoremap <CR> o
 nnoremap <BS> gg
+
+nmap <Leader>v :vsp<CR>:CtrlP<CR>
