@@ -25,7 +25,7 @@ set showmode " Show the current mode
 set title " Show the filename in the window titlebar
 set showcmd " Show the (partial) command as it’s being typed
 
-au BufWritePost .vimrc so $MYVIMRC " Autoload .vimrc whenever it is saved
+" au BufWritePost .vimrc so $MYVIMRC " Autoload .vimrc whenever it is saved
 
 " change cursor view for insert/normal mode
 let &t_SI = "\<Esc>]50;CursorShape=1\x7"
@@ -116,9 +116,11 @@ let g:syntastic_check_on_wq = 0
 let NERDSpaceDelims=1
 map <Leader>/ <plug>NERDCommenterToggle<CR>
 
-" Use ag
+" Use ag for :Ack
 let g:ackprg = 'ag --vimgrep'
-noremap <Leader>f :Ack<cr>
+
+" Search with :Ack! on current word
+noremap <Leader>f :Ack!<cr>
 
 " Ctrlp
 let g:ctrlp_map = '<leader><leader>'
@@ -128,20 +130,7 @@ let g:ctrlp_prompt_mappings = {
     \ }
 
 " Faster exit to normal mode
-" set timeoutlen=1000 ttimeoutlen=0
-
-" Instantly leave insert mode when pressing <Esc> {{{
-" This works by disabling the mapping timeout completely in normal mode,
-" and enabling it in insert mode with a very low timeout length.
-augroup fastescape
-  autocmd!
-
-  set notimeout
-  set ttimeout
-  set timeoutlen=1000
-  au InsertEnter * set timeout
-  au InsertLeave * set notimeout
-augroup END
+set timeoutlen=1000 ttimeoutlen=0
 
 " Custom mappings
 
@@ -158,14 +147,14 @@ nnoremap <C-H> <C-W><C-H>
 
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
+nnoremap <Leader>x :qa<CR>
 
-" Copy & paste to system clipboard with <Space>p and <Space>y:
-vmap <Leader>y "+y
-vmap <Leader>d "+d
-nmap <Leader>p "+p
-nmap <Leader>P "+P
+nnoremap <CR> o<Esc>
+nnoremap <S-CR> ko<Esc>
 
-nnoremap <CR> o
 nnoremap <BS> gg
 
 nmap <Leader>v :vsp<CR>:CtrlP<CR>
+
+" Custom file types
+au BufRead,BufNewFile *.eco setfiletype html
