@@ -43,6 +43,7 @@ alias g-='git checkout -'
 # Scripts
 alias pr='~/scripts/pullreq.sh'
 alias mylog='~/scripts/monthly-log.sh Yanis'
+alias lo='~/scripts/diary.sh'
 
 # Misc
 alias be='bundle exec'
