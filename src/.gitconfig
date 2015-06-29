@@ -43,6 +43,7 @@
   pullff = pull --ff-only
   pullre = pull --rebase
   show-aliases = config --get-regexp alias
+  cp = cherry-pick
 
 [advice]
 	statusHints = false

@@ -156,5 +156,7 @@ nnoremap <BS> gg
 
 nmap <Leader>v :vsp<CR>:CtrlP<CR>
 
+noremap <Leader>r ggVG:w !ruby<cr>
+
 " Custom file types
 au BufRead,BufNewFile *.eco setfiletype html
