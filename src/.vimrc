@@ -85,8 +85,11 @@ set statusline+=%*
 " Ignore this paths
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/build/*,*/node_modules/*,*/bower_components/*
 
-" Autosave
-" :au FocusLost * silent! wa
+" Jump to the last cursor position
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal g`\"" | endif
+
+" Custom file types
+au BufRead,BufNewFile *.eco setfiletype html
 
 " ================ PLUGINS ============================
 
@@ -101,9 +104,6 @@ colorscheme solarized
 " NerdTree
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-" Open file explorer with cursor at current file
-map <Leader>n :NERDTreeFind<CR>
-" map <Leader>n :NERDTreeToggle<CR>
 
 " Syntastic
 let g:syntastic_always_populate_loc_list = 1
@@ -112,15 +112,8 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-" NerdCommenter
-let NERDSpaceDelims=1
-map <Leader>/ <plug>NERDCommenterToggle<CR>
-
 " Use ag for :Ack
 let g:ackprg = 'ag --vimgrep'
-
-" Search with :Ack! on current word
-noremap <Leader>f :Ack!<cr>
 
 " Ctrlp
 let g:ctrlp_map = '<leader><leader>'
@@ -132,7 +125,16 @@ let g:ctrlp_prompt_mappings = {
 " Faster exit to normal mode
 set timeoutlen=1000 ttimeoutlen=0
 
-" Custom mappings
+" ================ MAPPINGS ============================
+
+" Open file explorer with cursor at current file
+map <Leader>n :NERDTreeFind<CR>
+
+" NerdCommenter, no, some another
+map <Leader>/ gc
+
+" Search with :Ack! on current word
+noremap <Leader>f :Ack!<cr>
 
 " Git blame on <leader>a
 :nnoremap <leader>a :Gblame<cr>
@@ -140,23 +142,25 @@ set timeoutlen=1000 ttimeoutlen=0
 " Fold on space
 noremap <Space> za
 
+" Navigating over splits
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" Faster save, and quit
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>x :qa<CR>
 
-nnoremap <CR> o<Esc>
-nnoremap <S-CR> ko<Esc>
+" No highlight on enter
+nnoremap <CR> :noh<cr>
 
-nnoremap <BS> gg
-
-nmap <Leader>v :vsp<CR>:CtrlP<CR>
-
+" run the whole file in ruby
 noremap <Leader>r ggVG:w !ruby<cr>
 
-" Custom file types
-au BufRead,BufNewFile *.eco setfiletype html
+" Don't allow to use arrow keys
+map <Left> :echo "no!"<cr>
+map <Right> :echo "no!"<cr>
+map <Up> :echo "no!"<cr>
+map <Down> :echo "no!"<cr>
