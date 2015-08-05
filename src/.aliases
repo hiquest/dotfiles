@@ -1,10 +1,5 @@
-# in your .bashrc/.zshrc file:
+# Add this to your .bashrc/.zshrc file:
 # source ./.aliases
-
-# IP addresses
-alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias localip="ipconfig getifaddr en0"
-alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
 # System
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl"
@@ -44,6 +39,7 @@ alias g-='git checkout -'
 alias pr='~/scripts/pullreq.sh'
 alias mylog='~/scripts/monthly-log.sh Yanis'
 alias lo='~/scripts/diary.sh'
+alias uvp='~/scripts/update_vim_plugins.sh'
 
 # Misc
 alias be='bundle exec'
@@ -54,3 +50,6 @@ alias i='ionic'
 alias mem='top -l1 | grep PhysMem'
 alias npmi='npm install --save'
 alias npmid='npm install --save-dev'
+
+# Tmp alias
+alias tv="coffee ~/projects/opensource/tvcl/src/index.coffee"

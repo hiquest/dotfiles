@@ -24,7 +24,7 @@ set shortmess=atI " Don’t show the intro message when starting Vim
 set showmode " Show the current mode
 set title " Show the filename in the window titlebar
 set showcmd " Show the (partial) command as it’s being typed
-
+set clipboard=unnamed
 " au BufWritePost .vimrc so $MYVIMRC " Autoload .vimrc whenever it is saved
 
 " change cursor view for insert/normal mode
@@ -107,8 +107,6 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " Syntastic
 let g:syntastic_always_populate_loc_list = 1
-" Display long list of errors at the bottom
-" let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
@@ -131,7 +129,7 @@ set timeoutlen=1000 ttimeoutlen=0
 map <Leader>n :NERDTreeFind<CR>
 
 " NerdCommenter, no, some another
-map <Leader>/ gc
+map <Leader>/ gccj
 
 " Search with :Ack! on current word
 noremap <Leader>f :Ack!<cr>
@@ -152,6 +150,8 @@ nnoremap <C-H> <C-W><C-H>
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>x :qa<CR>
+
+nnoremap <Leader>o :tabo<CR>
 
 " No highlight on enter
 nnoremap <CR> :noh<cr>
