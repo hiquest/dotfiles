@@ -90,6 +90,7 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "norm
 
 " Custom file types
 au BufRead,BufNewFile *.eco setfiletype html
+au BufRead,BufNewFile *.hamlc setfiletype haml
 
 " ================ PLUGINS ============================
 
@@ -119,6 +120,15 @@ let g:ctrlp_prompt_mappings = {
     \ 'AcceptSelection("e")': ['<c-t>', '<2-LeftMouse>'],
     \ 'AcceptSelection("t")': ['<cr>', '<RightMouse>'],
     \ }
+
+" UltiSnips
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+" let g:UltiSnipsEditSplit="vertical"
 
 " Faster exit to normal mode
 set timeoutlen=1000 ttimeoutlen=0
@@ -164,3 +174,6 @@ map <Left> :echo "no!"<cr>
 map <Right> :echo "no!"<cr>
 map <Up> :echo "no!"<cr>
 map <Down> :echo "no!"<cr>
+
+" Open Notepad
+nnoremap <Leader>' :vsp /Users/yanis/Dropbox/notes.markdown <CR>
