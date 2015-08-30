@@ -15,17 +15,10 @@ alias rs3='rails server -p 3003'
 alias rs4='rails server -p 3004'
 alias rs5='rails server -p 3005'
 alias rc='rails console'
-alias rgm='rails g migration'
 alias rdm='bundle exec rake db:migrate'
-alias cucs='bundle exec cucumber'
 
 # Heroku
 alias h='heroku'
-hbv() {
-  h "$@" -a bvsandbox
-}
-alias hbvlogs='hbv logs --tail'
-alias hbvconf='hbv config'
 
 mkcd() {
   mkdir $@ && cd $_
@@ -44,14 +37,12 @@ alias lo='~/scripts/diary.sh'
 alias uvp='~/scripts/update_vim_plugins.sh'
 
 # Misc
-alias be='bundle exec'
 alias b='bundle'
+alias be='bundle exec'
 alias ctags="`brew --prefix`/bin/ctags"
 alias serve='python -m SimpleHTTPServer 8000'
 alias i='ionic'
 alias mem='top -l1 | grep PhysMem'
-alias npmi='npm install --save'
-alias npmid='npm install --save-dev'
 
 # Tmp alias
 alias tv="coffee ~/projects/opensource/tvcl/src/index.coffee"
