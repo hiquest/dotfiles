@@ -14,6 +14,7 @@ alias rs2='rails server -p 3002'
 alias rs3='rails server -p 3003'
 alias rs4='rails server -p 3004'
 alias rs5='rails server -p 3005'
+alias rs7='rails server -p 3007'
 alias rc='rails console'
 alias rdm='bundle exec rake db:migrate'
 
@@ -29,6 +30,8 @@ alias g="git"
 alias gs='git s'
 alias gd='git d'
 alias g-='git checkout -'
+alias p='git push'
+alias c='git commit -m'
 
 # Scripts
 alias pr='~/scripts/pullreq.sh'

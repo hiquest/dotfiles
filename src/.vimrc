@@ -1,66 +1,60 @@
 syntax on
-filetype plugin indent on
+filetype plugin indent on " load filetype-specific indent files
 
 set nocompatible
-set wildmenu " Enhance command-line completion
-set esckeys " Allow cursor keys in insert mode
-set backspace=indent,eol,start " Allow backspace in insert mode
 set ttyfast " Optimize for fast terminal connections
-set gdefault " Add the g flag to search/replace by default
 set encoding=utf-8 nobomb " Use UTF-8 without BOM
-set number " Enable line numbers
-set cursorline " Highlight current line
-set tabstop=2 " Make tabs as wide as two spaces
-set lcs=tab:▸\ ,trail:·,nbsp:_ " Show “invisible” characters
 set list
-set hlsearch " Highlight searches
-set ignorecase " Ignore case of searches
-set incsearch " Highlight dynamically as pattern is typed
 set mouse=a " Enable mouse in all modes
-set noerrorbells " Disable error bells
-set nostartofline " Don’t reset cursor to start of line when moving around.
-set ruler " Show the cursor position
-set shortmess=atI " Don’t show the intro message when starting Vim
-set showmode " Show the current mode
-set title " Show the filename in the window titlebar
-set showcmd " Show the (partial) command as it’s being typed
 set clipboard=unnamed
-" au BufWritePost .vimrc so $MYVIMRC " Autoload .vimrc whenever it is saved
-
-" change cursor view for insert/normal mode
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-
-" Strip trailing whitespace
-function! StripWhitespace()
-  let save_cursor = getpos(".")
-  let old_query = getreg('/')
-  :%s/\s\+$//e
-  call setpos('.', save_cursor)
-  call setreg('/', old_query)
-endfunction
-noremap <leader>ss :call StripWhitespace()<CR>
-
 set autoread " Reload files changed outside vim
 
-" ================ Indentation ======================
+" UI SETTINGS
+set number " Enable line numbers
+set showcmd " Show the (partial) command as it’s being typed
+set showmode " Show the current mode
+set cursorline " Highlight current line
+set wildmenu " visual autocomplete for command menu
+set showmatch  " highlight matching [{()}] "
+set title " Show the filename in the window titlebar
+set ruler " Show the cursor position
+let &t_SI = "\<Esc>]50;CursorShape=1\x7" " change cursor view for insert/normal mode
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+set nostartofline " Don’t reset cursor to start of line when moving around.
+set shortmess=atI " Don’t show the intro message when starting Vim
+set lcs=tab:▸\ ,trail:·,nbsp:_ " Show “invisible” characters
+set noerrorbells " Disable error bells
+
+" SEARCHING
+set incsearch " Highlight dynamically as pattern is typed
+set hlsearch " Highlight searches
+set gdefault " Add the g flag to search/replace by default
+set ignorecase " Ignore case of searches
+
+" FOLDING
+set nofoldenable        "dont fold by default
+set foldmethod=indent   "fold based on indent
+" set foldlevelstart=10   " open most folds by default
+" set foldnestmax=10      " 10 nested fold max
+
+" NAVIGATION
+set esckeys " Allow cursor keys in insert mode
+set backspace=indent,eol,start " Allow backspace in insert mode
+
+" INDENTATION/TABS
+set tabstop=2     " read as
+set softtabstop=2 " insert as
+set expandtab     " tabs are spaces
 set autoindent
 set smartindent
 set smarttab
 set shiftwidth=2
-set softtabstop=2
-set tabstop=2
-set expandtab
 
-" ================ Splits ============================
+" SPLITS
 set splitbelow
 set splitright
 
-" ================ Folds ============================
-set foldmethod=indent   "fold based on indent
-set nofoldenable        "dont fold by default
-
-" Centralize backups, swapfiles and undo history
+" BACKUPS/SWAPS
 set backupdir=~/.vim/backups
 set directory=~/.vim/swaps
 if exists("&undodir")
@@ -69,7 +63,7 @@ endif
 " Don’t create backups when editing files in certain directories
 set backupskip=/tmp/*,/private/tmp/*
 
-" ================ Statusline ============================
+" STATUS LINE
 set laststatus=2 " Always show status line
 set statusline=
 set statusline+=%0*\[%n]                                  "buffernr
@@ -88,11 +82,11 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/build/*,*/node_modules/*,*/bower_comp
 " Jump to the last cursor position
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal g`\"" | endif
 
-" Custom file types
+" CUSTOM FILES
 au BufRead,BufNewFile *.eco setfiletype html
 au BufRead,BufNewFile *.hamlc setfiletype haml
 
-" ================ PLUGINS ============================
+" PLUGIN SETTINGS
 
 " Pathogen
 execute pathogen#infect()
@@ -120,6 +114,7 @@ let g:ctrlp_prompt_mappings = {
     \ 'AcceptSelection("e")': ['<c-t>', '<2-LeftMouse>'],
     \ 'AcceptSelection("t")': ['<cr>', '<RightMouse>'],
     \ }
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
 " UltiSnips
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
@@ -133,13 +128,20 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 " Faster exit to normal mode
 set timeoutlen=1000 ttimeoutlen=0
 
-" ================ MAPPINGS ============================
+" CUSTOM MAPPINGS
+
+" Strip trailing whitespace
+function! StripWhitespace()
+  let save_cursor = getpos(".")
+  let old_query = getreg('/')
+  :%s/\s\+$//e
+  call setpos('.', save_cursor)
+  call setreg('/', old_query)
+endfunction
+noremap <leader>ss :call StripWhitespace()<CR>
 
 " Open file explorer with cursor at current file
 map <Leader>n :NERDTreeFind<CR>
-
-" NerdCommenter, no, some another
-map <Leader>/ gccj
 
 " Search with :Ack! on current word
 noremap <Leader>f :Ack!<cr>
@@ -149,6 +151,9 @@ noremap <Leader>f :Ack!<cr>
 
 " Fold on space
 noremap <Space> za
+
+" jj to normal mode
+inoremap jj <Esc> :w<cr>
 
 " Navigating over splits
 nnoremap <C-J> <C-W><C-J>
@@ -177,3 +182,9 @@ map <Down> :echo "no!"<cr>
 
 " Open Notepad
 nnoremap <Leader>' :vsp /Users/yanis/Dropbox/notes.markdown <CR>
+
+" Split navigation
+nnoremap <Left> <C-w>h
+nnoremap <Down> <C-w>j
+nnoremap <Up> <C-w>k
+nnoremap <Right> <C-w>l
