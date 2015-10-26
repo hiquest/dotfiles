@@ -32,10 +32,10 @@ set gdefault " Add the g flag to search/replace by default
 set ignorecase " Ignore case of searches
 
 " FOLDING
-set nofoldenable        "dont fold by default
+set foldenable        "dont fold by default
 set foldmethod=indent   "fold based on indent
-" set foldlevelstart=10   " open most folds by default
-" set foldnestmax=10      " 10 nested fold max
+set foldlevelstart=10   " open most folds by default
+set foldnestmax=10      " 10 nested fold max
 
 " NAVIGATION
 set esckeys " Allow cursor keys in insert mode

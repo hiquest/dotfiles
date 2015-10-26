@@ -14,6 +14,7 @@ https://github.com/kchmck/vim-coffee-script.git
 https://github.com/altercation/vim-colors-solarized.git
 git://github.com/tpope/vim-commentary.git
 https://github.com/tpope/vim-cucumber.git
+https://github.com/elixir-lang/vim-elixir.git
 git://github.com/tpope/vim-endwise.git
 https://github.com/terryma/vim-expand-region
 git://github.com/tpope/vim-fugitive.git
