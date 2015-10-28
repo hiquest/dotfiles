@@ -13,5 +13,13 @@ apt-get install build-essential git vim curl htop autoconf bison libssl-dev liby
 wget -qO- https://deb.nodesource.com/setup_4.x | sudo bash -
 apt-get install --yes nodejs
 
+cp /root/dotfiles/src/.aliases /root/
+cp /root/dotfiles/src/.gitconfig /root/
+/root/dotfiles/bootstrap/vim.sh
+
 # rbenv, ruby, rails, gems
-curl https://raw.githubusercontent.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash
+# curl https://raw.githubusercontent.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash
+# rbenv install 2.2.3
+# gem install bundler
+
+# Passenger
