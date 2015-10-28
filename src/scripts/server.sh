@@ -15,7 +15,10 @@ apt-get install --yes nodejs
 
 # Workflow
 cp /root/dotfiles/src/.aliases /root/
+echo '. /root/.aliases' >> /root/.bashrc
+
 cp /root/dotfiles/src/.gitconfig /root/
+chmod +x /root/dotfiles/bootstrap/vim.sh
 /root/dotfiles/bootstrap/vim.sh
 
 # rbenv, ruby, rails, gems

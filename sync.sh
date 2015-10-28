@@ -7,6 +7,7 @@ mkdir src
 cp ~/.vimrc ./src/
 cp ~/.gitconfig ./src/
 cp ~/.aliases ./src/
+cp ~/.mac_aliases ./src/
 cp ~/.oh-my-zsh/custom/themes/yanis.zsh-theme ./src/
 cp -rf ~/scripts ./src/
 

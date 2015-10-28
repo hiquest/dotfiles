@@ -1,10 +1,7 @@
-# Add this to your .bashrc/.zshrc file:
-# source ./.aliases
-
-# System
-alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl"
-alias o="open"
-alias x="exit"
+# Navigation
+alias ..='cd ..'
+alias l='ls -lah'
+alias x='exit'
 
 # Rails
 alias r='rails'
@@ -18,9 +15,6 @@ alias rs7='rails server -p 3007'
 alias rc='rails console'
 alias rdm='bundle exec rake db:migrate'
 
-# Heroku
-alias h='heroku'
-
 mkcd() {
   mkdir $@ && cd $_
 }
@@ -33,19 +27,6 @@ alias g-='git checkout -'
 alias p='git push'
 alias c='git commit -m'
 
-# Scripts
-alias pr='~/scripts/pullreq.sh'
-alias mylog='~/scripts/monthly-log.sh Yanis'
-alias lo='~/scripts/diary.sh'
-alias uvp='~/scripts/update_vim_plugins.sh'
-
 # Misc
 alias b='bundle'
 alias be='bundle exec'
-alias ctags="`brew --prefix`/bin/ctags"
-alias serve='python -m SimpleHTTPServer 8000'
-alias i='ionic'
-alias mem='top -l1 | grep PhysMem'
-
-# Tmp alias
-alias tv="coffee ~/projects/opensource/tvcl/src/index.coffee"
