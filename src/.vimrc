@@ -77,7 +77,7 @@ set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 " Ignore this paths
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/build/*,*/node_modules/*,*/bower_components/*
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/build/*,*/node_modules/*,*/bower_components/*,*/test/files/*
 
 " Jump to the last cursor position
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal g`\"" | endif
@@ -91,10 +91,12 @@ au BufRead,BufNewFile *.hamlc setfiletype haml
 " Pathogen
 execute pathogen#infect()
 
-" Color scheme: solarized
+" Color scheme
 let g:solarized_termcolors=256
 set background=dark
 colorscheme solarized
+
+" colorscheme gruvbox
 
 " NerdTree
 autocmd StdinReadPre * let s:std_in=1
