@@ -1,0 +1,11 @@
+server {
+  server_name www.libie.ru;
+  return 301 $scheme://libie.ru$request_uri;
+}
+
+server {
+  listen 80 default_server;
+  server_name libie.ru;
+  passenger_enabled on;
+  root /www/libie-rails/public/;
+}
