@@ -1,10 +1,12 @@
 https://github.com/mileszs/ack.vim
 https://github.com/kien/ctrlp.vim.git
+https://github.com/rizzatti/dash.vim.git
 git://github.com/roman/golden-ratio.git
 git@github.com:morhetz/gruvbox.git
 git@github.com:othree/html5.vim.git
 https://github.com/tomasr/molokai
 https://github.com/scrooloose/nerdtree.git
+git@github.com:cakebaker/scss-syntax.vim.git
 git@github.com:ervandew/supertab.git
 https://github.com/scrooloose/syntastic.git
 git://github.com/mkitt/tabline.vim.git
@@ -15,6 +17,7 @@ git@github.com:Townk/vim-autoclose.git
 https://github.com/kchmck/vim-coffee-script.git
 https://github.com/altercation/vim-colors-solarized
 git://github.com/tpope/vim-commentary.git
+https://github.com/ap/vim-css-color.git
 https://github.com/tpope/vim-cucumber.git
 https://github.com/elixir-lang/vim-elixir.git
 git://github.com/tpope/vim-endwise.git

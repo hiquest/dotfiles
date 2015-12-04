@@ -148,6 +148,9 @@ map <Leader>n :NERDTreeFind<CR>
 " Search with :Ack! on current word
 noremap <Leader>f :Ack!<cr>
 
+" Searh Dash
+noremap <Leader>d :Dash<cr>
+
 " Git blame on <leader>a
 :nnoremap <leader>a :Gblame<cr>
 
