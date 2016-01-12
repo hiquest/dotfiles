@@ -14,6 +14,7 @@ alias rs5='rails server -p 3005'
 alias rs7='rails server -p 3007'
 alias rc='rails console'
 alias rdm='bundle exec rake db:migrate'
+alias groutes='bundle exec rake routes | grep $@'
 
 mkcd() {
   mkdir $@ && cd $_
@@ -30,4 +31,5 @@ alias c='git commit -m'
 # Misc
 alias b='bundle'
 alias be='bundle exec'
-alias do='docker'
+
+alias dokku='bash $HOME/.dokku/contrib/dokku_client.sh'
