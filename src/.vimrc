@@ -63,12 +63,19 @@ endif
 " Don’t create backups when editing files in certain directories
 set backupskip=/tmp/*,/private/tmp/*
 
+function! PlayingSong()
+  let esc = 'osascript -l JavaScript -e ''var track = Application("iTunes").currentTrack(); track.artist() + " — " + track.name()'''
+  return system(esc)
+endfunction
+
 " STATUS LINE
 set laststatus=2 " Always show status line
 set statusline=
 set statusline+=%0*\[%n]                                  "buffernr
 set statusline+=%0*\ %<%F\                                "File+path"
 set statusline+=%0*\ %y\                                  "FileType
+
+" set statusline+=%{PlayingSong()}
 set statusline+=%0*\ %=\ row:%l/%L\ (%03p%%)\             "Rownumber/total (%)
 set statusline+=%0*\ col:%03c\                            "Colnr
 set statusline+=%0*\ \ %m%r%w\ %P\ \                      "Modified? Readonly?  Top/bot."

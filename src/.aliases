@@ -33,3 +33,7 @@ alias b='bundle'
 alias be='bundle exec'
 
 alias dokku='bash $HOME/.dokku/contrib/dokku_client.sh'
+
+alias haplogs='ssh -t haprod "tail -f /opt/nearby/current/log/production.log"'
+alias hapc='ssh -t haprod "cd /opt/nearby/current && bundle exec rails console production"'
+alias hap='DOKKU_HOST=52.91.6.95 dokku'
