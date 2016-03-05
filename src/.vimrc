@@ -63,11 +63,6 @@ endif
 " Don’t create backups when editing files in certain directories
 set backupskip=/tmp/*,/private/tmp/*
 
-function! PlayingSong()
-  let esc = 'osascript -l JavaScript -e ''var track = Application("iTunes").currentTrack(); track.artist() + " — " + track.name()'''
-  return system(esc)
-endfunction
-
 " STATUS LINE
 set laststatus=2 " Always show status line
 set statusline=
@@ -75,7 +70,6 @@ set statusline+=%0*\[%n]                                  "buffernr
 set statusline+=%0*\ %<%F\                                "File+path"
 set statusline+=%0*\ %y\                                  "FileType
 
-" set statusline+=%{PlayingSong()}
 set statusline+=%0*\ %=\ row:%l/%L\ (%03p%%)\             "Rownumber/total (%)
 set statusline+=%0*\ col:%03c\                            "Colnr
 set statusline+=%0*\ \ %m%r%w\ %P\ \                      "Modified? Readonly?  Top/bot."
@@ -99,11 +93,9 @@ au BufRead,BufNewFile *.hamlc setfiletype haml
 execute pathogen#infect()
 
 " Color scheme
-let g:solarized_termcolors=256
-set background=dark
-colorscheme solarized
-
-" colorscheme gruvbox
+" let g:solarized_termcolors=256
+" set background=dark
+colorscheme Tomorrow-Night
 
 " NerdTree
 autocmd StdinReadPre * let s:std_in=1
@@ -125,15 +117,6 @@ let g:ctrlp_prompt_mappings = {
     \ 'AcceptSelection("t")': ['<cr>', '<RightMouse>'],
     \ }
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-" UltiSnips
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
-" If you want :UltiSnipsEdit to split your window.
-" let g:UltiSnipsEditSplit="vertical"
 
 " Faster exit to normal mode
 set timeoutlen=1000 ttimeoutlen=0
@@ -201,3 +184,7 @@ nnoremap <Left> <C-w>h
 nnoremap <Down> <C-w>j
 nnoremap <Up> <C-w>k
 nnoremap <Right> <C-w>l
+
+" Switching tabs: alt+], alt+[
+nnoremap ‘ gt
+nnoremap “ gT

@@ -12,7 +12,7 @@ alias vc='~/scripts/github-view-commit.sh'
 alias mylog='~/scripts/monthly-log.sh Yanis'
 alias lo='~/scripts/diary.sh'
 alias uvp='~/scripts/update_vim_plugins.sh'
-alias gco='~/scripts/gco.sh'
+alias co='~/scripts/gco.sh'
 
 # Misc
 alias i='ionic'
