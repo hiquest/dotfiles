@@ -1,5 +1,6 @@
 https://github.com/ekalinin/Dockerfile.vim.git
 https://github.com/mileszs/ack.vim
+https://github.com/jiangmiao/auto-pairs.git
 https://github.com/kien/ctrlp.vim.git
 https://github.com/rizzatti/dash.vim.git
 https://github.com/lambdatoast/elm.vim.git
