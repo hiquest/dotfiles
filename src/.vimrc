@@ -106,6 +106,7 @@ let NERDTreeShowHidden=1 " Always show dot files
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_ruby_checkers = ['rubocop', 'mri']
 
 " Use ag for :Ack
 let g:ackprg = 'ag --vimgrep'
@@ -185,6 +186,5 @@ nnoremap <Down> <C-w>j
 nnoremap <Up> <C-w>k
 nnoremap <Right> <C-w>l
 
-" Switching tabs: alt+], alt+[
-nnoremap ‘ gt
-nnoremap “ gT
+" Toggle Syntastic mode
+nnoremap <Leader>i :SyntasticToggleMode<CR>'

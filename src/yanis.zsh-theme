@@ -3,6 +3,9 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}*%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
 
+#
+# Custom helpers.
+#
 git_custom_status() {
   local cb=$(current_branch)
   if [ -n "$cb" ]; then
@@ -18,11 +21,19 @@ node_version() {
   echo "%{$fg[yellow]%}[$(node --version)]%{$reset_color%}"
 }
 
+time_in_clt() {
+  echo "%{$fg[yellow]%}[$(TZ=US/Eastern date +"%H:%M")]%{$reset_color%}"
+}
+
+#
+# Formatting
+#
+
 # RVM component of prompt
 ZSH_THEME_RVM_PROMPT_PREFIX="%{$fg[red]%}["
 ZSH_THEME_RVM_PROMPT_SUFFIX="]%{$reset_color%}"
 
 # Combine it all into a final right-side prompt
-RPS1='$(git_custom_status) $(rbenv_version) $(node_version) $EPS1'
+RPS1='$(git_custom_status) $(rbenv_version) $(time_in_clt) $EPS1'
 
 PROMPT="%{$fg[cyan]%}[%~% ]%(?.%{$fg[green]%}.%{$fg[red]%})%B$%b "
