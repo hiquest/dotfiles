@@ -10,9 +10,9 @@ alias h='heroku'
 alias pr='~/scripts/github-create-pullrequest.sh'
 alias vc='~/scripts/github-view-commit.sh'
 alias mylog='~/scripts/monthly-log.sh Yanis'
-alias lo='~/scripts/diary.sh'
 alias uvp='~/scripts/update_vim_plugins.sh'
 alias co='~/scripts/gco.sh'
+alias ly='~/scripts/lyrics.sh'
 
 # Misc
 alias i='ionic'
