@@ -18,12 +18,27 @@ rbenv_version() {
 }
 
 time_in_clt() {
-  echo "%{$fg[yellow]%}[$(TZ=US/Eastern date +"%H:%M")]%{$reset_color%}"
+  echo "%{$fg[yellow]%}$(TZ=US/Eastern date +"%H:%M")%{$reset_color%}"
 }
 
 itunes_playing() {
-  artist=`osascript -e 'tell application "iTunes" to artist of current track as string'`
-  name=`osascript -e 'tell application "iTunes" to name of current track as string'`
+
+  artist=`osascript -e '
+  tell application "iTunes"
+    try
+      if it is running then
+        artist of current track as string
+      end if
+    end try
+  end tell'`
+  name=`osascript -e '
+  tell application "iTunes"
+    try
+      if it is running then
+        name of current track as string
+      end if
+    end try
+  end tell'`
   echo "%{$fg[green]%}♫$artist - $name♫%{$reset_color%}"
 }
 
