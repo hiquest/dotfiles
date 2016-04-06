@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+# Looks up the lyrics for current playing song in iTunes and prints it out.
+# Usage:
+#   ./lyrics.sh
+
 enc() {
   echo `perl -MURI::Escape -e 'print uri_escape($ARGV[0]);' "$1"`
 }
@@ -12,4 +16,4 @@ name=`enc "$name"`
 
 url="http://makeitpersonal.co/lyrics?artist=$artist&title=$name"
 
-curl -s $url
+curl -s $url | less

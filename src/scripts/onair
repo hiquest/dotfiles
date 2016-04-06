@@ -1,8 +1,0 @@
-#!/bin/bash
-function check {
-  echo "$1 | $(curl -s -o /dev/null -w '%{http_code}' $1)"
-}
-
-check 'http://libie.ru'
-check 'http://blog.mdnbar.com'
-check 'http://nf.mdnbar.com'

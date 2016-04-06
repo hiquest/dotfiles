@@ -22,7 +22,6 @@ time_in_clt() {
 }
 
 itunes_playing() {
-
   artist=`osascript -e '
   tell application "iTunes"
     try

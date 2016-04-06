@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Prints out commits made by a specific user.
+# Usage:
+#   ./monthly-log.sh Yanis
+
 set -e
 
 git log --no-merges --format="%cd" --date=short --author=$1 | sort -u -r | head -n 31 | while read d ; do

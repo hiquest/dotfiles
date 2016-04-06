@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Traverse all dirs in ~/.vim/bundle and updates plugins.
+# Usage:
+#   ./update_vim_plugins.sh
+
 set -e
 
 ls ~/.vim/bundle |

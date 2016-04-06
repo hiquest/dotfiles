@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Checkout a branch by partial name.
+# Usage:
+#   ./gco.sh <part_of_branch_name>
+
 set -e
 
 grep_branches()

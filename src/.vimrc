@@ -1,13 +1,23 @@
 syntax on
 filetype plugin indent on " load filetype-specific indent files
 
-set nocompatible
+" GENERAL
+set nocompatible " Don't use own default settings
 set ttyfast " Optimize for fast terminal connections
 set encoding=utf-8 nobomb " Use UTF-8 without BOM
-set list
+set list " trailing whitespace can be seen
 set mouse=a " Enable mouse in all modes
-set clipboard=unnamed
-set autoread " Reload files changed outside vim
+set clipboard=unnamed " Use the OS clipboard by default (on versions compiled with `+clipboard`)
+set autoread " Reload files changed outside vim (but doesn't check periodically!)
+" Ignore this paths
+set wildignore+=.DS_Store
+set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd,*.o,*.obj,*.min.js
+set wildignore+=*/bower_components/*,*/node_modules/*
+set wildignore+=*/smarty/*,*/vendor/*,*/.git/*,*/.hg/*,*/.svn/*,*/.sass-cache/*,*/log/*,*/tmp/*,*/build/*,*/ckeditor/*,*/doc/*,*/source_maps/*,*/dist/*
+set wildignore+=*.so,*.swp,*.zip,*/test/files/*
+" Jump to the last cursor position
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal g`\"" | endif
+set report=0 " Show all changes
 
 " UI SETTINGS
 set number " Enable line numbers
@@ -18,27 +28,27 @@ set wildmenu " visual autocomplete for command menu
 set showmatch  " highlight matching [{()}] "
 set title " Show the filename in the window titlebar
 set ruler " Show the cursor position
-let &t_SI = "\<Esc>]50;CursorShape=1\x7" " change cursor view for insert/normal mode
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 set nostartofline " Don’t reset cursor to start of line when moving around.
 set shortmess=atI " Don’t show the intro message when starting Vim
 set lcs=tab:▸\ ,trail:·,nbsp:_ " Show “invisible” characters
 set noerrorbells " Disable error bells
+let &t_SI = "\<Esc>]50;CursorShape=1\x7" " change cursor view for insert/normal mode
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
-" SEARCHING
+" SEARCH
 set incsearch " Highlight dynamically as pattern is typed
 set hlsearch " Highlight searches
 set gdefault " Add the g flag to search/replace by default
 set ignorecase " Ignore case of searches
 
 " FOLDING
-set foldenable        "dont fold by default
+set foldenable          "dont fold by default
 set foldmethod=indent   "fold based on indent
 set foldlevelstart=10   " open most folds by default
 set foldnestmax=10      " 10 nested fold max
 
 " NAVIGATION
-set esckeys " Allow cursor keys in insert mode
+set noesckeys " Don't allow cursor keys in insert mode
 set backspace=indent,eol,start " Allow backspace in insert mode
 
 " INDENTATION/TABS
@@ -60,28 +70,22 @@ set directory=~/.vim/swaps
 if exists("&undodir")
   set undodir=~/.vim/undo
 endif
-" Don’t create backups when editing files in certain directories
-set backupskip=/tmp/*,/private/tmp/*
+set backupskip=/tmp/*,/private/tmp/* " Don’t create for certain directories
 
 " STATUS LINE
 set laststatus=2 " Always show status line
+" Left side
 set statusline=
 set statusline+=%0*\[%n]                                  "buffernr
 set statusline+=%0*\ %<%F\                                "File+path"
 set statusline+=%0*\ %y\                                  "FileType
-
+" Right side
 set statusline+=%0*\ %=\ row:%l/%L\ (%03p%%)\             "Rownumber/total (%)
 set statusline+=%0*\ col:%03c\                            "Colnr
 set statusline+=%0*\ \ %m%r%w\ %P\ \                      "Modified? Readonly?  Top/bot."
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-
-" Ignore this paths
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/build/*,*/node_modules/*,*/bower_components/*,*/test/files/*
-
-" Jump to the last cursor position
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal g`\"" | endif
 
 " CUSTOM FILES
 au BufRead,BufNewFile *.eco setfiletype html
@@ -93,8 +97,6 @@ au BufRead,BufNewFile *.hamlc setfiletype haml
 execute pathogen#infect()
 
 " Color scheme
-" let g:solarized_termcolors=256
-" set background=dark
 colorscheme Tomorrow-Night
 
 " NerdTree
@@ -140,7 +142,7 @@ map <Leader>n :NERDTreeFind<CR>
 " Search with :Ack! on current word
 noremap <Leader>f :Ack!<cr>
 
-" Searh Dash
+" Search Dash
 noremap <Leader>d :Dash<cr>
 
 " Git blame on <leader>a
@@ -180,7 +182,7 @@ map <Down> :echo "no!"<cr>
 " Open Notepad
 nnoremap <Leader>' :vsp /Users/yanis/Dropbox/notes.markdown <CR>
 
-" Split navigation
+" Navigate splits with arrows
 nnoremap <Left> <C-w>h
 nnoremap <Down> <C-w>j
 nnoremap <Up> <C-w>k

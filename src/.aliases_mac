@@ -7,8 +7,8 @@ alias x="exit"
 alias h='heroku'
 
 # Scripts
-alias pr='~/scripts/github-create-pullrequest.sh'
-alias vc='~/scripts/github-view-commit.sh'
+alias pr='~/scripts/gh-pull-request.sh'
+alias vc='~/scripts/gh-view-commit.sh'
 alias mylog='~/scripts/monthly-log.sh Yanis'
 alias uvp='~/scripts/update_vim_plugins.sh'
 alias co='~/scripts/gco.sh'
