@@ -18,7 +18,11 @@ rbenv_version() {
 }
 
 time_in_clt() {
-  echo "%{$fg[yellow]%}$(TZ=US/Eastern date +"%H:%M")%{$reset_color%}"
+  echo "%{$fg[yellow]%}c$(TZ=US/Eastern date +"%H:%M")%{$reset_color%}"
+}
+
+time_in_smr() {
+  echo "%{$fg[yellow]%}s$(TZ=Europe/Samara date +"%H:%M")%{$reset_color%}"
 }
 
 itunes_playing() {
@@ -50,6 +54,6 @@ ZSH_THEME_RVM_PROMPT_PREFIX="%{$fg[red]%}["
 ZSH_THEME_RVM_PROMPT_SUFFIX="]%{$reset_color%}"
 
 # Combine it all into a final right-side prompt
-RPS1='$(git_custom_status) $(rbenv_version) $(time_in_clt) $(itunes_playing) $EPS1'
+RPS1='$(git_custom_status) $(rbenv_version) $(time_in_clt) $(time_in_smr) $(itunes_playing) $EPS1'
 
 PROMPT="%{$fg[cyan]%}[%~% ]%(?.%{$fg[green]%}.%{$fg[red]%})%B$%b "

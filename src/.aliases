@@ -20,6 +20,16 @@ mkcd() {
   mkdir $@ && cd $_
 }
 
+# Only run spec if file exists
+rsp() {
+  if [ -f $1 ]; then
+    bundle exec rspec $1
+  else
+    (>&2 echo "File Not Found")
+    # exit 1
+  fi
+}
+
 # Git
 alias g="git"
 alias gs='git s'

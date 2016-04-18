@@ -1,6 +1,8 @@
 syntax on
 filetype plugin indent on " load filetype-specific indent files
 
+set rtp+=~/.fzf
+
 " GENERAL
 set nocompatible " Don't use own default settings
 set ttyfast " Optimize for fast terminal connections
@@ -14,7 +16,7 @@ set wildignore+=.DS_Store
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd,*.o,*.obj,*.min.js
 set wildignore+=*/bower_components/*,*/node_modules/*
 set wildignore+=*/smarty/*,*/vendor/*,*/.git/*,*/.hg/*,*/.svn/*,*/.sass-cache/*,*/log/*,*/tmp/*,*/build/*,*/ckeditor/*,*/doc/*,*/source_maps/*,*/dist/*
-set wildignore+=*.so,*.swp,*.zip,*/test/files/*
+set wildignore+=*.so,*.swp,*.zip,*/test/files/*,*/webpack.bundle.js
 " Jump to the last cursor position
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal g`\"" | endif
 set report=0 " Show all changes
@@ -34,6 +36,9 @@ set lcs=tab:▸\ ,trail:·,nbsp:_ " Show “invisible” characters
 set noerrorbells " Disable error bells
 let &t_SI = "\<Esc>]50;CursorShape=1\x7" " change cursor view for insert/normal mode
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+" Color scheme
+colorscheme Tomorrow-Night
 
 " SEARCH
 set incsearch " Highlight dynamically as pattern is typed
@@ -91,40 +96,50 @@ set statusline+=%*
 au BufRead,BufNewFile *.eco setfiletype html
 au BufRead,BufNewFile *.hamlc setfiletype haml
 
+" Faster exit to normal mode
+set timeoutlen=1000 ttimeoutlen=0
+
+" ###
 " PLUGIN SETTINGS
+" ###
 
 " Pathogen
 execute pathogen#infect()
-
-" Color scheme
-colorscheme Tomorrow-Night
 
 " NerdTree
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 let NERDTreeShowHidden=1 " Always show dot files
+" Open file explorer with cursor at current file
+map <Leader>n :NERDTreeFind<CR>
 
 " Syntastic
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_ruby_checkers = ['rubocop', 'mri']
+" Toggle Syntastic mode
+nnoremap <Leader>i :SyntasticToggleMode<CR>'
 
-" Use ag for :Ack
-let g:ackprg = 'ag --vimgrep'
+" Ack
+let g:ackprg = 'ag --vimgrep' " Use silver searcher
+" Search with :Ack! on current word
+noremap <Leader>f :Ack!<cr>
 
-" Ctrlp
-let g:ctrlp_map = '<leader><leader>'
+" CtrlP
+" let g:ctrlp_map = '<leader><leader>'
 let g:ctrlp_prompt_mappings = {
     \ 'AcceptSelection("e")': ['<c-t>', '<2-LeftMouse>'],
     \ 'AcceptSelection("t")': ['<cr>', '<RightMouse>'],
     \ }
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
-" Faster exit to normal mode
-set timeoutlen=1000 ttimeoutlen=0
+" Fuzzy finder fzf
+noremap <Leader><Leader> :Files<cr>
 
+" ###
 " CUSTOM MAPPINGS
+" ###
 
 " Strip trailing whitespace
 function! StripWhitespace()
@@ -136,17 +151,11 @@ function! StripWhitespace()
 endfunction
 noremap <leader>ss :call StripWhitespace()<CR>
 
-" Open file explorer with cursor at current file
-map <Leader>n :NERDTreeFind<CR>
-
-" Search with :Ack! on current word
-noremap <Leader>f :Ack!<cr>
-
-" Search Dash
+" Search with Dash app
 noremap <Leader>d :Dash<cr>
 
 " Git blame on <leader>a
-:nnoremap <leader>a :Gblame<cr>
+nnoremap <leader>a :Gblame<cr>
 
 " Fold on space
 noremap <Space> za
@@ -170,9 +179,6 @@ nnoremap <Leader>o :tabo<CR>
 " No highlight on enter
 nnoremap <CR> :noh<cr>
 
-" run the whole file in ruby
-noremap <Leader>r ggVG:w !ruby<cr>
-
 " Don't allow to use arrow keys
 map <Left> :echo "no!"<cr>
 map <Right> :echo "no!"<cr>
@@ -187,6 +193,3 @@ nnoremap <Left> <C-w>h
 nnoremap <Down> <C-w>j
 nnoremap <Up> <C-w>k
 nnoremap <Right> <C-w>l
-
-" Toggle Syntastic mode
-nnoremap <Leader>i :SyntasticToggleMode<CR>'

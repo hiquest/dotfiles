@@ -11,12 +11,33 @@ alias pr='~/scripts/gh-pull-request.sh'
 alias vc='~/scripts/gh-view-commit.sh'
 alias mylog='~/scripts/monthly-log.sh Yanis'
 alias uvp='~/scripts/update_vim_plugins.sh'
-alias co='~/scripts/gco.sh'
 alias ly='~/scripts/lyrics.sh'
 
 # Misc
 alias i='ionic'
 alias mem='top -l1 | grep PhysMem'
+alias we='curl http://wttr.in/ | less'
 
 # Tmp alias
 alias tv="coffee ~/projects/opensource/tvcl/src/index.coffee"
+
+alias j="z"
+
+#
+# Following need junegunn/fzf installed.
+#
+
+# Use fzf with z
+unalias z 2> /dev/null
+z() {
+  [ $# -gt 0 ] && _z "$*" && return
+  cd "$(_z -l 2>&1 | fzf-tmux +s --tac --query "$*" | sed 's/^[0-9,.]* *//')"
+}
+
+# Checkout a branch with fzf
+co() {
+  local branches branch
+  branches=$(git branch -vv) &&
+  branch=$(echo "$branches" | fzf +m) &&
+  git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
+}

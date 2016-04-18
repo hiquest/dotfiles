@@ -1,19 +1,32 @@
 #!/bin/bash
 set -e
 
-# Looks up the lyrics for current playing song in iTunes and prints it out.
+# Looks up the lyrics for the current playing song in iTunes and prints it out.
 # Usage:
 #   ./lyrics.sh
 
-enc() {
-  echo `perl -MURI::Escape -e 'print uri_escape($ARGV[0]);' "$1"`
+escape_uri() {
+  perl -MURI::Escape -e 'print uri_escape($ARGV[0]);' "$1"
 }
 
-artist=`osascript -e 'tell application "iTunes" to artist of current track as string'`
-artist=`enc "$artist"`
-name=`osascript -e 'tell application "iTunes" to name of current track as string'`
-name=`enc "$name"`
+osa() {
+  osascript -l JavaScript -e "$1"
+}
 
-url="http://makeitpersonal.co/lyrics?artist=$artist&title=$name"
+artist() {
+  osa 'Application("iTunes").currentTrack.artist()'
+}
 
-curl -s $url | less
+name() {
+  osa 'Application("iTunes").currentTrack.name()'
+}
+
+artist=`artist`
+artist=`escape_uri "$artist"`
+
+name=`name`
+name=`escape_uri "$name"`
+
+lyrics_url="http://makeitpersonal.co/lyrics?artist=$artist&title=$name"
+
+curl -s $lyrics_url | less
