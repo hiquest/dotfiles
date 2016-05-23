@@ -22,6 +22,7 @@ name() {
 }
 
 artist=`artist`
+artist=`echo $artist | sed 's/&/And/g'`
 artist=`escape_uri "$artist"`
 
 name=`name`

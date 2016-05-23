@@ -23,7 +23,6 @@ set report=0 " Show all changes
 
 " UI SETTINGS
 set number " Enable line numbers
-set relativenumber
 set showcmd " Show the (partial) command as it’s being typed
 set showmode " Show the current mode
 set cursorline " Highlight current line
