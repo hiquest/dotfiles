@@ -1,27 +1,49 @@
+#
 # System
+#
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl"
 alias o="open"
 alias x="exit"
+alias mem='top -l1 | grep PhysMem'
+alias j="z"
 
-# Heroku
+#
+# Workflow
+#
+
 alias h='heroku'
+alias i='ionic'
 
-# Scripts
+# Update VIM plugins
+alias uvp='~/scripts/update_vim_plugins.sh'
+
+#
+# Git/Github helpers
+#
 alias pr='~/scripts/gh-pull-request.sh'
 alias vc='~/scripts/gh-view-commit.sh'
 alias mylog='~/scripts/monthly-log.sh Yanis'
-alias uvp='~/scripts/update_vim_plugins.sh'
+
+#
+# Misc/fun
+#
+
+# Lookup lyrics of song playing in iTunes
 alias ly='~/scripts/lyrics.sh'
 
-# Misc
-alias i='ionic'
-alias mem='top -l1 | grep PhysMem'
+# Weather
 alias we='curl http://wttr.in/ | less'
+
+# Check playing song on BBC6
+alias bbc='~/scripts/bbc6_now_playing.sh'
 
 # Tmp alias
 alias tv="coffee ~/projects/opensource/tvcl/src/index.coffee"
 
-alias j="z"
+# Lookup in the Dictionary.app
+def() {
+  open "dict://$1"
+}
 
 #
 # Following need junegunn/fzf installed.

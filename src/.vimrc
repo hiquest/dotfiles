@@ -23,6 +23,7 @@ set report=0 " Show all changes
 
 " UI SETTINGS
 set number " Enable line numbers
+set relativenumber
 set showcmd " Show the (partial) command as it’s being typed
 set showmode " Show the current mode
 set cursorline " Highlight current line
@@ -38,6 +39,7 @@ let &t_SI = "\<Esc>]50;CursorShape=1\x7" " change cursor view for insert/normal 
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 " Color scheme
+" set background=dark
 colorscheme Tomorrow-Night
 
 " SEARCH
@@ -117,7 +119,7 @@ map <Leader>n :NERDTreeFind<CR>
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_ruby_checkers = ['rubocop', 'mri']
+" let g:syntastic_ruby_checkers = ['rubocop', 'mri']
 " Toggle Syntastic mode
 nnoremap <Leader>i :SyntasticToggleMode<CR>'
 
@@ -136,6 +138,20 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
 " Fuzzy finder fzf
 noremap <Leader><Leader> :Files<cr>
+" Use enter to open in new tab
+let g:fzf_action = {
+  \ 'enter': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" Vroom setup
+let g:vroom_clear_screen=0
+let g:vroom_use_vimux=1
+let g:vroom_use_bundle_exec=1
+let g:vroom_use_binstubs=0
+let g:vroom_use_colors=1
+" this gives rspec's pane a title "target", that we'll late use to find its id
+" let g:vroom_spec_command="printf '\\033]2;target\\033\\\\' && rspec "
 
 " ###
 " CUSTOM MAPPINGS
@@ -150,6 +166,12 @@ function! StripWhitespace()
   call setreg('/', old_query)
 endfunction
 noremap <leader>ss :call StripWhitespace()<CR>
+
+function! RunSpec()
+  :vsplit<CR>
+  :read bundle exec rspec %<CR>
+endfunction
+noremap <leader>t :call RunSpec()<CR>
 
 " Search with Dash app
 noremap <Leader>d :Dash<cr>
