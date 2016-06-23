@@ -15,28 +15,28 @@ alias h='heroku'
 alias i='ionic'
 
 # Update VIM plugins
-alias uvp='~/scripts/update_vim_plugins.sh'
+alias uvp='~/dotfiles/scripts/update_vim_plugins.sh'
 
 #
 # Git/Github helpers
 #
-alias pr='~/scripts/gh-pull-request.sh'
-alias vc='~/scripts/gh-view-commit.sh'
-alias mylog='~/scripts/git-monthly-log.sh Yanis'
-alias gclean='~/scripts/git-clean-merged.sh'
+alias pr='~/dotfiles/scripts/gh-pull-request.sh'
+alias vc='~/dotfiles/scripts/gh-view-commit.sh'
+alias mylog='~/dotfiles/scripts/git-monthly-log.sh Yanis'
+alias gclean='~/dotfiles/scripts/git-clean-merged.sh'
 
 #
 # Misc/fun
 #
 
 # Lookup lyrics of song playing in iTunes
-alias ly='~/scripts/lyrics.sh'
+alias ly='~/dotfiles/scripts/lyrics.sh'
 
 # Weather
 alias we='curl http://wttr.in/ | less'
 
 # Check playing song on BBC6
-alias bbc='~/scripts/bbc6_now_playing.sh'
+alias bbc='~/dotfiles/scripts/bbc6_now_playing.sh'
 
 # Tmp alias
 alias tv="coffee ~/projects/opensource/tvcl/src/index.coffee"
