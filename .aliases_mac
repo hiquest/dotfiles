@@ -22,7 +22,8 @@ alias uvp='~/scripts/update_vim_plugins.sh'
 #
 alias pr='~/scripts/gh-pull-request.sh'
 alias vc='~/scripts/gh-view-commit.sh'
-alias mylog='~/scripts/monthly-log.sh Yanis'
+alias mylog='~/scripts/git-monthly-log.sh Yanis'
+alias gclean='~/scripts/git-clean-merged.sh'
 
 #
 # Misc/fun
@@ -63,3 +64,5 @@ co() {
   branch=$(echo "$branches" | fzf +m) &&
   git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
 }
+
+alias octave='/usr/local/octave/3.8.0/bin/octave-3.8.0 --silent'

@@ -26,8 +26,10 @@ artist=`echo $artist | sed 's/&/And/g'`
 artist=`escape_uri "$artist"`
 
 name=`name`
+name=`echo $name | sed 's/?//g'`
 name=`escape_uri "$name"`
 
 lyrics_url="http://makeitpersonal.co/lyrics?artist=$artist&title=$name"
+echo $lyrics_url
 
 curl -s $lyrics_url | less

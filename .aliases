@@ -44,5 +44,4 @@ alias be='bundle exec'
 
 alias dokku='bash $HOME/.dokku/contrib/dokku_client.sh'
 
-alias haplogs='ssh -t haprod "tail -f /opt/nearby/current/log/production.log"'
-alias hapc='ssh -t haprod "cd /opt/nearby/current && bundle exec rails console production"'
+alias libiec='ssh -t libie "cd /www/libie-rails && rails console production"'

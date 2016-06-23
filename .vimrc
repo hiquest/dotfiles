@@ -11,6 +11,7 @@ set list " trailing whitespace can be seen
 set mouse=a " Enable mouse in all modes
 set clipboard=unnamed " Use the OS clipboard by default (on versions compiled with `+clipboard`)
 set autoread " Reload files changed outside vim (but doesn't check periodically!)
+set shortmess=a " Short the status message
 " Ignore this paths
 set wildignore+=.DS_Store
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd,*.o,*.obj,*.min.js
@@ -101,11 +102,63 @@ au BufRead,BufNewFile *.hamlc setfiletype haml
 set timeoutlen=1000 ttimeoutlen=0
 
 " ###
-" PLUGIN SETTINGS
+" PLUGINS
 " ###
 
-" Pathogen
-execute pathogen#infect()
+call plug#begin('~/.vim/plugged')
+
+" General
+Plug 'junegunn/fzf'         " Best fuzzy finder
+Plug 'jiangmiao/auto-pairs' " Auto-insert paired symbols
+" Plug 'Townk/vim-autoclose'
+Plug 'roman/golden-ratio'   " Resize splits in golden ratio
+Plug 'scrooloose/nerdtree'  " File explorer
+" Plug 'ervandew/supertab'
+Plug 'scrooloose/syntastic' " Bunch of syntax checkers
+Plug 'mkitt/tabline.vim'    " Enhances tab labels
+Plug 'tpope/vim-commentary' " Commenting
+" Plug 'tomtom/tlib_vim'
+Plug 'tpope/vim-fugitive'   " Git utils
+Plug 'airblade/vim-gitgutter' " Shows a git diff in the gutter
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-surround'   " Adds surrounds actions
+Plug 'bronson/vim-trailing-whitespace' " Highlights trailing whitespace in red and provides
+Plug 'MarcWeber/vim-addon-mw-utils' " Required by snipmate
+Plug 'garbas/vim-snipmate' " Snippets plugins
+Plug 'honza/vim-snippets' " Snippets for snipmate
+
+" Syntax
+Plug 'ekalinin/Dockerfile.vim'
+Plug 'evanmiller/nginx-vim-syntax'
+Plug 'cakebaker/scss-syntax.vim'
+Plug 'tpope/vim-haml'
+Plug 'digitaltoad/vim-jade'
+Plug 'slim-template/vim-slim'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'ap/vim-css-color'
+Plug 'elixir-lang/vim-elixir'
+
+" Ruby
+Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-cucumber'
+
+" JavaScript
+Plug 'leafgarland/typescript-vim'
+Plug 'kchmck/vim-coffee-script'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'othree/yajs'
+
+" Tmux
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'skalnik/vim-vroom'
+Plug 'benmills/vimux'
+
+" Integrations
+Plug 'rizzatti/dash.vim' " Dash App
+
+call plug#end()
 
 " NerdTree
 autocmd StdinReadPre * let s:std_in=1
@@ -122,19 +175,6 @@ let g:syntastic_check_on_wq = 0
 " Toggle Syntastic mode
 nnoremap <Leader>i :SyntasticToggleMode<CR>'
 
-" Ack
-let g:ackprg = 'ag --vimgrep' " Use silver searcher
-" Search with :Ack! on current word
-noremap <Leader>f :Ack!<cr>
-
-" CtrlP
-" let g:ctrlp_map = '<leader><leader>'
-let g:ctrlp_prompt_mappings = {
-    \ 'AcceptSelection("e")': ['<c-t>', '<2-LeftMouse>'],
-    \ 'AcceptSelection("t")': ['<cr>', '<RightMouse>'],
-    \ }
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
 " Fuzzy finder fzf
 noremap <Leader><Leader> :Files<cr>
 " Use enter to open in new tab
@@ -142,6 +182,9 @@ let g:fzf_action = {
   \ 'enter': 'tab split',
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
+nnoremap <Leader>f :Ag <C-R><C-W><cr>
+vnoremap <Leader>f y:Ag <C-R>"<cr>
+nnoremap <C-F> :Ag<Space>
 
 " Vroom setup
 let g:vroom_clear_screen=0
@@ -196,6 +239,9 @@ nnoremap <Leader>q :q<CR>
 nnoremap <Leader>x :qa<CR>
 
 nnoremap <Leader>o :tabo<CR>
+
+" Open current line (e.g. open a url)
+" nnoremap <Leader>v ^yt$:!open <C-R>"<cr>
 
 " No highlight on enter
 nnoremap <CR> :noh<cr>
