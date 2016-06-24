@@ -3,7 +3,6 @@
 #
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl"
 alias o="open"
-alias x="exit"
 alias mem='top -l1 | grep PhysMem'
 alias j="z"
 
@@ -14,16 +13,13 @@ alias j="z"
 alias h='heroku'
 alias i='ionic'
 
-# Update VIM plugins
-alias uvp='~/dotfiles/scripts/update_vim_plugins.sh'
-
 #
 # Git/Github helpers
 #
-alias pr='~/dotfiles/scripts/gh-pull-request.sh'
-alias vc='~/dotfiles/scripts/gh-view-commit.sh'
-alias mylog='~/dotfiles/scripts/git-monthly-log.sh Yanis'
-alias gclean='~/dotfiles/scripts/git-clean-merged.sh'
+alias pr='~/dotfiles/scripts/git/gh-pull-request.sh'
+alias vc='~/dotfiles/scripts/git/gh-view-commit.sh'
+alias mylog='~/dotfiles/scripts/git/git-monthly-log.sh Yanis'
+alias gclean='~/dotfiles/scripts/git/git-clean-merged.sh'
 
 #
 # Misc/fun

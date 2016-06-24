@@ -1,6 +1,65 @@
 syntax on
 filetype plugin indent on " load filetype-specific indent files
 
+" ###
+" PLUGINS
+" ###
+
+call plug#begin('~/.vim/plugged')
+
+" General
+Plug 'junegunn/fzf.vim'         " Best fuzzy finder
+Plug 'jiangmiao/auto-pairs' " Auto-insert paired symbols
+" Plug 'Townk/vim-autoclose'
+Plug 'roman/golden-ratio'   " Resize splits in golden ratio
+Plug 'scrooloose/nerdtree'  " File explorer
+" Plug 'ervandew/supertab'
+Plug 'scrooloose/syntastic' " Bunch of syntax checkers
+Plug 'mkitt/tabline.vim'    " Enhances tab labels
+Plug 'tpope/vim-commentary' " Commenting
+" Plug 'tomtom/tlib_vim'
+Plug 'tpope/vim-fugitive'   " Git utils
+Plug 'airblade/vim-gitgutter' " Shows a git diff in the gutter
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-surround'   " Adds surrounds actions
+Plug 'bronson/vim-trailing-whitespace' " Highlights trailing whitespace in red and provides
+Plug 'MarcWeber/vim-addon-mw-utils' " Required by snipmate
+Plug 'garbas/vim-snipmate' " Snippets plugins
+Plug 'honza/vim-snippets' " Snippets for snipmate
+
+" Syntax
+Plug 'ekalinin/Dockerfile.vim'
+Plug 'evanmiller/nginx-vim-syntax'
+Plug 'cakebaker/scss-syntax.vim'
+Plug 'tpope/vim-haml'
+Plug 'digitaltoad/vim-jade'
+Plug 'slim-template/vim-slim'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'ap/vim-css-color'
+Plug 'elixir-lang/vim-elixir'
+
+" Ruby
+Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-cucumber'
+
+" JavaScript
+Plug 'leafgarland/typescript-vim'
+Plug 'kchmck/vim-coffee-script'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'othree/yajs'
+
+" Tmux
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'skalnik/vim-vroom'
+Plug 'benmills/vimux'
+
+" Integrations
+Plug 'rizzatti/dash.vim' " Dash App
+
+call plug#end()
+
 set rtp+=~/.fzf
 
 " GENERAL
@@ -101,64 +160,7 @@ au BufRead,BufNewFile *.hamlc setfiletype haml
 " Faster exit to normal mode
 set timeoutlen=1000 ttimeoutlen=0
 
-" ###
-" PLUGINS
-" ###
-
-call plug#begin('~/.vim/plugged')
-
-" General
-Plug 'junegunn/fzf'         " Best fuzzy finder
-Plug 'jiangmiao/auto-pairs' " Auto-insert paired symbols
-" Plug 'Townk/vim-autoclose'
-Plug 'roman/golden-ratio'   " Resize splits in golden ratio
-Plug 'scrooloose/nerdtree'  " File explorer
-" Plug 'ervandew/supertab'
-Plug 'scrooloose/syntastic' " Bunch of syntax checkers
-Plug 'mkitt/tabline.vim'    " Enhances tab labels
-Plug 'tpope/vim-commentary' " Commenting
-" Plug 'tomtom/tlib_vim'
-Plug 'tpope/vim-fugitive'   " Git utils
-Plug 'airblade/vim-gitgutter' " Shows a git diff in the gutter
-Plug 'terryma/vim-multiple-cursors'
-Plug 'tpope/vim-surround'   " Adds surrounds actions
-Plug 'bronson/vim-trailing-whitespace' " Highlights trailing whitespace in red and provides
-Plug 'MarcWeber/vim-addon-mw-utils' " Required by snipmate
-Plug 'garbas/vim-snipmate' " Snippets plugins
-Plug 'honza/vim-snippets' " Snippets for snipmate
-
-" Syntax
-Plug 'ekalinin/Dockerfile.vim'
-Plug 'evanmiller/nginx-vim-syntax'
-Plug 'cakebaker/scss-syntax.vim'
-Plug 'tpope/vim-haml'
-Plug 'digitaltoad/vim-jade'
-Plug 'slim-template/vim-slim'
-Plug 'hail2u/vim-css3-syntax'
-Plug 'ap/vim-css-color'
-Plug 'elixir-lang/vim-elixir'
-
-" Ruby
-Plug 'vim-ruby/vim-ruby'
-Plug 'tpope/vim-rails'
-Plug 'tpope/vim-cucumber'
-
-" JavaScript
-Plug 'leafgarland/typescript-vim'
-Plug 'kchmck/vim-coffee-script'
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-Plug 'othree/yajs'
-
-" Tmux
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'skalnik/vim-vroom'
-Plug 'benmills/vimux'
-
-" Integrations
-Plug 'rizzatti/dash.vim' " Dash App
-
-call plug#end()
+" Plugin config
 
 " NerdTree
 autocmd StdinReadPre * let s:std_in=1
