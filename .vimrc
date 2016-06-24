@@ -13,17 +13,19 @@ Plug 'jiangmiao/auto-pairs' " Auto-insert paired symbols
 " Plug 'Townk/vim-autoclose'
 Plug 'roman/golden-ratio'   " Resize splits in golden ratio
 Plug 'scrooloose/nerdtree'  " File explorer
-" Plug 'ervandew/supertab'
+Plug 'ervandew/supertab'    " Easier completion with tab
 Plug 'scrooloose/syntastic' " Bunch of syntax checkers
 Plug 'mkitt/tabline.vim'    " Enhances tab labels
 Plug 'tpope/vim-commentary' " Commenting
-" Plug 'tomtom/tlib_vim'
 Plug 'tpope/vim-fugitive'   " Git utils
 Plug 'airblade/vim-gitgutter' " Shows a git diff in the gutter
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-surround'   " Adds surrounds actions
 Plug 'bronson/vim-trailing-whitespace' " Highlights trailing whitespace in red and provides
+
+" Snipmate stuff
 Plug 'MarcWeber/vim-addon-mw-utils' " Required by snipmate
+Plug 'tomtom/tlib_vim' " Required by snipmate
 Plug 'garbas/vim-snipmate' " Snippets plugins
 Plug 'honza/vim-snippets' " Snippets for snipmate
 
