@@ -2,7 +2,7 @@
 export ZSH=/Users/yanis/.oh-my-zsh
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 ZSH_THEME="yanis" # or 'random'
-plugins=(git rbenv colored-man-pages rails)
+plugins=(git rbenv colored-man-pages zsh-completions)
 # ENABLE_CORRECTION="true"
 source $ZSH/oh-my-zsh.sh
 
@@ -10,6 +10,9 @@ export EDITOR='vim'
 
 # Rbenv setup
 eval "$(rbenv init -)"
+
+# Required by zsh-completions
+autoload -U compinit && compinit
 
 source_if_exists() {
   [ -f $1 ] && source $1

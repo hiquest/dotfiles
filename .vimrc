@@ -10,7 +10,6 @@ call plug#begin('~/.vim/plugged')
 " General
 Plug 'junegunn/fzf.vim'         " Best fuzzy finder
 Plug 'jiangmiao/auto-pairs' " Auto-insert paired symbols
-" Plug 'Townk/vim-autoclose'
 Plug 'roman/golden-ratio'   " Resize splits in golden ratio
 Plug 'scrooloose/nerdtree'  " File explorer
 Plug 'ervandew/supertab'    " Easier completion with tab
@@ -46,11 +45,12 @@ Plug 'tpope/vim-rails'
 Plug 'tpope/vim-cucumber'
 
 " JavaScript
-Plug 'leafgarland/typescript-vim'
+" Plug 'leafgarland/typescript-vim'
+Plug 'isRuslan/vim-es6'
 Plug 'kchmck/vim-coffee-script'
-Plug 'pangloss/vim-javascript'
+" Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
-Plug 'othree/yajs'
+" Plug 'othree/yajs'
 
 " Tmux
 Plug 'christoomey/vim-tmux-navigator'
