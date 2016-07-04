@@ -35,5 +35,5 @@ source_if_exists ~/.unsafe.env
 
 # Read aliases
 source_if_exists ~/.aliases
-source_if_exists ~/.aliases_mac
+source_if_exists ~/.aliases_dev # mostly for developer's machine only
 source_if_exists ~/.aliases_unsafe

@@ -1,17 +1,15 @@
 #
-# System
+# MacOS only
 #
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl"
 alias o="open"
-alias mem='top -l1 | grep PhysMem'
+
+#
+# Oftenly used
+#
 alias j="z"
-
-#
-# Workflow
-#
-
-alias h='heroku'
 alias i='ionic'
+alias octave='/usr/local/octave/3.8.0/bin/octave-3.8.0 --silent'
 
 #
 # Git/Github helpers
@@ -22,7 +20,7 @@ alias mylog='~/dotfiles/scripts/git/git-monthly-log.sh Yanis'
 alias gclean='~/dotfiles/scripts/git/git-clean-merged.sh'
 
 #
-# Misc/fun
+# Misc/Fun
 #
 
 # Lookup lyrics of song playing in iTunes
@@ -34,13 +32,13 @@ alias we='curl http://wttr.in/ | less'
 # Check playing song on BBC6
 alias bbc='~/dotfiles/scripts/bbc6_now_playing.sh'
 
-# Tmp alias
-alias tv="coffee ~/projects/opensource/tvcl/src/index.coffee"
-
 # Lookup in the Dictionary.app
-def() {
+define() {
   open "dict://$1"
 }
+
+# Tmp alias
+alias tv="coffee ~/projects/opensource/tvcl/src/index.coffee"
 
 #
 # Following need junegunn/fzf installed.
@@ -60,5 +58,3 @@ co() {
   branch=$(echo "$branches" | fzf +m) &&
   git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
 }
-
-alias octave='/usr/local/octave/3.8.0/bin/octave-3.8.0 --silent'
