@@ -1,6 +1,3 @@
-syntax on
-filetype plugin indent on " load filetype-specific indent files
-
 " ###
 " PLUGINS
 " ###
@@ -21,6 +18,7 @@ Plug 'airblade/vim-gitgutter' " Shows a git diff in the gutter
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-surround'   " Adds surrounds actions
 Plug 'bronson/vim-trailing-whitespace' " Highlights trailing whitespace in red and provides
+Plug 'tmhedberg/matchit'    " More matched
 
 " Snipmate stuff
 Plug 'MarcWeber/vim-addon-mw-utils' " Required by snipmate
@@ -52,46 +50,39 @@ Plug 'kchmck/vim-coffee-script'
 Plug 'mxw/vim-jsx'
 " Plug 'othree/yajs'
 
-" Tmux
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'skalnik/vim-vroom'
-Plug 'benmills/vimux'
-
 " Integrations
-Plug 'rizzatti/dash.vim' " Dash App
+" Plug 'rizzatti/dash.vim' " Dash App
 
 call plug#end()
 
 set rtp+=~/.fzf
 
 " GENERAL
-set nocompatible " Don't use own default settings
-set ttyfast " Optimize for fast terminal connections
+syntax on
+filetype plugin indent on " load filetype-specific indent files
+set nocompatible          " Don't use the default settings
 set encoding=utf-8 nobomb " Use UTF-8 without BOM
-set list " trailing whitespace can be seen
-set mouse=a " Enable mouse in all modes
-set clipboard=unnamed " Use the OS clipboard by default (on versions compiled with `+clipboard`)
-set autoread " Reload files changed outside vim (but doesn't check periodically!)
-set shortmess=a " Short the status message
-" Ignore this paths
+set clipboard=unnamed     " Use the OS clipboard by default (on versions compiled with `+clipboard`)
+set shortmess=a           " Short the status message
+set report=0              " Show all changes
+
+" Ignore those paths
 set wildignore+=.DS_Store
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd,*.o,*.obj,*.min.js
 set wildignore+=*/bower_components/*,*/node_modules/*
-set wildignore+=*/smarty/*,*/vendor/*,*/.git/*,*/.hg/*,*/.svn/*,*/.sass-cache/*,*/log/*,*/tmp/*,*/build/*,*/ckeditor/*,*/doc/*,*/source_maps/*,*/dist/*
+set wildignore+=*/vendor/*,*/.git/*,*/.hg/*,*/.svn/*,*/.sass-cache/*,*/log/*,*/tmp/*,*/build/*,*/doc/*,*/source_maps/*,*/dist/*
 set wildignore+=*.so,*.swp,*.zip,*/test/files/*,*/webpack.bundle.js
-" Jump to the last cursor position
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal g`\"" | endif
-set report=0 " Show all changes
 
 " UI SETTINGS
-set number " Enable line numbers
-set showcmd " Show the (partial) command as it’s being typed
-set showmode " Show the current mode
-set cursorline " Highlight current line
-set wildmenu " visual autocomplete for command menu
-set showmatch  " highlight matching [{()}] "
-set title " Show the filename in the window titlebar
-set ruler " Show the cursor position
+set list          " Show trailing whitespace
+set number        " Enable line numbers
+set showcmd       " Show the (partial) command as it’s being typed
+set showmode      " Show the current mode
+set cursorline    " Highlight current line
+set wildmenu      " visual autocomplete for command menu
+set showmatch     " highlight matching [{()}] "
+set title         " Show the filename in the window titlebar
+set ruler         " Show the cursor position
 set nostartofline " Don’t reset cursor to start of line when moving around.
 set shortmess=atI " Don’t show the intro message when starting Vim
 set lcs=tab:▸\ ,trail:·,nbsp:_ " Show “invisible” characters
@@ -100,23 +91,22 @@ let &t_SI = "\<Esc>]50;CursorShape=1\x7" " change cursor view for insert/normal 
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 " Color scheme
-" set background=dark
 colorscheme Tomorrow-Night
 
 " SEARCH
-set incsearch " Highlight dynamically as pattern is typed
-set hlsearch " Highlight searches
-set gdefault " Add the g flag to search/replace by default
-set ignorecase " Ignore case of searches
+set hlsearch    " Highlight searches
+set incsearch   " Highlight dynamically as pattern is typed
+set gdefault    " Add the g flag to search/replace by default
+set ignorecase  " Ignore case of searches
 
 " FOLDING
-set foldenable          "dont fold by default
-set foldmethod=indent   "fold based on indent
-set foldlevelstart=10   " open most folds by default
-set foldnestmax=10      " 10 nested fold max
+set foldenable        " dont fold by default
+set foldmethod=indent " fold based on indent
+set foldlevelstart=10 " open most folds by default
+set foldnestmax=10    " 10 nested fold max
 
 " NAVIGATION
-set noesckeys " Don't allow cursor keys in insert mode
+set noesckeys                  " No cursor keys in insert mode
 set backspace=indent,eol,start " Allow backspace in insert mode
 
 " INDENTATION/TABS
@@ -132,7 +122,7 @@ set shiftwidth=2
 set splitbelow
 set splitright
 
-" BACKUPS/SWAPS
+" BACKUPS/SWAPS/UNDO
 set backupdir=~/.vim/backups
 set directory=~/.vim/swaps
 if exists("&undodir")
@@ -155,14 +145,8 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-" CUSTOM FILES
-au BufRead,BufNewFile *.eco setfiletype html
-au BufRead,BufNewFile *.hamlc setfiletype haml
-
-" Faster exit to normal mode
-set timeoutlen=1000 ttimeoutlen=0
-
-" Plugin config
+" Jump to the last cursor position
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal g`\"" | endif
 
 " NerdTree
 autocmd StdinReadPre * let s:std_in=1
@@ -190,15 +174,6 @@ nnoremap <Leader>f :Ag <C-R><C-W><cr>
 vnoremap <Leader>f y:Ag <C-R>"<cr>
 nnoremap <C-F> :Ag<Space>
 
-" Vroom setup
-let g:vroom_clear_screen=0
-let g:vroom_use_vimux=1
-let g:vroom_use_bundle_exec=1
-let g:vroom_use_binstubs=0
-let g:vroom_use_colors=1
-" this gives rspec's pane a title "target", that we'll late use to find its id
-" let g:vroom_spec_command="printf '\\033]2;target\\033\\\\' && rspec "
-
 " ###
 " CUSTOM MAPPINGS
 " ###
@@ -213,42 +188,29 @@ function! StripWhitespace()
 endfunction
 noremap <leader>ss :call StripWhitespace()<CR>
 
-function! RunSpec()
-  :vsplit<CR>
-  :read bundle exec rspec %<CR>
-endfunction
-noremap <leader>t :call RunSpec()<CR>
-
-" Search with Dash app
-noremap <Leader>d :Dash<cr>
-
 " Git blame on <leader>a
 nnoremap <leader>a :Gblame<cr>
 
 " Fold on space
 noremap <Space> za
 
-" jj to normal mode
+" jj to exit to normal mode
 inoremap jj <Esc> :w<cr>
 
+" No highlight on enter
+nnoremap <CR> :noh<cr>
+
 " Navigating over splits
-" nnoremap <C-J> <C-W><C-J>
-" nnoremap <C-K> <C-W><C-K>
-" nnoremap <C-L> <C-W><C-L>
-" nnoremap <C-H> <C-W><C-H>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 
 " Faster save, and quit
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>x :qa<CR>
-
 nnoremap <Leader>o :tabo<CR>
-
-" Open current line (e.g. open a url)
-" nnoremap <Leader>v ^yt$:!open <C-R>"<cr>
-
-" No highlight on enter
-nnoremap <CR> :noh<cr>
 
 " Don't allow to use arrow keys
 map <Left> :echo "no!"<cr>
@@ -257,10 +219,4 @@ map <Up> :echo "no!"<cr>
 map <Down> :echo "no!"<cr>
 
 " Open Notepad
-nnoremap <Leader>' :vsp /Users/yanis/Dropbox/notes.markdown <CR>
-
-" Navigate splits with arrows
-nnoremap <Left> <C-w>h
-nnoremap <Down> <C-w>j
-nnoremap <Up> <C-w>k
-nnoremap <Right> <C-w>l
+nnoremap <Leader>' :vsp ~/Dropbox/notes.markdown <CR>
