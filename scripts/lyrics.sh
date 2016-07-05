@@ -29,7 +29,6 @@ name=`name`
 name=`echo $name | sed 's/?//g'`
 name=`escape_uri "$name"`
 
-lyrics_url="http://makeitpersonal.co/lyrics?artist=$artist&title=$name"
-echo $lyrics_url
+lyrics_url="https://makeitpersonal.co/lyrics?artist=$artist&title=$name"
 
 curl -s $lyrics_url | less
