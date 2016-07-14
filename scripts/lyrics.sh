@@ -13,21 +13,16 @@ osa() {
   osascript -l JavaScript -e "$1"
 }
 
-artist() {
+itunes_artist() {
   osa 'Application("iTunes").currentTrack.artist()'
 }
 
-name() {
+itunes_name() {
   osa 'Application("iTunes").currentTrack.name()'
 }
 
-artist=`artist`
-artist=`echo $artist | sed 's/&/And/g'`
-artist=`escape_uri "$artist"`
-
-name=`name`
-name=`echo $name | sed 's/?//g'`
-name=`escape_uri "$name"`
+artist=`escape_uri "$(itunes_artist)"`
+name=`escape_uri "$(itunes_name)"`
 
 lyrics_url="https://makeitpersonal.co/lyrics?artist=$artist&title=$name"
 
