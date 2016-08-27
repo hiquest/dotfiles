@@ -11,6 +11,7 @@ alias j="z"
 alias i='ionic'
 alias octave='/usr/local/octave/3.8.0/bin/octave-3.8.0 --silent'
 alias ctags='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
+alias nrun='npm run'
 
 alias fixs='git checkout db/structure.sql && RAILS_ENV=test be rake db:drop db:create db:migrate'
 
@@ -21,6 +22,7 @@ alias pr='~/dotfiles/scripts/git/gh-pull-request.sh'
 alias vc='~/dotfiles/scripts/git/gh-view-commit.sh'
 alias mylog='~/dotfiles/scripts/git/git-monthly-log.sh Yanis'
 alias gclean='~/dotfiles/scripts/git/git-clean-merged.sh'
+alias gcall='~/dotfiles/scripts/git/git-commit-all.sh'
 
 #
 # Misc/Fun

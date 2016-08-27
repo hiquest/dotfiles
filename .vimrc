@@ -43,12 +43,13 @@ Plug 'tpope/vim-rails'
 Plug 'tpope/vim-cucumber'
 
 " JavaScript
-" Plug 'leafgarland/typescript-vim'
+Plug 'leafgarland/typescript-vim'
 Plug 'isRuslan/vim-es6'
 Plug 'kchmck/vim-coffee-script'
-" Plug 'pangloss/vim-javascript'
+Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
-" Plug 'othree/yajs'
+Plug 'othree/javascript-libraries-syntax.vim'
+Plug 'matthewsimo/angular-vim-snippets'
 
 " Integrations
 " Plug 'rizzatti/dash.vim' " Dash App
@@ -217,6 +218,10 @@ map <Left> :echo "no!"<cr>
 map <Right> :echo "no!"<cr>
 map <Up> :echo "no!"<cr>
 map <Down> :echo "no!"<cr>
+
+" Faster tab navigation
+map <Tab> gt
+map <S-Tab> gT
 
 " Open Notepad
 nnoremap <Leader>' :vsp ~/Dropbox/notes.markdown <CR>
