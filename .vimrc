@@ -5,11 +5,12 @@
 call plug#begin('~/.vim/plugged')
 
 " General
-Plug 'junegunn/fzf.vim'         " Best fuzzy finder
+Plug 'junegunn/fzf.vim'     " Best fuzzy finder
 Plug 'jiangmiao/auto-pairs' " Auto-insert paired symbols
 Plug 'roman/golden-ratio'   " Resize splits in golden ratio
 Plug 'scrooloose/nerdtree'  " File explorer
 Plug 'ervandew/supertab'    " Easier completion with tab
+Plug 'Valloric/YouCompleteMe'
 Plug 'scrooloose/syntastic' " Bunch of syntax checkers
 Plug 'mkitt/tabline.vim'    " Enhances tab labels
 Plug 'tpope/vim-commentary' " Commenting
@@ -29,27 +30,33 @@ Plug 'honza/vim-snippets' " Snippets for snipmate
 " Syntax
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'evanmiller/nginx-vim-syntax'
-Plug 'cakebaker/scss-syntax.vim'
 Plug 'tpope/vim-haml'
 Plug 'digitaltoad/vim-jade'
 Plug 'slim-template/vim-slim'
+Plug 'elixir-lang/vim-elixir'
+
+" Tmux
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'benmills/vimux'
+
+" Stylesheets
+Plug 'cakebaker/scss-syntax.vim'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'ap/vim-css-color'
-Plug 'elixir-lang/vim-elixir'
 
 " Ruby
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-cucumber'
+Plug 'skalnik/vim-vroom'
 
 " JavaScript
-Plug 'leafgarland/typescript-vim'
-Plug 'isRuslan/vim-es6'
+Plug 'isRuslan/vim-es6'                        " JavaScript ES6 snippets and syntax highlighting for vim
 Plug 'kchmck/vim-coffee-script'
 Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
+Plug 'mxw/vim-jsx'                             " React JSX syntax highlighting and indenting for vim.
 Plug 'othree/javascript-libraries-syntax.vim'
-Plug 'matthewsimo/angular-vim-snippets'
+Plug 'othree/yajs.vim', { 'for': 'javascript' }
 
 " Integrations
 " Plug 'rizzatti/dash.vim' " Dash App
@@ -175,6 +182,10 @@ nnoremap <Leader>f :Ag <C-R><C-W><cr>
 vnoremap <Leader>f y:Ag <C-R>"<cr>
 nnoremap <C-F> :Ag<Space>
 
+let g:vroom_use_vimux = 1
+
+let g:used_javascript_libs = 'jquery,underscore,react,chai'
+
 " ###
 " CUSTOM MAPPINGS
 " ###
@@ -225,3 +236,9 @@ map <S-Tab> gT
 
 " Open Notepad
 nnoremap <Leader>' :vsp ~/Dropbox/notes.markdown <CR>
+
+let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
+" RSpec.vim mappings
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>

@@ -1,6 +1,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/yanis/.oh-my-zsh
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+# export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 ZSH_THEME="yanis" # or 'random'
 plugins=(git rbenv colored-man-pages zsh-completions)
 # ENABLE_CORRECTION="true"
@@ -37,3 +37,5 @@ source_if_exists ~/.unsafe.env
 source_if_exists ~/.aliases
 source_if_exists ~/.aliases_dev # mostly for developer's machine only
 source_if_exists ~/.aliases_unsafe
+
+export PATH="$PATH:/Users/yanis/bin"
