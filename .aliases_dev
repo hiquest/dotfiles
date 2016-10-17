@@ -13,6 +13,7 @@ alias h='heroku'
 alias octave='/usr/local/octave/3.8.0/bin/octave-3.8.0 --silent'
 alias ctags='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
 alias nrun='npm run'
+alias pys='python -m SimpleHTTPServer'
 
 alias fixs='git checkout db/structure.sql && RAILS_ENV=test be rake db:drop db:create db:migrate'
 
