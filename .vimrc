@@ -9,8 +9,8 @@ Plug 'junegunn/fzf.vim'     " Best fuzzy finder
 Plug 'jiangmiao/auto-pairs' " Auto-insert paired symbols
 Plug 'roman/golden-ratio'   " Resize splits in golden ratio
 Plug 'scrooloose/nerdtree'  " File explorer
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py'  }
 Plug 'ervandew/supertab'    " Easier completion with tab
-Plug 'Valloric/YouCompleteMe'
 Plug 'scrooloose/syntastic' " Bunch of syntax checkers
 Plug 'mkitt/tabline.vim'    " Enhances tab labels
 Plug 'tpope/vim-commentary' " Commenting
@@ -20,11 +20,8 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-surround'   " Adds surrounds actions
 Plug 'bronson/vim-trailing-whitespace' " Highlights trailing whitespace in red and provides
 Plug 'tmhedberg/matchit'    " More matched
-
-" Snipmate stuff
-Plug 'MarcWeber/vim-addon-mw-utils' " Required by snipmate
-Plug 'tomtom/tlib_vim' " Required by snipmate
-Plug 'garbas/vim-snipmate' " Snippets plugins
+Plug 'tpope/vim-endwise'    " auto add closing end's
+Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets' " Snippets for snipmate
 
 " Syntax
@@ -56,7 +53,7 @@ Plug 'kchmck/vim-coffee-script'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'                             " React JSX syntax highlighting and indenting for vim.
 Plug 'othree/javascript-libraries-syntax.vim'
-Plug 'othree/yajs.vim', { 'for': 'javascript' }
+Plug 'burnettk/vim-angular'
 
 " Integrations
 " Plug 'rizzatti/dash.vim' " Dash App
@@ -74,7 +71,9 @@ set clipboard=unnamed     " Use the OS clipboard by default (on versions compile
 set shortmess=a           " Short the status message
 set report=0              " Show all changes
 
-" Ignore those paths
+" ----------------------------------------------------------------------------
+" Wild ignore
+" ----------------------------------------------------------------------------
 set wildignore+=.DS_Store
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd,*.o,*.obj,*.min.js
 set wildignore+=*/bower_components/*,*/node_modules/*
@@ -84,9 +83,12 @@ set wildignore+=*.so,*.swp,*.zip,*/test/files/*,*/webpack.bundle.js
 " UI SETTINGS
 set list          " Show trailing whitespace
 set number        " Enable line numbers
+" set numberwidth=5
 set showcmd       " Show the (partial) command as it’s being typed
 set showmode      " Show the current mode
 set cursorline    " Highlight current line
+set colorcolumn=80
+set wildmode=longest,list,full
 set wildmenu      " visual autocomplete for command menu
 set showmatch     " highlight matching [{()}] "
 set title         " Show the filename in the window titlebar
@@ -97,8 +99,14 @@ set lcs=tab:▸\ ,trail:·,nbsp:_ " Show “invisible” characters
 set noerrorbells " Disable error bells
 let &t_SI = "\<Esc>]50;CursorShape=1\x7" " change cursor view for insert/normal mode
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+set nojoinspaces                      " J command doesn't add extra space"
+
+" cursor don't get below/ontop when scrolling
+" set scrolloff=8
+" set sidescrolloff=16
 
 " Color scheme
+set background=dark
 colorscheme Tomorrow-Night
 
 " SEARCH
@@ -129,6 +137,7 @@ set shiftwidth=2
 " SPLITS
 set splitbelow
 set splitright
+set fillchars=vert:│  " Vertical sep between windows (unicode)"
 
 " BACKUPS/SWAPS/UNDO
 set backupdir=~/.vim/backups
@@ -137,6 +146,13 @@ if exists("&undodir")
   set undodir=~/.vim/undo
 endif
 set backupskip=/tmp/*,/private/tmp/* " Don’t create for certain directories
+
+" ------------------------------------
+" Typing key combos
+" ------------------------------------
+set notimeout
+set ttimeout
+set ttimeoutlen=10
 
 " STATUS LINE
 set laststatus=2 " Always show status line
@@ -149,7 +165,7 @@ set statusline+=%0*\ %y\                                  "FileType
 set statusline+=%0*\ %=\ row:%l/%L\ (%03p%%)\             "Rownumber/total (%)
 set statusline+=%0*\ col:%03c\                            "Colnr
 set statusline+=%0*\ \ %m%r%w\ %P\ \                      "Modified? Readonly?  Top/bot."
-set statusline+=%#warningmsg#
+set statusline+=%#warningmsg#                             "Syntastic err message
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
@@ -165,6 +181,7 @@ map <Leader>n :NERDTreeFind<CR>
 
 " Syntastic
 let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 " let g:syntastic_ruby_checkers = ['rubocop', 'mri']
@@ -181,10 +198,24 @@ let g:fzf_action = {
 nnoremap <Leader>f :Ag <C-R><C-W><cr>
 vnoremap <Leader>f y:Ag <C-R>"<cr>
 nnoremap <C-F> :Ag<Space>
+" List changed and new files
+command! Fzfc call fzf#run(fzf#wrap(
+  \ {'source': 'git ls-files --exclude-standard --others --modified'}))
+noremap <Leader>] :Fzfc<cr>
 
 let g:vroom_use_vimux = 1
 
-let g:used_javascript_libs = 'jquery,underscore,react,chai'
+let g:used_javascript_libs = 'jquery,underscore,react,chai,angularjs'
+
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 " ###
 " CUSTOM MAPPINGS
@@ -242,3 +273,5 @@ let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
 map <Leader>t :call RunCurrentSpecFile()<CR>
 map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
+
+nmap <Leader>hr <Plug>GitGutterUndoHunk
