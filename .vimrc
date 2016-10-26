@@ -25,16 +25,13 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets' " Snippets for snipmate
 
 " Syntax
-Plug 'ekalinin/Dockerfile.vim'
 Plug 'evanmiller/nginx-vim-syntax'
+Plug 'elixir-lang/vim-elixir'
+
+" Html markup
 Plug 'tpope/vim-haml'
 Plug 'digitaltoad/vim-jade'
 Plug 'slim-template/vim-slim'
-Plug 'elixir-lang/vim-elixir'
-
-" Tmux
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'benmills/vimux'
 
 " Stylesheets
 Plug 'cakebaker/scss-syntax.vim'
@@ -48,11 +45,7 @@ Plug 'tpope/vim-cucumber'
 Plug 'skalnik/vim-vroom'
 
 " JavaScript
-Plug 'isRuslan/vim-es6'                        " JavaScript ES6 snippets and syntax highlighting for vim
 Plug 'kchmck/vim-coffee-script'
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'                             " React JSX syntax highlighting and indenting for vim.
-Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'burnettk/vim-angular'
 
 " Integrations
@@ -181,7 +174,7 @@ map <Leader>n :NERDTreeFind<CR>
 
 " Syntastic
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 " let g:syntastic_ruby_checkers = ['rubocop', 'mri']
