@@ -42,7 +42,10 @@ itunes_playing() {
       end if
     end try
   end tell'`
-  echo "%{$fg[green]%}♫$artist - $name♫%{$reset_color%}"
+
+  test -z $artist \
+    && echo "" \
+    || echo "%{$fg[green]%}♫$artist - $name♫%{$reset_color%}"
 }
 
 curr_usd() {
