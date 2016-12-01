@@ -21,9 +21,9 @@ time_in_clt() {
   echo "%{$fg[yellow]%}c$(TZ=US/Eastern date +"%H:%M")%{$reset_color%}"
 }
 
-time_in_smr() {
-  echo "%{$fg[yellow]%}s$(TZ=Europe/Samara date +"%H:%M")%{$reset_color%}"
-}
+# time_in_smr() {
+#   echo "%{$fg[yellow]%}s$(TZ=Europe/Samara date +"%H:%M")%{$reset_color%}"
+# }
 
 itunes_playing() {
   artist=`osascript -e '
@@ -45,6 +45,11 @@ itunes_playing() {
   echo "%{$fg[green]%}♫$artist - $name♫%{$reset_color%}"
 }
 
+curr_usd() {
+  val=`cat /Users/yanis/.track/usd`
+  echo "%{$fg[red]%}\$$val%{$reset_color%}"
+}
+
 #
 # Formatting
 #
@@ -54,6 +59,6 @@ ZSH_THEME_RVM_PROMPT_PREFIX="%{$fg[red]%}["
 ZSH_THEME_RVM_PROMPT_SUFFIX="]%{$reset_color%}"
 
 # Combine it all into a final right-side prompt
-RPS1='$(git_custom_status) $(rbenv_version) $(time_in_clt) $(itunes_playing) $EPS1'
+RPS1='$(git_custom_status) $(rbenv_version) $(time_in_clt) $(curr_usd) $(itunes_playing)$EPS1'
 
 PROMPT="%{$fg[cyan]%}[%~% ]%(?.%{$fg[green]%}.%{$fg[red]%})%B$%b "
