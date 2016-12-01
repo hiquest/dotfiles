@@ -7,7 +7,7 @@ call plug#begin('~/.vim/plugged')
 " General
 Plug 'junegunn/fzf.vim'     " Best fuzzy finder
 Plug 'jiangmiao/auto-pairs' " Auto-insert paired symbols
-Plug 'roman/golden-ratio'   " Resize splits in golden ratio
+" Plug 'roman/golden-ratio'   " Resize splits in golden ratio
 Plug 'scrooloose/nerdtree'  " File explorer
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py'  }
 Plug 'ervandew/supertab'    " Easier completion with tab
@@ -45,8 +45,15 @@ Plug 'tpope/vim-cucumber'
 Plug 'skalnik/vim-vroom'
 
 " JavaScript
+Plug 'othree/yajs.vim'
 Plug 'kchmck/vim-coffee-script'
 Plug 'burnettk/vim-angular'
+Plug 'Quramy/vim-js-pretty-template' " highlights JavaScript's Template Strings
+
+" Typescript
+Plug 'leafgarland/typescript-vim'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'Quramy/tsuquyomi'
 
 " Integrations
 " Plug 'rizzatti/dash.vim' " Dash App
@@ -178,6 +185,7 @@ let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 " let g:syntastic_ruby_checkers = ['rubocop', 'mri']
+let g:syntastic_javascript_checkers = ['eslint']
 " Toggle Syntastic mode
 nnoremap <Leader>i :SyntasticToggleMode<CR>'
 
@@ -268,3 +276,8 @@ map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 
 nmap <Leader>hr <Plug>GitGutterUndoHunk
+
+
+autocmd FileType coffee JsPreTmpl html
+let g:tsuquyomi_disable_quickfix = 1
+let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
