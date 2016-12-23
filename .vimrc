@@ -57,6 +57,9 @@ Plug 'Quramy/tsuquyomi'
 
 " Integrations
 " Plug 'rizzatti/dash.vim' " Dash App
+"
+
+Plug 'mhartington/oceanic-next'
 
 call plug#end()
 
@@ -106,8 +109,12 @@ set nojoinspaces                      " J command doesn't add extra space"
 " set sidescrolloff=16
 
 " Color scheme
-set background=dark
-colorscheme Tomorrow-Night
+" set background=dark
+" colorscheme Tomorrow-Night
+if (has("termguicolors"))
+ set termguicolors
+endif
+colorscheme OceanicNext
 
 " SEARCH
 set hlsearch    " Highlight searches
@@ -171,6 +178,9 @@ set statusline+=%*
 
 " Jump to the last cursor position
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal g`\"" | endif
+
+" Reload .vimrc file changes immidiately
+" autocmd BufWritePost  $MYVIMRC  source $MYVIMRC
 
 " NerdTree
 autocmd StdinReadPre * let s:std_in=1
@@ -263,8 +273,8 @@ map <Up> :echo "no!"<cr>
 map <Down> :echo "no!"<cr>
 
 " Faster tab navigation
-map <Tab> gt
-map <S-Tab> gT
+map <S-H> gT
+map <S-L> gt
 
 " Open Notepad
 nnoremap <Leader>' :vsp ~/Dropbox/notes.markdown <CR>
@@ -277,7 +287,9 @@ map <Leader>l :call RunLastSpec()<CR>
 
 nmap <Leader>hr <Plug>GitGutterUndoHunk
 
-
 autocmd FileType coffee JsPreTmpl html
 let g:tsuquyomi_disable_quickfix = 1
 let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
+
+" Edit ~/.vimrc
+nmap <silent>  <Leader>v :next $MYVIMRC<CR>
