@@ -1,65 +1,66 @@
-" ###
-" PLUGINS
-" ###
-
 call plug#begin('~/.vim/plugged')
 
-" General
-Plug 'junegunn/fzf.vim'     " Best fuzzy finder
-Plug 'jiangmiao/auto-pairs' " Auto-insert paired symbols
-" Plug 'roman/golden-ratio'   " Resize splits in golden ratio
-Plug 'scrooloose/nerdtree'  " File explorer
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py'  }
-Plug 'ervandew/supertab'    " Easier completion with tab
-Plug 'scrooloose/syntastic' " Bunch of syntax checkers
-Plug 'mkitt/tabline.vim'    " Enhances tab labels
-Plug 'tpope/vim-commentary' " Commenting
-Plug 'tpope/vim-fugitive'   " Git utils
-Plug 'airblade/vim-gitgutter' " Shows a git diff in the gutter
+" General extension
+Plug 'scrooloose/nerdtree'     " File explorer
+Plug 'junegunn/fzf.vim'        " Best fuzzy finder
+Plug 'vim-syntastic/syntastic' " Syntax checker
 Plug 'terryma/vim-multiple-cursors'
-Plug 'tpope/vim-surround'   " Adds surrounds actions
-Plug 'bronson/vim-trailing-whitespace' " Highlights trailing whitespace in red and provides
-Plug 'tmhedberg/matchit'    " More matched
-Plug 'tpope/vim-endwise'    " auto add closing end's
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets' " Snippets for snipmate
+Plug 'Chiel92/vim-autoformat' " Formatting
 
-" Syntax
+" Completion
+Plug 'Shougo/neocomplete.vim' " required compiled with Lua
+
+" Snippets
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
+
+" Appearance
+Plug 'mkitt/tabline.vim'    " Enhances tab labels
+
+" Git
+Plug 'tpope/vim-fugitive'     " Git utils
+Plug 'airblade/vim-gitgutter' " Shows a git diff in the gutter
+
+" Highlights
+Plug 'tmhedberg/matchit'               " extended %
+Plug 'itchyny/vim-cursorword'          " word under cursor
+Plug 'bronson/vim-trailing-whitespace' " trailing whitespace
+
+" Commands
+Plug 'tpope/vim-surround'   " Adds surrounds actions
+Plug 'tpope/vim-commentary' " Commenting
+
+" Auto
+Plug 'tpope/vim-endwise'    " auto add closing end's
+Plug 'jiangmiao/auto-pairs' " Auto-insert paired symbols
+
+" Integrations
+Plug 'rizzatti/dash.vim'    " Dash App
+
+" Nginx
 Plug 'evanmiller/nginx-vim-syntax'
-Plug 'elixir-lang/vim-elixir'
 
 " Html markup
-Plug 'tpope/vim-haml'
-Plug 'digitaltoad/vim-jade'
-Plug 'slim-template/vim-slim'
+Plug 'othree/html5.vim'
+Plug 'tpope/vim-haml', { 'for': 'haml' }
+Plug 'digitaltoad/vim-jade', { 'for': 'jade' }
+Plug 'slim-template/vim-slim', { 'for': 'slim' }
 
 " Stylesheets
+Plug 'gko/vim-coloresque'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'hail2u/vim-css3-syntax'
-Plug 'ap/vim-css-color'
 
 " Ruby
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-cucumber'
-Plug 'skalnik/vim-vroom'
 
 " JavaScript
-Plug 'othree/yajs.vim'
-Plug 'kchmck/vim-coffee-script'
+Plug 'othree/yajs.vim', { 'for': 'javascript' }
+Plug 'kchmck/vim-coffee-script', { 'for': 'coffee'}
 Plug 'burnettk/vim-angular'
-Plug 'Quramy/vim-js-pretty-template' " highlights JavaScript's Template Strings
-
-" Typescript
-Plug 'leafgarland/typescript-vim'
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-Plug 'Quramy/tsuquyomi'
-
-" Integrations
-" Plug 'rizzatti/dash.vim' " Dash App
-"
-
-Plug 'mhartington/oceanic-next'
+Plug 'Quramy/vim-js-pretty-template', { 'for': [ 'javascript', 'coffee' ] } " highlights JavaScript's Template Strings
 
 call plug#end()
 
@@ -109,12 +110,13 @@ set nojoinspaces                      " J command doesn't add extra space"
 " set sidescrolloff=16
 
 " Color scheme
-" set background=dark
-" colorscheme Tomorrow-Night
+set background=dark
 if (has("termguicolors"))
- set termguicolors
+  set termguicolors
 endif
-colorscheme OceanicNext
+" colorscheme anderson
+" colorscheme Tomorrow-Night
+colorscheme seoul256
 
 " SEARCH
 set hlsearch    " Highlight searches
@@ -194,7 +196,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-" let g:syntastic_ruby_checkers = ['rubocop', 'mri']
+let g:syntastic_ruby_checkers = ['rubocop', 'mri']
 let g:syntastic_javascript_checkers = ['eslint']
 " Toggle Syntastic mode
 nnoremap <Leader>i :SyntasticToggleMode<CR>'
@@ -203,44 +205,22 @@ nnoremap <Leader>i :SyntasticToggleMode<CR>'
 noremap <Leader><Leader> :Files<cr>
 " Use enter to open in new tab
 let g:fzf_action = {
-  \ 'enter': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
+      \ 'enter': 'tab split',
+      \ 'ctrl-x': 'split',
+      \ 'ctrl-v': 'vsplit' }
 nnoremap <Leader>f :Ag <C-R><C-W><cr>
 vnoremap <Leader>f y:Ag <C-R>"<cr>
 nnoremap <C-F> :Ag<Space>
 " List changed and new files
 command! Fzfc call fzf#run(fzf#wrap(
-  \ {'source': 'git ls-files --exclude-standard --others --modified'}))
+      \ {'source': 'git ls-files --exclude-standard --others --modified'}))
 noremap <Leader>] :Fzfc<cr>
 
-let g:vroom_use_vimux = 1
-
 let g:used_javascript_libs = 'jquery,underscore,react,chai,angularjs'
-
-" make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
-
-" better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 " ###
 " CUSTOM MAPPINGS
 " ###
-
-" Strip trailing whitespace
-function! StripWhitespace()
-  let save_cursor = getpos(".")
-  let old_query = getreg('/')
-  :%s/\s\+$//e
-  call setpos('.', save_cursor)
-  call setreg('/', old_query)
-endfunction
-noremap <leader>ss :call StripWhitespace()<CR>
 
 " Git blame on <leader>a
 nnoremap <leader>a :Gblame<cr>
@@ -279,17 +259,70 @@ map <S-L> gt
 " Open Notepad
 nnoremap <Leader>' :vsp ~/Dropbox/notes.markdown <CR>
 
-let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
-" RSpec.vim mappings
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-
 nmap <Leader>hr <Plug>GitGutterUndoHunk
 
 autocmd FileType coffee JsPreTmpl html
 let g:tsuquyomi_disable_quickfix = 1
 let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
 
-" Edit ~/.vimrc
-nmap <silent>  <Leader>v :next $MYVIMRC<CR>
+" Autoformat config
+noremap <leader>r :Autoformat<CR>:w<CR>
+let g:formatters_javascript = ['prettier']
+let g:formatdef_prettier = '"prettier --stdin"'
+
+" neocomplete
+let g:neocomplete#enable_at_startup = 1 " Use neocomplete.
+let g:neocomplete#enable_smart_case = 1 " Use smartcase.
+let g:neocomplete#sources#syntax#min_keyword_length = 3 " Set minimum syntax keyword length.
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+  let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+
+
+" neopsnippet
+" Plugin key-mappings.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+" SuperTab like snippets behavior.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+"imap <expr><TAB>
+" \ pumvisible() ? "\<C-n>" :
+" \ neosnippet#expandable_or_jumpable() ?
+" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+      \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif

@@ -3,6 +3,7 @@ alias ..='cd ..'
 alias l='ls -lahF'
 alias x='exit'
 alias v='vim'
+alias vimconf="vim ~/.vimrc"
 
 # Rails
 alias r='rails'
