@@ -15,7 +15,7 @@ Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 
 " Appearance
-Plug 'mkitt/tabline.vim'    " Enhances tab labels
+" Plug 'mkitt/tabline.vim'    " Enhances tab labels
 
 " Git
 Plug 'tpope/vim-fugitive'     " Git utils
@@ -46,8 +46,11 @@ Plug 'tpope/vim-haml', { 'for': 'haml' }
 Plug 'digitaltoad/vim-jade', { 'for': 'jade' }
 Plug 'slim-template/vim-slim', { 'for': 'slim' }
 
+" Manage buffers
+Plug 'jeetsukumaran/vim-buffergator'
+Plug 'ap/vim-buftabline'
+
 " Stylesheets
-Plug 'gko/vim-coloresque'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'hail2u/vim-css3-syntax'
 
@@ -57,10 +60,19 @@ Plug 'tpope/vim-rails'
 Plug 'tpope/vim-cucumber'
 
 " JavaScript
-Plug 'othree/yajs.vim', { 'for': 'javascript' }
-Plug 'kchmck/vim-coffee-script', { 'for': 'coffee'}
+Plug 'othree/yajs.vim'
+Plug 'Quramy/vim-js-pretty-template'
+
+" JavaScript libs support
 Plug 'burnettk/vim-angular'
-Plug 'Quramy/vim-js-pretty-template', { 'for': [ 'javascript', 'coffee' ] } " highlights JavaScript's Template Strings
+Plug 'othree/javascript-libraries-syntax.vim'
+
+" JavaScript syntax checkers
+Plug 'mtscout6/syntastic-local-eslint.vim' " use local eslint
+Plug 'flowtype/vim-flow'
+
+" Coffee
+Plug 'kchmck/vim-coffee-script', { 'for': 'coffee'}
 
 call plug#end()
 
@@ -74,6 +86,7 @@ set encoding=utf-8 nobomb " Use UTF-8 without BOM
 set clipboard=unnamed     " Use the OS clipboard by default (on versions compiled with `+clipboard`)
 set shortmess=a           " Short the status message
 set report=0              " Show all changes
+set exrc                  " Read local .vimrc
 
 " ----------------------------------------------------------------------------
 " Wild ignore
@@ -163,20 +176,47 @@ set notimeout
 set ttimeout
 set ttimeoutlen=10
 
+function! MyBufferLine()
+  let st='%{bufferline#refresh_status()}'
+  return bufferline#get_status_string()
+endfunction
+
 " STATUS LINE
 set laststatus=2 " Always show status line
+
+
 " Left side
+" set statusline=
+" " set statusline+=%0*\[%n]                                  "buffernr
+" " set statusline+=%0*\ %<%F\                                "File+path
+" " set statusline+=%0*\ %y\                                  "FileType
+" set statusline+=%{MyBufferLine()}
+
+" " let g:bufferline_echo = 0
+" " Right side
+" set statusline+=%0*\ %=\ row:%l/%L\ (%03p%%)\             "Rownumber/total (%)
+" set statusline+=%0*\ col:%03c\                            "Colnr
+" " set statusline+=%0*\ \ %m%r%w\ %P\ \                      "Modified? Readonly?  Top/bot."
+" set statusline+=%#warningmsg#                             "Syntastic err message
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+
+
 set statusline=
-set statusline+=%0*\[%n]                                  "buffernr
-set statusline+=%0*\ %<%F\                                "File+path"
-set statusline+=%0*\ %y\                                  "FileType
+set statusline+=%(%{'help'!=&filetype?bufnr('%'):''}\ \ %)
+set statusline+=%< " Where to truncate line
+set statusline+=%f " Path to the file in the buffer, as typed or relative to current directory
+set statusline+=%{&modified?'\ +':''}
+set statusline+=%{&readonly?'\ ':''}
+set statusline+=%= " Separation point between left and right aligned items
+
 " Right side
-set statusline+=%0*\ %=\ row:%l/%L\ (%03p%%)\             "Rownumber/total (%)
-set statusline+=%0*\ col:%03c\                            "Colnr
-set statusline+=%0*\ \ %m%r%w\ %P\ \                      "Modified? Readonly?  Top/bot."
-set statusline+=%#warningmsg#                             "Syntastic err message
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+set statusline+=\ %{''!=#&filetype?&filetype:'none'}
+set statusline+=%(\ %{(&bomb\|\|'^$\|utf-8'!~#&fileencoding?'\ '.&fileencoding.(&bomb?'-bom':''):'')
+  \.('unix'!=#&fileformat?'\ '.&fileformat:'')}%)
+set statusline+=%(\ \ %{&modifiable?(&expandtab?'et\ ':'noet\ ').&shiftwidth:''}%)
+set statusline+=\ \ %2v " Virtual column number
+set statusline+=\ %3p%% " Percentage through file in lines as in |CTRL-G|
 
 " Jump to the last cursor position
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal g`\"" | endif
@@ -186,7 +226,7 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "norm
 
 " NerdTree
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 let NERDTreeShowHidden=1 " Always show dot files
 " Open file explorer with cursor at current file
 map <Leader>n :NERDTreeFind<CR>
@@ -196,8 +236,8 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_ruby_checkers = ['rubocop', 'mri']
-let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_ruby_checkers = ['mri']
+let g:syntastic_javascript_checkers = ['flow']
 " Toggle Syntastic mode
 nnoremap <Leader>i :SyntasticToggleMode<CR>'
 
@@ -205,7 +245,6 @@ nnoremap <Leader>i :SyntasticToggleMode<CR>'
 noremap <Leader><Leader> :Files<cr>
 " Use enter to open in new tab
 let g:fzf_action = {
-      \ 'enter': 'tab split',
       \ 'ctrl-x': 'split',
       \ 'ctrl-v': 'vsplit' }
 nnoremap <Leader>f :Ag <C-R><C-W><cr>
@@ -229,7 +268,8 @@ nnoremap <leader>a :Gblame<cr>
 noremap <Space> za
 
 " jj to exit to normal mode
-inoremap jj <Esc> :w<cr>
+" inoremap jj <Esc> :w<cr>
+inoremap jj <Esc>
 
 " No highlight on enter
 nnoremap <CR> :noh<cr>
@@ -242,7 +282,7 @@ nnoremap <C-H> <C-W><C-H>
 
 " Faster save, and quit
 nnoremap <Leader>w :w<CR>
-nnoremap <Leader>q :q<CR>
+nnoremap <Leader>q :bdel<CR>
 nnoremap <Leader>x :qa<CR>
 nnoremap <Leader>o :tabo<CR>
 
@@ -252,16 +292,15 @@ map <Right> :echo "no!"<cr>
 map <Up> :echo "no!"<cr>
 map <Down> :echo "no!"<cr>
 
-" Faster tab navigation
-map <S-H> gT
-map <S-L> gt
-
 " Open Notepad
 nnoremap <Leader>' :vsp ~/Dropbox/notes.markdown <CR>
 
 nmap <Leader>hr <Plug>GitGutterUndoHunk
 
+" Js templates
 autocmd FileType coffee JsPreTmpl html
+" autocmd FileType javascript JsPreTmpl html
+
 let g:tsuquyomi_disable_quickfix = 1
 let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
 
@@ -298,7 +337,6 @@ inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 " Enable heavy omni completion.
@@ -306,6 +344,7 @@ if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
 
+set tags=.vim_tags;
 
 " neopsnippet
 " Plugin key-mappings.
@@ -326,3 +365,20 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
+
+" Flow plugin setting
+let g:flow#enable = 0 " I use Syntastic instead
+let g:flow#autoclose = 1
+let g:flow#omnifunc = 1
+
+let g:used_javascript_libs = 'underscore,jquery,angularjs'
+
+" This allows buffers to be hidden if you've modified a buffer.
+set hidden
+
+" Buffergator
+let g:buffergator_viewport_split_policy = 'R' " Use the right side
+let g:buffergator_suppress_keymaps = 1 " Use custom keys
+nmap <leader>b :BuffergatorOpen<cr>
+nmap <C-j> :bnext<cr>
+nmap <C-k> :bprev<cr>

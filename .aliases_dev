@@ -10,8 +10,7 @@ alias o="open"
 alias j="z"
 alias i='ionic'
 alias h='heroku'
-alias octave='/usr/local/octave/3.8.0/bin/octave-3.8.0 --silent'
-alias ctags='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
+alias ctags='/usr/local/Cellar/ctags/5.8_1/bin/ctags -f .vim_tags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths)'
 alias nrun='npm run'
 alias pys='python -m SimpleHTTPServer'
 
