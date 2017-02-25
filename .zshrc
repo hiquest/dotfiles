@@ -2,7 +2,7 @@
 export ZSH=/Users/yanis/.oh-my-zsh
 # export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 ZSH_THEME="yanis" # or 'random'
-plugins=(git rbenv colored-man-pages zsh-completions)
+plugins=(git rbenv colored-man-pages zsh-completions zsh-autosuggestions zsh-syntax-highlighting)
 # ENABLE_CORRECTION="true"
 source $ZSH/oh-my-zsh.sh
 
@@ -25,7 +25,7 @@ source_if_exists ~/z/z.sh
 source_if_exists ~/.fzf.zsh
 
 # Setting ag as the default source for fzf
-export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git --ignore node_modules --ignore app/assets/fonts --ignore app/assets/images --ignore webpack.bundle.js -g ""'
+export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git --ignore node_modules --ignore app/assets/fonts --ignore app/assets/images --ignore "*webpack.bundle.js" -g ""'
 
 export ANDROID_HOME=/Users/yanis/Library/Android/sdk
 

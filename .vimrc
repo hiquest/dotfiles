@@ -8,14 +8,14 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'Chiel92/vim-autoformat' " Formatting
 
 " Completion
-Plug 'Shougo/neocomplete.vim' " required compiled with Lua
+Plug 'Shougo/neocomplete.vim' " requires Lua
 
 " Snippets
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 
 " Appearance
-" Plug 'mkitt/tabline.vim'    " Enhances tab labels
+Plug 'mkitt/tabline.vim'    " Enhances tab labels
 
 " Git
 Plug 'tpope/vim-fugitive'     " Git utils
@@ -24,7 +24,8 @@ Plug 'airblade/vim-gitgutter' " Shows a git diff in the gutter
 " Highlights
 Plug 'tmhedberg/matchit'               " extended %
 Plug 'itchyny/vim-cursorword'          " word under cursor
-Plug 'bronson/vim-trailing-whitespace' " trailing whitespace
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'Valloric/MatchTagAlways'
 
 " Commands
 Plug 'tpope/vim-surround'   " Adds surrounds actions
@@ -47,8 +48,8 @@ Plug 'digitaltoad/vim-jade', { 'for': 'jade' }
 Plug 'slim-template/vim-slim', { 'for': 'slim' }
 
 " Manage buffers
-Plug 'jeetsukumaran/vim-buffergator'
-Plug 'ap/vim-buftabline'
+" Plug 'jeetsukumaran/vim-buffergator'
+" Plug 'ap/vim-buftabline'
 
 " Stylesheets
 Plug 'cakebaker/scss-syntax.vim'
@@ -68,11 +69,13 @@ Plug 'burnettk/vim-angular'
 Plug 'othree/javascript-libraries-syntax.vim'
 
 " JavaScript syntax checkers
-Plug 'mtscout6/syntastic-local-eslint.vim' " use local eslint
-Plug 'flowtype/vim-flow'
+" Plug 'mtscout6/syntastic-local-eslint.vim' " use local eslint
+" Plug 'flowtype/vim-flow'
 
 " Coffee
 Plug 'kchmck/vim-coffee-script', { 'for': 'coffee'}
+
+Plug 'ElmCast/elm-vim'
 
 call plug#end()
 
@@ -123,12 +126,10 @@ set nojoinspaces                      " J command doesn't add extra space"
 " set sidescrolloff=16
 
 " Color scheme
-set background=dark
+" set background=dark
 if (has("termguicolors"))
   set termguicolors
 endif
-" colorscheme anderson
-" colorscheme Tomorrow-Night
 colorscheme seoul256
 
 " SEARCH
@@ -225,11 +226,12 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "norm
 " autocmd BufWritePost  $MYVIMRC  source $MYVIMRC
 
 " NerdTree
-autocmd StdinReadPre * let s:std_in=1
-" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 let NERDTreeShowHidden=1 " Always show dot files
-" Open file explorer with cursor at current file
+let NERDTreeQuitOnOpen=1
 map <Leader>n :NERDTreeFind<CR>
+
+" Elm
+let g:elm_setup_keybindings = 0
 
 " Syntastic
 let g:syntastic_always_populate_loc_list = 1
@@ -237,24 +239,31 @@ let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_ruby_checkers = ['mri']
-let g:syntastic_javascript_checkers = ['flow']
+let g:syntastic_javascript_checkers = ['eslint']
 " Toggle Syntastic mode
 nnoremap <Leader>i :SyntasticToggleMode<CR>'
+
+let g:elm_syntastic_show_warnings = 1
 
 " Fuzzy finder fzf
 noremap <Leader><Leader> :Files<cr>
 " Use enter to open in new tab
 let g:fzf_action = {
+      \ 'enter': 'tab split',
       \ 'ctrl-x': 'split',
       \ 'ctrl-v': 'vsplit' }
 nnoremap <Leader>f :Ag <C-R><C-W><cr>
 vnoremap <Leader>f y:Ag <C-R>"<cr>
 nnoremap <C-F> :Ag<Space>
+
+let g:fzf_layout = { 'down': '~40%'  }
+
 " List changed and new files
 command! Fzfc call fzf#run(fzf#wrap(
       \ {'source': 'git ls-files --exclude-standard --others --modified'}))
 noremap <Leader>] :Fzfc<cr>
 
+" JS libs
 let g:used_javascript_libs = 'jquery,underscore,react,chai,angularjs'
 
 " ###
@@ -274,15 +283,15 @@ inoremap jj <Esc>
 " No highlight on enter
 nnoremap <CR> :noh<cr>
 
-" Navigating over splits
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
+" Navigating
+nnoremap <C-J> gt
+nnoremap <C-K> gT
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 " Faster save, and quit
 nnoremap <Leader>w :w<CR>
-nnoremap <Leader>q :bdel<CR>
+nnoremap <Leader>q :q<CR>
 nnoremap <Leader>x :qa<CR>
 nnoremap <Leader>o :tabo<CR>
 
@@ -295,7 +304,10 @@ map <Down> :echo "no!"<cr>
 " Open Notepad
 nnoremap <Leader>' :vsp ~/Dropbox/notes.markdown <CR>
 
+" Undo git hunk
 nmap <Leader>hr <Plug>GitGutterUndoHunk
+
+au BufRead,BufNewFile *.jst.eco set filetype=html
 
 " Js templates
 autocmd FileType coffee JsPreTmpl html
@@ -318,6 +330,12 @@ if !exists('g:neocomplete#keyword_patterns')
   let g:neocomplete#keyword_patterns = {}
 endif
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+call neocomplete#util#set_default_dictionary(
+  \ 'g:neocomplete#sources#omni#input_patterns',
+  \ 'elm',
+  \ '\.')
+
 " Plugin key-mappings.
 inoremap <expr><C-g>     neocomplete#undo_completion()
 inoremap <expr><C-l>     neocomplete#complete_common_string()
@@ -372,13 +390,3 @@ let g:flow#autoclose = 1
 let g:flow#omnifunc = 1
 
 let g:used_javascript_libs = 'underscore,jquery,angularjs'
-
-" This allows buffers to be hidden if you've modified a buffer.
-set hidden
-
-" Buffergator
-let g:buffergator_viewport_split_policy = 'R' " Use the right side
-let g:buffergator_suppress_keymaps = 1 " Use custom keys
-nmap <leader>b :BuffergatorOpen<cr>
-nmap <C-j> :bnext<cr>
-nmap <C-k> :bprev<cr>
