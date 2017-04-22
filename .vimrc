@@ -95,7 +95,7 @@ set title         " Show the filename in the window titlebar
 set ruler         " Show the cursor position
 set nostartofline " Don’t reset cursor to start of line when moving around.
 set shortmess=atI " Don’t show the intro message when starting Vim
-set lcs=tab:▸\ ,trail:$,nbsp:_ " Show “invisible” characters
+set lcs=tab:▸\ ,trail:·,nbsp:_ " Show “invisible” characters
 set noerrorbells " Disable error bells
 let &t_SI = "\<Esc>]50;CursorShape=1\x7" " change cursor view for insert/normal mode
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
