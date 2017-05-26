@@ -18,11 +18,8 @@ source_if_exists() {
   [ -f $1 ] && source $1
 }
 
-# rupa/z
-source_if_exists ~/z/z.sh
-
-# Fuzzy Finder
-source_if_exists ~/.fzf.zsh
+source_if_exists ~/z/z.sh # rupa/z
+source_if_exists ~/.fzf.zsh # Fuzzy Finder
 
 # Setting ag as the default source for fzf
 export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git --ignore node_modules --ignore app/assets/fonts --ignore app/assets/images --ignore "*webpack.bundle.js" -g ""'
