@@ -6,7 +6,6 @@ call plug#begin('~/.vim/plugged')
 " General
 Plug 'scrooloose/nerdtree'          " File explorer
 Plug 'junegunn/fzf.vim'             " Best fuzzy finder
-Plug 'terryma/vim-multiple-cursors'
 Plug 'w0rp/ale'                     " Async linter
 
 " Completion & snippets
@@ -42,6 +41,7 @@ Plug 'evanmiller/nginx-vim-syntax'
 Plug 'othree/html5.vim'
 Plug 'tpope/vim-haml', { 'for': 'haml' }
 Plug 'slim-template/vim-slim', { 'for': 'slim' }
+Plug 'digitaltoad/vim-pug'
 
 " Stylesheets
 Plug 'hail2u/vim-css3-syntax'
@@ -206,15 +206,16 @@ set statusline+=\ %3p%% " Percentage through file in lines as in |CTRL-G|
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal g`\"" | endif
 
 " ----------------------------------------------------------------------------
+" Custom files
+" ----------------------------------------------------------------------------
+autocmd BufRead,BufNewFile *.jst.eco set filetype=html
+autocmd BufRead,BufNewFile *.html.inky set filetype=haml
+
+" ----------------------------------------------------------------------------
 " Formatters
 " ----------------------------------------------------------------------------
 autocmd FileType javascript setlocal formatprg=js-beautify\ --type\ js
 autocmd FileType html setlocal formatprg=js-beautify\ --type\ html
-
-" ----------------------------------------------------------------------------
-" Custom files
-" ----------------------------------------------------------------------------
-au BufRead,BufNewFile *.jst.eco set filetype=html
 
 " ----------------------------------------------------------------------------
 " Enable omni completion.
@@ -226,7 +227,6 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 
 set tags=.vim_tags;
-set conceallevel=0 " disable the auto-hide feature in json-vim
 
 " ----------------------------------------------------------------------------
 " KEY MAPPINGS
@@ -340,3 +340,5 @@ if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
 let g:neosnippet#enable_snipmate_compatibility = 1
+
+set conceallevel=0 " disable the auto-hide feature in json-vim
