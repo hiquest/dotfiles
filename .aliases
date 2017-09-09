@@ -2,8 +2,20 @@
 alias ..='cd ..'
 alias l='ls -lahF'
 alias x='exit'
+
+# Oftenly used
 alias v='vim'
 alias vimconf="vim ~/.vimrc"
+alias o="open"
+alias j="z"
+alias i='ionic'
+alias y='yarn'
+alias h='heroku'
+alias ctags='/usr/local/Cellar/ctags/5.8_1/bin/ctags -f .vim_tags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths)'
+alias pys='python -m SimpleHTTPServer'
+alias b='bundle'
+alias be='bundle exec'
+alias dokku='bash $HOME/.dokku/contrib/dokku_client.sh'
 
 # Rails
 alias r='rails'
@@ -18,9 +30,22 @@ alias rc='rails console'
 alias rdm='bundle exec rake db:migrate'
 alias groutes='bundle exec rake routes | grep $@'
 
+#
+# Workflow hacks
+#
+alias fixs='git checkout db/structure.sql && RAILS_ENV=test be rake db:drop db:create db:migrate'
+
 mkcd() {
   mkdir $@ && cd $_
 }
+
+#
+# Git/Github helpers
+#
+alias pr='~/dotfiles/scripts/git/gh-pull-request.sh'
+alias vc='~/dotfiles/scripts/git/gh-view-commit.sh'
+alias mylog='~/dotfiles/scripts/git/git-monthly-log.sh Yanis'
+alias gclean='~/dotfiles/scripts/git/git-clean-merged.sh'
 
 # Only run spec if file exists
 rsp() {
@@ -40,10 +65,44 @@ alias g-='git checkout -'
 alias p='git push'
 alias c='git commit -m'
 
-# Misc
-alias b='bundle'
-alias be='bundle exec'
+#
+# Fun
+#
 
-alias dokku='bash $HOME/.dokku/contrib/dokku_client.sh'
+# Lookup lyrics of song playing in iTunes
+alias ly='~/dotfiles/scripts/lyrics.sh'
 
-alias libiec='ssh -t libie "cd /www/libie-rails && rails console production"'
+# Weather
+alias we='curl http://wttr.in/ | less'
+
+# Check playing song on BBC6
+alias bbc='~/dotfiles/scripts/bbc6_now_playing.sh'
+
+wps() {
+  if [ -f ./bin/webpack-dev-server ]; then
+    ./bin/webpack-dev-server
+  elif [ -f ./script/webpack-dev-server ]; then
+    ./script/webpack-dev-server
+  else
+    npm start
+  fi
+}
+
+#
+# Following need junegunn/fzf installed.
+#
+
+# Use fzf with z
+unalias z 2> /dev/null
+z() {
+  [ $# -gt 0 ] && _z "$*" && return
+  cd "$(_z -l 2>&1 | fzf-tmux +s --tac --query "$*" | sed 's/^[0-9,.]* *//')"
+}
+
+# Checkout a branch with fzf
+co() {
+  local branches branch
+  branches=$(git branch -vv) &&
+  branch=$(echo "$branches" | fzf +m) &&
+  git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
+}
