@@ -6,6 +6,16 @@ ZSH_THEME_GIT_PROMPT_CLEAN=""
 #
 # Custom helpers.
 #
+current_branch() {
+  git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3
+}
+
+work_in_progress() {
+  if $(git log -n 1 2>/dev/null | grep -q -c "\-\-wip\-\-"); then
+    echo "WIP!!"
+  fi
+}
+
 git_custom_status() {
   local cb=$(current_branch)
   if [ -n "$cb" ]; then
@@ -62,6 +72,6 @@ ZSH_THEME_RVM_PROMPT_PREFIX="%{$fg[red]%}["
 ZSH_THEME_RVM_PROMPT_SUFFIX="]%{$reset_color%}"
 
 # Combine it all into a final right-side prompt
-RPS1='$(git_custom_status) $(rbenv_version) $(time_in_clt) $(itunes_playing)$EPS1'
+RPS1='$(git_custom_status) $(rbenv_version) $(time_in_clt)$EPS1'
 
 PROMPT="%{$fg[cyan]%}[%~% ]%(?.%{$fg[green]%}.%{$fg[red]%})%B$%b "
