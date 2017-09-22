@@ -7,15 +7,10 @@ call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'          " File explorer
 Plug 'junegunn/fzf.vim'             " Best fuzzy finder
 Plug 'w0rp/ale'                     " Async linter
+Plug 'Valloric/YouCompleteMe'
 
-" Completion & snippets
-Plug 'Shougo/neocomplete.vim'       " requires Lua
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
-Plug 'honza/vim-snippets'
-
-" Appearance
-Plug 'mkitt/tabline.vim'    " Enhances tab labels
+" " Appearance
+Plug 'flazz/vim-colorschemes'
 
 " Git
 Plug 'tpope/vim-fugitive'     " Git utils
@@ -23,8 +18,8 @@ Plug 'airblade/vim-gitgutter' " Shows a git diff in the gutter
 
 " Highlights
 Plug 'tmhedberg/matchit'       " extended %
-Plug 'itchyny/vim-cursorword'  " word under cursor
-Plug 'Valloric/MatchTagAlways'
+" Plug 'itchyny/vim-cursorword'  " word under cursor
+Plug 'Valloric/MatchTagAlways' " highlights the enclosing html/xml tags
 
 " Commands
 Plug 'tpope/vim-surround'   " Adds surrounds actions
@@ -46,22 +41,21 @@ Plug 'digitaltoad/vim-pug'
 " Stylesheets
 Plug 'hail2u/vim-css3-syntax'
 Plug 'cakebaker/scss-syntax.vim'
+Plug 'ap/vim-css-color'
 
 " Ruby
 Plug 'vim-ruby/vim-ruby'
-Plug 'tpope/vim-rails'
-Plug 'tpope/vim-cucumber'
+" Plug 'tpope/vim-rails'
 
 " JavaScript
-Plug 'othree/yajs.vim'
-Plug 'Quramy/vim-js-pretty-template'
+Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
-Plug 'burnettk/vim-angular'
+" Plug 'burnettk/vim-angular'
 Plug 'posva/vim-vue'
-Plug 'othree/javascript-libraries-syntax.vim'
 
-" Coffee
+" Other syntax supports
 Plug 'kchmck/vim-coffee-script', { 'for': 'coffee'}
+Plug 'plasticboy/vim-markdown'
 
 call plug#end()
 
@@ -79,14 +73,21 @@ set shortmess=a           " Short the status message
 set report=0              " Show all changes
 set exrc                  " Read local .vimrc
 
-" ----------------------------------------------------------------------------
+" Jump to the last cursor position
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal g`\"" | endif
+
+" Custom files
+autocmd BufRead,BufNewFile *.jst.eco set filetype=html
+autocmd BufRead,BufNewFile *.html.inky set filetype=haml
+
+" ----------------
 " UI
-" ----------------------------------------------------------------------------
+" ----------------
 set list          " Show trailing whitespace
 set number        " Enable line numbers
 set showcmd       " Show the (partial) command as it’s being typed
 set showmode      " Show the current mode
-set cursorline    " Highlight current line
+" set cursorline    " Highlight current line
 set colorcolumn=80
 set wildmode=longest,list,full
 set wildmenu      " visual autocomplete for command menu
@@ -100,38 +101,38 @@ set noerrorbells " Disable error bells
 let &t_SI = "\<Esc>]50;CursorShape=1\x7" " change cursor view for insert/normal mode
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
-" ----------------------------------------------------------------------------
-" Color scheme
-" ----------------------------------------------------------------------------
+" set ttyfast
+" set lazyredraw
+
 " set background=dark
 set termguicolors
 colorscheme seoul256
 
-" ----------------------------------------------------------------------------
-" SEARCH
-" ----------------------------------------------------------------------------
+" ------------------
+"  Search
+"  -----------------
 set hlsearch   " Highlight searches
 set incsearch  " Highlight dynamically as pattern is typed
 set gdefault   " Add the g flag to search/replace by default
 set ignorecase " Ignore case of searches
 
-" ----------------------------------------------------------------------------
-" FOLDING
-" ----------------------------------------------------------------------------
+" ------------------
+"  Folding
+"  -----------------
 set foldenable        " dont fold by default
 set foldmethod=indent " fold based on indent
 set foldlevelstart=10 " open most folds by default
 set foldnestmax=10    " 10 nested fold max
 
-" ----------------------------------------------------------------------------
-" NAVIGATION
-" ----------------------------------------------------------------------------
+" ------------------
+"  Navigation
+"  -----------------
 set noesckeys                  " No cursor keys in insert mode
 set backspace=indent,eol,start " Allow backspace in insert mode
 
-" ----------------------------------------------------------------------------
-" INDENTATION/TABS
-" ----------------------------------------------------------------------------
+" ------------------
+"  Indentation
+"  -----------------
 set tabstop=2     " read as
 set softtabstop=2 " insert as
 set expandtab     " tabs are spaces
@@ -140,42 +141,25 @@ set smartindent
 set smarttab
 set shiftwidth=2
 
-" ----------------------------------------------------------------------------
-" SPLITS
-" ----------------------------------------------------------------------------
+" ------------------
+" Splits
+" ------------------
 set splitbelow
 set splitright
 set fillchars=vert:│  " Vertical sep between windows (unicode)"
 
-" ----------------------------------------------------------------------------
-" Wild ignore
-" ----------------------------------------------------------------------------
+" -----------------
+"  Ignore
+" -----------------
 set wildignore+=.DS_Store
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd,*.o,*.obj,*.min.js
 set wildignore+=*/bower_components/*,*/node_modules/*
 set wildignore+=*/vendor/*,*/.git/*,*/.hg/*,*/.svn/*,*/.sass-cache/*,*/log/*,*/tmp/*,*/build/*,*/doc/*,*/source_maps/*,*/dist/*
 set wildignore+=*.so,*.swp,*.zip,*/test/files/*,*/webpack.bundle.js
 
-" ----------------------------------------------------------------------------
-" BACKUPS/SWAPS/UNDO
-" ----------------------------------------------------------------------------
-set backupdir=~/.vim/backups
-set directory=~/.vim/swaps
-if exists("&undodir")
-  set undodir=~/.vim/undo
-endif
-set backupskip=/tmp/*,/private/tmp/* " Don’t create for certain directories
-
-" ------------------------------------
-" Typing key combos
-" ------------------------------------
-set notimeout
-set ttimeout
-set ttimeoutlen=10
-
-" ----------------------------------------------------------------------------
+" -----------------
 " Status Line
-" ----------------------------------------------------------------------------
+" -----------------
 set laststatus=2 " Always show status line
 function! MyBufferLine()
   let st='%{bufferline#refresh_status()}'
@@ -199,28 +183,29 @@ set statusline+=%(\ \ %{&modifiable?(&expandtab?'et\ ':'noet\ ').&shiftwidth:
 set statusline+=\ \ %2v " Virtual column number
 set statusline+=\ %3p%% " Percentage through file in lines as in |CTRL-G|
 
-" ----------------------------------------------------------------------------
-" Configure auto
-" ----------------------------------------------------------------------------
-" Jump to the last cursor position
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal g`\"" | endif
-
-" ----------------------------------------------------------------------------
-" Custom files
-" ----------------------------------------------------------------------------
-autocmd BufRead,BufNewFile *.jst.eco set filetype=html
-autocmd BufRead,BufNewFile *.html.inky set filetype=haml
+" -----------------
+" Dirs
+" -----------------
+set backupdir=~/.vim/backups
+set directory=~/.vim/swaps
+if exists("&undodir")
+  set undodir=~/.vim/undo
+endif
+set backupskip=/tmp/*,/private/tmp/* " Don’t create for certain directories
 
 " ----------------------------------------------------------------------------
 " Formatters
 " ----------------------------------------------------------------------------
 autocmd FileType javascript setlocal formatprg=js-beautify\ --type\ js
 autocmd FileType html setlocal formatprg=js-beautify\ --type\ html
+autocmd FileType scss setlocal formatprg=prettier\ --parser\ postcss
+autocmd FileType css setlocal formatprg=prettier\ --parser\ postcss
 
 " ----------------------------------------------------------------------------
 " Enable omni completion.
 " ----------------------------------------------------------------------------
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType scss setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
@@ -277,68 +262,5 @@ command! Fzfc call fzf#run(fzf#wrap(
       \ {'source': 'git ls-files --exclude-standard --others --modified'}))
 noremap <Leader>] :Fzfc<cr>
 
-" ----------------------------------------------------------------------------
-" JS libs
-" ----------------------------------------------------------------------------
-let g:used_javascript_libs = 'jquery,underscore,react,angularjs'
-
-" ----------------------------------------------------------------------------
-" Js templates
-" ----------------------------------------------------------------------------
-autocmd FileType coffee JsPreTmpl html
-" autocmd FileType javascript JsPreTmpl html " not working ?
-
-" ----------------------------------------------------------------------------
-" NeoComplete
-" ----------------------------------------------------------------------------
-let g:neocomplete#enable_at_startup = 1 " Use neocomplete.
-let g:neocomplete#enable_smart_case = 1 " Use smartcase.
-let g:neocomplete#sources#syntax#min_keyword_length = 3 " min syntax keyword length
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-  let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-call neocomplete#util#set_default_dictionary(
-  \ 'g:neocomplete#sources#omni#input_patterns',
-  \ 'elm',
-  \ '\.')
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? "\<C-y>" : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-
-" ----------------------------------------------------------------------------
-" NeopSnippet
-" ----------------------------------------------------------------------------
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-" SuperTab like snippets behavior.
-"imap <expr><TAB>
-" \ pumvisible() ? "\<C-n>" :
-" \ neosnippet#expandable_or_jumpable() ?
-" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-      \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-" For conceal markers.
-if has('conceal')
-  set conceallevel=2 concealcursor=niv
-endif
-let g:neosnippet#enable_snipmate_compatibility = 1
-
-set conceallevel=0 " disable the auto-hide feature in json-vim
+" disable the auto-hide feature in json-vim
+set conceallevel=0 

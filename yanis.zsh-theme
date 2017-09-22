@@ -58,11 +58,6 @@ itunes_playing() {
     || echo "%{$fg[green]%}♫$artist - $name♫%{$reset_color%}"
 }
 
-curr_usd() {
-  val=`cat /Users/yanis/.track/usd`
-  echo "%{$fg[red]%}\$$val%{$reset_color%}"
-}
-
 #
 # Formatting
 #
