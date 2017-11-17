@@ -17,6 +17,11 @@ alias b='bundle'
 alias be='bundle exec'
 alias dokku='bash $HOME/.dokku/contrib/dokku_client.sh'
 
+alias doc='docker-compose'
+alias docup='docker-compose up'
+alias docex='docker-compose eec'
+alias k='kubectl'
+
 # Rails
 alias r='rails'
 alias rs='rails server'
