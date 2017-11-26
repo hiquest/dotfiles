@@ -44,7 +44,7 @@
   pullre = pull --rebase
   show-aliases = config --get-regexp alias
   cp = cherry-pick
-  bD = branch -D
+  b = branch -v
 
 [advice]
 	statusHints = false

@@ -3,14 +3,21 @@
 " ----------------------------------------------------------------------------
 call plug#begin('~/.vim/plugged')
 
-" General
+" Extension
 Plug 'scrooloose/nerdtree'          " File explorer
 Plug 'junegunn/fzf.vim'             " Best fuzzy finder
 Plug 'w0rp/ale'                     " Async linter
-Plug 'Valloric/YouCompleteMe'
+Plug 'Shougo/neocomplete.vim'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-endwise'    " auto add closing end's
+Plug 'jiangmiao/auto-pairs' " Auto-insert paired symbols
+Plug 'roman/golden-ratio'   " Auto-expands current split
 
-" " Appearance
+Plug 'editorconfig/editorconfig-vim'
+
+" Appearance
 Plug 'flazz/vim-colorschemes'
+Plug 'itchyny/lightline.vim'
 
 " Git
 Plug 'tpope/vim-fugitive'     " Git utils
@@ -25,14 +32,7 @@ Plug 'Valloric/MatchTagAlways' " highlights the enclosing html/xml tags
 Plug 'tpope/vim-surround'   " Adds surrounds actions
 Plug 'tpope/vim-commentary' " Commenting
 
-" Auto
-Plug 'tpope/vim-endwise'    " auto add closing end's
-Plug 'jiangmiao/auto-pairs' " Auto-insert paired symbols
-
-" Nginx
-Plug 'evanmiller/nginx-vim-syntax'
-
-" Html markup
+" Html markup langs
 Plug 'othree/html5.vim'
 Plug 'tpope/vim-haml', { 'for': 'haml' }
 Plug 'slim-template/vim-slim', { 'for': 'slim' }
@@ -45,17 +45,20 @@ Plug 'ap/vim-css-color'
 
 " Ruby
 Plug 'vim-ruby/vim-ruby'
-" Plug 'tpope/vim-rails'
+Plug 'tpope/vim-rails'
 
 " JavaScript
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-" Plug 'burnettk/vim-angular'
+" Plug 'pangloss/vim-javascript'
+" Plug 'mxw/vim-jsx'
 Plug 'posva/vim-vue'
 
-" Other syntax supports
-Plug 'kchmck/vim-coffee-script', { 'for': 'coffee'}
+" Markdown
 Plug 'plasticboy/vim-markdown'
+
+" Misc/tmp
+Plug 'StanAngeloff/php.vim'
+Plug 'vim-perl/vim-perl'
+Plug 'elixir-editors/vim-elixir'
 
 call plug#end()
 
@@ -78,7 +81,7 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "norm
 
 " Custom files
 autocmd BufRead,BufNewFile *.jst.eco set filetype=html
-autocmd BufRead,BufNewFile *.html.inky set filetype=haml
+autocmd BufRead,BufNewFile *.html.inky-haml set filetype=haml
 
 " ----------------
 " UI
@@ -86,7 +89,7 @@ autocmd BufRead,BufNewFile *.html.inky set filetype=haml
 set list          " Show trailing whitespace
 set number        " Enable line numbers
 set showcmd       " Show the (partial) command as it’s being typed
-set showmode      " Show the current mode
+set noshowmode      " Show the current mode
 " set cursorline    " Highlight current line
 set colorcolumn=80
 set wildmode=longest,list,full
@@ -161,27 +164,75 @@ set wildignore+=*.so,*.swp,*.zip,*/test/files/*,*/webpack.bundle.js
 " Status Line
 " -----------------
 set laststatus=2 " Always show status line
-function! MyBufferLine()
-  let st='%{bufferline#refresh_status()}'
-  return bufferline#get_status_string()
+" function! MyBufferLine()
+"   let st='%{bufferline#refresh_status()}'
+"   return bufferline#get_status_string()
+" endfunction
+
+" set statusline=
+" set statusline+=%(%{'help'!=&filetype?bufnr('%'):''}\ \ %)
+" set statusline+=%< " Where to truncate line
+" set statusline+=%f " Path to the file in the buffer, as typed or relative to current directory
+" set statusline+=%{&modified?'\ +':''}
+" set statusline+=%{&readonly?'\ ':''}
+" set statusline+=%(\ \ %{ALEGetStatusLine()}%)
+" set statusline+=%= " Separation point between left and right aligned items
+
+" " Right side
+" set statusline+=\ %{''!=#&filetype?&filetype:'none'}
+" set statusline+=%(\ %{(&bomb\|\|'^$\|utf-8'!~#&fileencoding?'\ '.&fileencoding.(&bomb?'-bom':''):'')
+"   \.('unix'!=#&fileformat?'\ '.&fileformat:'')}%)
+" set statusline+=%(\ \ %{&modifiable?(&expandtab?'et\ ':'noet\ ').&shiftwidth:''}%)
+" set statusline+=\ \ %2v " Virtual column number
+" set statusline+=\ %3p%% " Percentage through file in lines as in |CTRL-G|
+
+" Lightline
+let g:lightline = {
+\ 'active': {
+\   'left': [['mode', 'paste'], ['filename', 'modified']],
+\   'right': [['lineinfo'], ['percent'], ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok']]
+\ },
+\ 'component_expand': {
+\   'linter_warnings': 'LightlineLinterWarnings',
+\   'linter_errors': 'LightlineLinterErrors',
+\   'linter_ok': 'LightlineLinterOK'
+\ },
+\ 'component_type': {
+\   'readonly': 'error',
+\   'linter_warnings': 'warning',
+\   'linter_errors': 'error'
+\ },
+\ }
+
+function! LightlineLinterWarnings() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+  return l:counts.total == 0 ? '' : printf('%d ◆', all_non_errors)
 endfunction
 
-set statusline=
-set statusline+=%(%{'help'!=&filetype?bufnr('%'):''}\ \ %)
-set statusline+=%< " Where to truncate line
-set statusline+=%f " Path to the file in the buffer, as typed or relative to current directory
-set statusline+=%{&modified?'\ +':''}
-set statusline+=%{&readonly?'\ ':''}
-set statusline+=%(\ \ %{ALEGetStatusLine()}%)
-set statusline+=%= " Separation point between left and right aligned items
+function! LightlineLinterErrors() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+  return l:counts.total == 0 ? '' : printf('%d ✗', all_errors)
+endfunction
 
-" Right side
-set statusline+=\ %{''!=#&filetype?&filetype:'none'}
-set statusline+=%(\ %{(&bomb\|\|'^$\|utf-8'!~#&fileencoding?'\ '.&fileencoding.(&bomb?'-bom':''):'')
-  \.('unix'!=#&fileformat?'\ '.&fileformat:'')}%)
-set statusline+=%(\ \ %{&modifiable?(&expandtab?'et\ ':'noet\ ').&shiftwidth:''}%)
-set statusline+=\ \ %2v " Virtual column number
-set statusline+=\ %3p%% " Percentage through file in lines as in |CTRL-G|
+function! LightlineLinterOK() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+  return l:counts.total == 0 ? '✓ ' : ''
+endfunction
+
+autocmd User ALELint call s:MaybeUpdateLightline()
+
+" Update and show lightline but only if it's visible (e.g., not in Goyo)
+function! s:MaybeUpdateLightline()
+  if exists('#lightline')
+    call lightline#update()
+  end
+endfunction
 
 " -----------------
 " Dirs
@@ -196,10 +247,10 @@ set backupskip=/tmp/*,/private/tmp/* " Don’t create for certain directories
 " ----------------------------------------------------------------------------
 " Formatters
 " ----------------------------------------------------------------------------
-autocmd FileType javascript setlocal formatprg=js-beautify\ --type\ js
+autocmd FileType javascript setlocal formatprg=prettier
 autocmd FileType html setlocal formatprg=js-beautify\ --type\ html
-autocmd FileType scss setlocal formatprg=prettier\ --parser\ postcss
-autocmd FileType css setlocal formatprg=prettier\ --parser\ postcss
+autocmd FileType scss setlocal formatprg=prettier\ --parser\ css
+autocmd FileType css setlocal formatprg=prettier\ --parser\ css
 
 " ----------------------------------------------------------------------------
 " Enable omni completion.
@@ -264,3 +315,37 @@ noremap <Leader>] :Fzfc<cr>
 
 " disable the auto-hide feature in json-vim
 set conceallevel=0 
+
+" ----------------------------------------------------------------------------
+" NeoComplete
+" ----------------------------------------------------------------------------
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1 " Use smartcase.
+let g:neocomplete#sources#syntax#min_keyword_length = 3 " min syntax keyword length
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+  let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+call neocomplete#util#set_default_dictionary(
+  \ 'g:neocomplete#sources#omni#input_patterns',
+  \ 'elm',
+  \ '\.')
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
