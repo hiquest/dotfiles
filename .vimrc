@@ -12,8 +12,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-endwise'    " auto add closing end's
 Plug 'jiangmiao/auto-pairs' " Auto-insert paired symbols
 Plug 'roman/golden-ratio'   " Auto-expands current split
-
-Plug 'editorconfig/editorconfig-vim'
+Plug 'thinca/vim-localrc'
 
 " Appearance
 Plug 'flazz/vim-colorschemes'
@@ -25,7 +24,6 @@ Plug 'airblade/vim-gitgutter' " Shows a git diff in the gutter
 
 " Highlights
 Plug 'tmhedberg/matchit'       " extended %
-" Plug 'itchyny/vim-cursorword'  " word under cursor
 Plug 'Valloric/MatchTagAlways' " highlights the enclosing html/xml tags
 
 " Commands
@@ -48,9 +46,10 @@ Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
 
 " JavaScript
-" Plug 'pangloss/vim-javascript'
-" Plug 'mxw/vim-jsx'
+Plug 'othree/yajs.vim'
+Plug 'mxw/vim-jsx'
 Plug 'posva/vim-vue'
+Plug 'leafgarland/typescript-vim'
 
 " Markdown
 Plug 'plasticboy/vim-markdown'
@@ -78,6 +77,8 @@ set exrc                  " Read local .vimrc
 
 " Jump to the last cursor position
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal g`\"" | endif
+autocmd BufRead,BufNewFile *.md setlocal spell
+autocmd BufRead,BufNewFile *.md set complete+=kspell
 
 " Custom files
 autocmd BufRead,BufNewFile *.jst.eco set filetype=html
@@ -91,7 +92,7 @@ set number        " Enable line numbers
 set showcmd       " Show the (partial) command as it’s being typed
 set noshowmode      " Show the current mode
 " set cursorline    " Highlight current line
-set colorcolumn=80
+set colorcolumn=100
 set wildmode=longest,list,full
 set wildmenu      " visual autocomplete for command menu
 set showmatch     " highlight matching [{()}] "
@@ -164,27 +165,6 @@ set wildignore+=*.so,*.swp,*.zip,*/test/files/*,*/webpack.bundle.js
 " Status Line
 " -----------------
 set laststatus=2 " Always show status line
-" function! MyBufferLine()
-"   let st='%{bufferline#refresh_status()}'
-"   return bufferline#get_status_string()
-" endfunction
-
-" set statusline=
-" set statusline+=%(%{'help'!=&filetype?bufnr('%'):''}\ \ %)
-" set statusline+=%< " Where to truncate line
-" set statusline+=%f " Path to the file in the buffer, as typed or relative to current directory
-" set statusline+=%{&modified?'\ +':''}
-" set statusline+=%{&readonly?'\ ':''}
-" set statusline+=%(\ \ %{ALEGetStatusLine()}%)
-" set statusline+=%= " Separation point between left and right aligned items
-
-" " Right side
-" set statusline+=\ %{''!=#&filetype?&filetype:'none'}
-" set statusline+=%(\ %{(&bomb\|\|'^$\|utf-8'!~#&fileencoding?'\ '.&fileencoding.(&bomb?'-bom':''):'')
-"   \.('unix'!=#&fileformat?'\ '.&fileformat:'')}%)
-" set statusline+=%(\ \ %{&modifiable?(&expandtab?'et\ ':'noet\ ').&shiftwidth:''}%)
-" set statusline+=\ \ %2v " Virtual column number
-" set statusline+=\ %3p%% " Percentage through file in lines as in |CTRL-G|
 
 " Lightline
 let g:lightline = {
@@ -267,7 +247,8 @@ set tags=.vim_tags;
 " ----------------------------------------------------------------------------
 " KEY MAPPINGS
 " ----------------------------------------------------------------------------
-inoremap jj <Esc> :w<cr>
+" inoremap jj <Esc> :w<cr>
+inoremap jj <Esc>
 nnoremap <leader>= gg=G``
 nnoremap <leader>g gggqG``
 nnoremap <Space> za
