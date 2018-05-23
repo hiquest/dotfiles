@@ -1,22 +1,18 @@
-" ----------------------------------------------------------------------------
-" Plugins
-" ----------------------------------------------------------------------------
+" ===========================
+" PLUGINS
+" ===========================
 call plug#begin('~/.vim/plugged')
 
-" Extension
-Plug 'scrooloose/nerdtree'          " File explorer
-Plug 'junegunn/fzf.vim'             " Best fuzzy finder
-Plug 'w0rp/ale'                     " Async linter
-Plug 'Shougo/neocomplete.vim'
+Plug 'scrooloose/nerdtree'           " Navigation tree
+Plug '~/.fzf'                        " Fuzzy search
+Plug 'junegunn/fzf.vim'              " Vim ext for FZF
+Plug 'rafi/awesome-vim-colorschemes' " Just a color theme
+Plug 'w0rp/ale'                      " Linting
+Plug 'itchyny/lightline.vim'         " lite line
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'terryma/vim-multiple-cursors'
-Plug 'tpope/vim-endwise'    " auto add closing end's
 Plug 'jiangmiao/auto-pairs' " Auto-insert paired symbols
 Plug 'roman/golden-ratio'   " Auto-expands current split
-Plug 'thinca/vim-localrc'
-
-" Appearance
-Plug 'flazz/vim-colorschemes'
-Plug 'itchyny/lightline.vim'
 
 " Git
 Plug 'tpope/vim-fugitive'     " Git utils
@@ -24,136 +20,83 @@ Plug 'airblade/vim-gitgutter' " Shows a git diff in the gutter
 
 " Highlights
 Plug 'tmhedberg/matchit'       " extended %
-Plug 'Valloric/MatchTagAlways' " highlights the enclosing html/xml tags
 
 " Commands
 Plug 'tpope/vim-surround'   " Adds surrounds actions
 Plug 'tpope/vim-commentary' " Commenting
 
-" Html markup langs
-Plug 'othree/html5.vim'
-Plug 'tpope/vim-haml', { 'for': 'haml' }
-Plug 'slim-template/vim-slim', { 'for': 'slim' }
-Plug 'digitaltoad/vim-pug'
-
-" Stylesheets
-Plug 'hail2u/vim-css3-syntax'
-Plug 'cakebaker/scss-syntax.vim'
-Plug 'ap/vim-css-color'
-
-" Ruby
-Plug 'vim-ruby/vim-ruby'
-Plug 'tpope/vim-rails'
+" Python
+Plug 'davidhalter/jedi-vim'
+Plug 'hdima/python-syntax'
 
 " JavaScript
 Plug 'othree/yajs.vim'
 Plug 'mxw/vim-jsx'
-Plug 'posva/vim-vue'
-Plug 'leafgarland/typescript-vim'
 
-" Markdown
-Plug 'plasticboy/vim-markdown'
-
-" Misc/tmp
-Plug 'StanAngeloff/php.vim'
-Plug 'vim-perl/vim-perl'
-Plug 'elixir-editors/vim-elixir'
+" Ruby
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-haml'
 
 call plug#end()
 
-set rtp+=~/.fzf
+" ============================
+" SOME SETTINGS
+" ============================
+language en_US " had to put this for neovim
+set clipboard^=unnamed     " Use the system register for everything
+set backspace=2   " Backspace deletes like most programs in insert mode
 
-" ----------------------------------------------------------------------------
-" GENERAL
-" ----------------------------------------------------------------------------
-syntax on
-filetype plugin indent on " load filetype-specific indent files
-set nocompatible          " Don't use the default vi-like setting
-set encoding=utf-8 nobomb " Use UTF-8 without BOM
-set clipboard=unnamed     " Use the OS clipboard by default (on versions compiled with `+clipboard`)
-set shortmess=a           " Short the status message
-set report=0              " Show all changes
-set exrc                  " Read local .vimrc
-
-" Jump to the last cursor position
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal g`\"" | endif
-autocmd BufRead,BufNewFile *.md setlocal spell
-autocmd BufRead,BufNewFile *.md set complete+=kspell
-
-" Custom files
-autocmd BufRead,BufNewFile *.jst.eco set filetype=html
-autocmd BufRead,BufNewFile *.html.inky-haml set filetype=haml
-
-" ----------------
-" UI
-" ----------------
-set list          " Show trailing whitespace
-set number        " Enable line numbers
-set showcmd       " Show the (partial) command as it’s being typed
-set noshowmode      " Show the current mode
-" set cursorline    " Highlight current line
-set colorcolumn=100
-set wildmode=longest,list,full
-set wildmenu      " visual autocomplete for command menu
-set showmatch     " highlight matching [{()}] "
-set title         " Show the filename in the window titlebar
-set ruler         " Show the cursor position
-set nostartofline " Don’t reset cursor to start of line when moving around.
-set shortmess=atI " Don’t show the intro message when starting Vim
-set lcs=tab:▸\ ,trail:·,nbsp:_ " Show “invisible” characters
-set noerrorbells " Disable error bells
-let &t_SI = "\<Esc>]50;CursorShape=1\x7" " change cursor view for insert/normal mode
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-
-" set ttyfast
-" set lazyredraw
-
-" set background=dark
-set termguicolors
-colorscheme seoul256
-
-" ------------------
-"  Search
-"  -----------------
-set hlsearch   " Highlight searches
-set incsearch  " Highlight dynamically as pattern is typed
-set gdefault   " Add the g flag to search/replace by default
-set ignorecase " Ignore case of searches
-
-" ------------------
-"  Folding
-"  -----------------
+" Folding
 set foldenable        " dont fold by default
 set foldmethod=indent " fold based on indent
 set foldlevelstart=10 " open most folds by default
 set foldnestmax=10    " 10 nested fold max
 
-" ------------------
-"  Navigation
-"  -----------------
-set noesckeys                  " No cursor keys in insert mode
-set backspace=indent,eol,start " Allow backspace in insert mode
+" Appearance
+color OceanicNext
+set background=dark
+set number
+set numberwidth=5
+set list listchars=tab:»·,trail:·,nbsp:· " disaply extra whitespace
+set textwidth=80  " line to limit to 80 chars
+set colorcolumn=+1
 
-" ------------------
-"  Indentation
-"  -----------------
-set tabstop=2     " read as
-set softtabstop=2 " insert as
-set expandtab     " tabs are spaces
-set autoindent
-set smartindent
-set smarttab
-set shiftwidth=2
-
-" ------------------
-" Splits
-" ------------------
+" SPLITS
 set splitbelow
 set splitright
 set fillchars=vert:│  " Vertical sep between windows (unicode)"
 
+" DIRS
+set backupdir=~/.vim/backups
+set directory=~/.vim/swaps
+if exists("&undodir")
+  set undodir=~/.vim/undo
+endif
+set backupskip=/tmp/*,/private/tmp/* " Don’t create for certain directories
+
+" TABS
+set tabstop=2
+set shiftwidth=2
+set shiftround
+set expandtab
+
+" FORMATTERS
+autocmd FileType javascript setlocal formatprg=prettier
+autocmd FileType html setlocal formatprg=js-beautify\ --type\ html
+autocmd FileType scss setlocal formatprg=prettier\ --parser\ css
+autocmd FileType css setlocal formatprg=prettier\ --parser\ css
+autocmd FileType python setlocal formatprg=yapf
+
+" OMNI COMPLETION
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType scss setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+
 " -----------------
-"  Ignore
+" Ignore
 " -----------------
 set wildignore+=.DS_Store
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd,*.o,*.obj,*.min.js
@@ -214,61 +157,6 @@ function! s:MaybeUpdateLightline()
   end
 endfunction
 
-" -----------------
-" Dirs
-" -----------------
-set backupdir=~/.vim/backups
-set directory=~/.vim/swaps
-if exists("&undodir")
-  set undodir=~/.vim/undo
-endif
-set backupskip=/tmp/*,/private/tmp/* " Don’t create for certain directories
-
-" ----------------------------------------------------------------------------
-" Formatters
-" ----------------------------------------------------------------------------
-autocmd FileType javascript setlocal formatprg=prettier
-autocmd FileType html setlocal formatprg=js-beautify\ --type\ html
-autocmd FileType scss setlocal formatprg=prettier\ --parser\ css
-autocmd FileType css setlocal formatprg=prettier\ --parser\ css
-
-" ----------------------------------------------------------------------------
-" Enable omni completion.
-" ----------------------------------------------------------------------------
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType scss setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-
-set tags=.vim_tags;
-
-" ----------------------------------------------------------------------------
-" KEY MAPPINGS
-" ----------------------------------------------------------------------------
-" inoremap jj <Esc> :w<cr>
-inoremap jj <Esc>
-nnoremap <leader>= gg=G``
-nnoremap <leader>g gggqG``
-nnoremap <Space> za
-nnoremap <leader>a :Gblame<cr>
-nnoremap <CR> :noh<cr>
-nnoremap <C-J> gt
-nnoremap <C-K> gT
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-nnoremap <Leader>w :w<CR>
-nnoremap <Leader>q :q<CR>
-nnoremap <Leader>x :qa<CR>
-nnoremap <Leader>o :tabo<CR>
-map <Left> :echo "no!"<cr>
-map <Right> :echo "no!"<cr>
-map <Up> :echo "no!"<cr>
-map <Down> :echo "no!"<cr>
-nnoremap <Leader>' :vsp ~/Dropbox/notes.markdown <CR>
-nmap <Leader>hr <Plug>GitGutterUndoHunk
-
 " ----------------------------------------------------------------------------
 " NerdTree
 " ----------------------------------------------------------------------------
@@ -276,10 +164,9 @@ let NERDTreeShowHidden=1 " Always show dot files
 let NERDTreeQuitOnOpen=1
 map <Leader>n :NERDTreeFind<CR>
 
-" ----------------------------------------------------------------------------
-" Fuzzy finder fzf
-" ----------------------------------------------------------------------------
-" Use enter to open in new tab
+" ============================
+" Fuzzy Finder Setup
+" ============================
 let g:fzf_action = {
       \ 'enter': 'tab split',
       \ 'ctrl-x': 'split',
@@ -294,39 +181,76 @@ command! Fzfc call fzf#run(fzf#wrap(
       \ {'source': 'git ls-files --exclude-standard --others --modified'}))
 noremap <Leader>] :Fzfc<cr>
 
-" disable the auto-hide feature in json-vim
-set conceallevel=0 
+" ============================
+" Ale
+" ============================
+let g:ale_lint_delay=1000
+let g:ale_sign_error = '😱'
+let g:ale_sign_warning = '😞'
+let g:ale_linters = {
+\   'python': ['flake8', 'pylint'],
+\   'javascript': ['eslint']
+\}
 
-" ----------------------------------------------------------------------------
-" NeoComplete
-" ----------------------------------------------------------------------------
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1 " Use smartcase.
-let g:neocomplete#sources#syntax#min_keyword_length = 3 " min syntax keyword length
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-  let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-call neocomplete#util#set_default_dictionary(
-  \ 'g:neocomplete#sources#omni#input_patterns',
-  \ 'elm',
-  \ '\.')
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? "\<C-y>" : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" ============================
+" DEOPLETE
+" ============================
+let g:deoplete#enable_at_startup = 1
+inoremap <silent><expr> <TAB>
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ deoplete#mappings#manual_complete()
+function! s:check_back_space() abort "{{{
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction"}}}
 
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
+" ---------------------------
+" Jedi (Python)
+" ---------------------------
+let g:jedi#use_tabs_not_buffers = 1
+let g:jedi#show_call_signatures = "2"
+let g:jedi#goto_command = "<leader>d"
+let g:jedi#goto_assignments_command = "<leader>g"
+let g:jedi#goto_definitions_command = ""
+let g:jedi#documentation_command = "K"
+let g:jedi#usages_command = ""
+let g:jedi#completions_command = "<C-Space>"
+let g:jedi#rename_command = "<leader>r"
+
+" ============================
+" CUSTOM MAPPINGS
+" ============================
+inoremap jj <Esc>
+nnoremap <space> za
+nnoremap <Leader><Leader> :FZF<CR>
+nnoremap <CR> :noh<CR>
+
+" System
+nnoremap <Leader>w :w<CR>
+nnoremap <Leader>q :q<CR>
+nnoremap <Leader>o :tabo<CR>
+
+" Navigate tabs
+nnoremap <C-j> gt
+nnoremap <C-k> gT
+
+" Navigate splits
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+
+" Move between linting errors
+nnoremap ]r :ALENextWrap<CR>
+nnoremap [r :ALEPreviousWrap<CR>
+
+" Git blame
+nnoremap <leader>a :Gblame<cr>
+
+" Indent and formatting
+nnoremap <leader>= gg=G``
+nnoremap <leader>- gggqG``
+
+
+
+
+let python_highlight_all = 1
