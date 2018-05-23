@@ -1,88 +1,43 @@
-# Navigation
+# =================
+# Navigation/system
+# =================
 alias ..='cd ..'
 alias l='ls -lahF'
 alias x='exit'
-
-# Oftenly used
-alias v='vim'
-alias vimconf="vim ~/.vimrc"
+alias j="z"         # https://github.com/rupa/z
 alias o="open"
-alias j="z"
-alias i='ionic'
-alias y='yarn'
-alias h='heroku'
-alias ctags='/usr/local/Cellar/ctags/5.8_1/bin/ctags -f .vim_tags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths)'
-alias pys='python -m SimpleHTTPServer'
-alias b='bundle'
-alias be='bundle exec'
-alias dokku='bash $HOME/.dokku/contrib/dokku_client.sh'
+mkcd() {
+  mkdir $@ && cd $_
+}
 
+# =================
+# Misc
+# =================
+alias v='nvim'
+alias vimconf="nvim ~/.vimrc"
+alias y='yarn'
+
+# =================
+# Docker/Kubs
+# =================
+alias d='docker'
 alias doc='docker-compose'
 alias docup='docker-compose up'
 alias docex='docker-compose eec'
 alias k='kubectl'
 
+# =================
 # Rails
+# =================
+alias b='bundle'
+alias be='bundle exec'
 alias r='rails'
 alias rs='rails server'
 alias rs1='rails server -p 3001'
 alias rs2='rails server -p 3002'
 alias rs3='rails server -p 3003'
-alias rs4='rails server -p 3004'
-alias rs5='rails server -p 3005'
-alias rs7='rails server -p 3007'
 alias rc='rails console'
 alias rdm='bundle exec rake db:migrate'
-alias groutes='bundle exec rake routes | grep $@'
-
-#
-# Workflow hacks
-#
-alias fixs='git checkout db/structure.sql && RAILS_ENV=test be rake db:drop db:create db:migrate'
-
-mkcd() {
-  mkdir $@ && cd $_
-}
-
-#
-# Git/Github helpers
-#
-alias pr='~/dotfiles/scripts/git/gh-pull-request.sh'
-alias vc='~/dotfiles/scripts/git/gh-view-commit.sh'
-alias mylog='~/dotfiles/scripts/git/git-monthly-log.sh Yanis'
-alias gclean='~/dotfiles/scripts/git/git-clean-merged.sh'
-
-# Only run spec if file exists
-rsp() {
-  if [ -f $1 ]; then
-    bundle exec rspec $1
-  else
-    (>&2 echo "File Not Found")
-    # exit 1
-  fi
-}
-
-# Git
-alias g="git"
-alias gs='git s'
-alias gd='git d'
-alias g-='git checkout -'
-alias p='git push'
-alias c='git commit -m'
-
-#
-# Fun
-#
-
-# Lookup lyrics of song playing in iTunes
-alias ly='~/dotfiles/scripts/lyrics.sh'
-
-# Weather
-alias we='curl http://wttr.in/ | less'
-
-# Check playing song on BBC6
-alias bbc='~/dotfiles/scripts/bbc6_now_playing.sh'
-
 wps() {
   if [ -f ./bin/webpack-dev-server ]; then
     ./bin/webpack-dev-server
@@ -93,9 +48,43 @@ wps() {
   fi
 }
 
-#
-# Following need junegunn/fzf installed.
-#
+# =================
+# Django
+# =================
+alias pm="python manage.py"
+alias pmsh="python manage.py shell"
+alias pmrs="python manage.py runserver"
+alias pmt="python manage.py test"
+
+# =================
+# Git
+# =================
+alias g="git"
+alias gs='git s'
+alias gd='git d'
+alias g-='git checkout -'
+alias p='git push'
+alias c='git commit -m'
+alias pr='~/dotfiles/scripts/git/gh-pull-request.sh'
+alias vc='~/dotfiles/scripts/git/gh-view-commit.sh'
+alias gclean='~/dotfiles/scripts/git/git-clean-merged.sh'
+
+# =================
+# Fun
+# =================
+
+# Lookup lyrics of song playing in iTunes
+alias ly='~/dotfiles/scripts/lyrics.sh'
+
+# Weather
+alias we='curl http://wttr.in/ | less'
+
+# Check playing song on BBC6
+alias bbc='~/dotfiles/scripts/bbc6_now_playing.sh'
+
+# =================
+# Following needs junegunn/fzf installed.
+# =================
 
 # Use fzf with z
 unalias z 2> /dev/null
@@ -104,10 +93,7 @@ z() {
   cd "$(_z -l 2>&1 | fzf-tmux +s --tac --query "$*" | sed 's/^[0-9,.]* *//')"
 }
 
-# Checkout a branch with fzf
-co() {
-  local branches branch
-  branches=$(git branch -vv) &&
-  branch=$(echo "$branches" | fzf +m) &&
-  git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
-}
+# =================
+# Work-related
+# =================
+alias kshell='~/projects/ueni/scripts/kubes_django_shell.sh'
