@@ -51,10 +51,15 @@ wps() {
 # =================
 # Django
 # =================
-alias pm="python manage.py"
-alias pmsh="python manage.py shell"
-alias pmrs="python manage.py runserver"
-alias pmt="python manage.py test"
+dj() {
+  if [ -f ./manage.py ]; then
+    python ./manage.py $*
+  elif [ -f ./app/manage.py ]; then
+    python ./app/manage.py $*
+  else
+    echo 'manage.py not found'
+  fi
+}
 
 # =================
 # Git
@@ -96,4 +101,14 @@ z() {
 # =================
 # Work-related
 # =================
-alias kshell='~/projects/ueni/scripts/kubes_django_shell.sh'
+kshell() {
+  ns=$1
+  pod=`kubectl get pods --namespace=$ns | tail -n 1 | awk '{print $1}'`
+  kubectl exec -it $pod --namespace=$ns -- python /ueni/app/manage.py shell
+}
+
+kbash() {
+  ns=$1
+  pod=`kubectl get pods --namespace=$ns | tail -n 1 | awk '{print $1}'`
+  kubectl exec -it $pod --namespace=$ns -- /bin/bash
+}
