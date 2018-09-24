@@ -6,9 +6,13 @@ alias l='ls -lahF'
 alias x='exit'
 alias j="z"         # https://github.com/rupa/z
 alias o="open"
+alias i='ionic'
 mkcd() {
   mkdir $@ && cd $_
 }
+
+alias cat='bat'
+alias ping='prettyping --nolegend'
 
 # =================
 # Misc
@@ -103,12 +107,12 @@ z() {
 # =================
 kshell() {
   ns=$1
-  pod=`kubectl get pods --namespace=$ns | tail -n 1 | awk '{print $1}'`
+  pod=`kubectl get pods --namespace=$ns | grep 'django\|backend' | tail -n 1 | awk '{print $1}'`
   kubectl exec -it $pod --namespace=$ns -- python /ueni/app/manage.py shell
 }
 
 kbash() {
   ns=$1
-  pod=`kubectl get pods --namespace=$ns | tail -n 1 | awk '{print $1}'`
+  pod=`kubectl get pods --namespace=$ns | grep 'django\|backend' | tail -n 1 | awk '{print $1}'`
   kubectl exec -it $pod --namespace=$ns -- /bin/bash
 }
