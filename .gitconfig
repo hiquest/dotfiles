@@ -1,9 +1,9 @@
 [user]
-  name = Ianis
-  email = janis.sci@gmail.com
+	name = Ianis
+	email = janis.sci@gmail.com
 
 [core]
-  editor = vim
+	editor = nvim
 
 [color]
   ui = auto
@@ -61,7 +61,11 @@
 	smudge = git hawser smudge %f
 	required = true
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+
+[pager]
+  diff = diff-so-fancy | less --tabs=1,5 -RFX
+  show = diff-so-fancy | less --tabs=1,5 -RFX
