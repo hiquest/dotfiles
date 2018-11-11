@@ -3,35 +3,54 @@
 " ===========================
 call plug#begin('~/.vim/plugged')
 
+" Essentials
 Plug 'scrooloose/nerdtree'           " Navigation tree
 Plug '~/.fzf'                        " Fuzzy search
 Plug 'junegunn/fzf.vim'              " Vim ext for FZF
-Plug 'rafi/awesome-vim-colorschemes' " Just a color theme
-Plug 'w0rp/ale'                      " Linting
-Plug 'itchyny/lightline.vim'         " lite line
+Plug 'w0rp/ale'                      " Linting and fixing
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+" Easier navigation
+Plug 'roman/golden-ratio'   " Auto-expands current split
 Plug 'terryma/vim-multiple-cursors'
 Plug 'jiangmiao/auto-pairs' " Auto-insert paired symbols
-Plug 'roman/golden-ratio'   " Auto-expands current split
+Plug 'ap/vim-buftabline'
 
-" Git
-Plug 'tpope/vim-fugitive'     " Git utils
-Plug 'airblade/vim-gitgutter' " Shows a git diff in the gutter
-
-" Highlights
-Plug 'tmhedberg/matchit'       " extended %
-
-" Commands
+" Extensions
 Plug 'tpope/vim-surround'   " Adds surrounds actions
 Plug 'tpope/vim-commentary' " Commenting
+Plug 'tmhedberg/matchit'    " extended %
+
+" Appearance
+Plug 'rafi/awesome-vim-colorschemes' " Collection of color schemes
+
+" Git
+Plug 'tpope/vim-fugitive'     " Git utils ( I only use annotate )
+Plug 'mhinz/vim-signify'      " Shows what is changed in a sidebar
+
+" Still not sure I need those
+Plug 'mhinz/vim-startify'
+
+" =========================
+" LANGUAGE-SPECIFIC PLUGINS
+" =========================
 
 " Python
-Plug 'davidhalter/jedi-vim'
+Plug 'zchee/deoplete-jedi'
 Plug 'hdima/python-syntax'
 
 " JavaScript
 Plug 'othree/yajs.vim'
+
+" React
 Plug 'mxw/vim-jsx'
+
+" Vue
+Plug 'posva/vim-vue'
+Plug 'digitaltoad/vim-pug'
+
+" Typescript
+Plug 'leafgarland/typescript-vim'
 
 " Ruby
 Plug 'tpope/vim-endwise'
@@ -40,11 +59,12 @@ Plug 'tpope/vim-haml'
 call plug#end()
 
 " ============================
-" SOME SETTINGS
+" SETTINGS
 " ============================
-language en_US " had to put this for neovim
-set clipboard^=unnamed     " Use the system register for everything
-set backspace=2   " Backspace deletes like most programs in insert mode
+language en_US           " had to put this for neovim
+set clipboard^=unnamed   " Use the system register for everything
+set backspace=2          " Backspace deletes like most programs in insert mode
+set hidden
 
 " Folding
 set foldenable        " dont fold by default
@@ -55,6 +75,7 @@ set foldnestmax=10    " 10 nested fold max
 " Appearance
 color OceanicNext
 set background=dark
+
 set number
 set numberwidth=5
 set list listchars=tab:»·,trail:·,nbsp:· " disaply extra whitespace
@@ -82,6 +103,8 @@ set expandtab
 
 " FORMATTERS
 autocmd FileType javascript setlocal formatprg=prettier
+autocmd FileType javascript.jsx setlocal formatprg=prettier
+autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript\ --no-semi
 autocmd FileType html setlocal formatprg=js-beautify\ --type\ html
 autocmd FileType scss setlocal formatprg=prettier\ --parser\ css
 autocmd FileType css setlocal formatprg=prettier\ --parser\ css
@@ -91,7 +114,6 @@ autocmd FileType python setlocal formatprg=yapf
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType scss setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 
@@ -107,55 +129,26 @@ set wildignore+=*.so,*.swp,*.zip,*/test/files/*,*/webpack.bundle.js
 " -----------------
 " Status Line
 " -----------------
-set laststatus=2 " Always show status line
-
-" Lightline
-let g:lightline = {
-\ 'active': {
-\   'left': [['mode', 'paste'], ['filename', 'modified']],
-\   'right': [['lineinfo'], ['percent'], ['readonly', 'linter_warnings', 'linter_errors', 'linter_ok']]
-\ },
-\ 'component_expand': {
-\   'linter_warnings': 'LightlineLinterWarnings',
-\   'linter_errors': 'LightlineLinterErrors',
-\   'linter_ok': 'LightlineLinterOK'
-\ },
-\ 'component_type': {
-\   'readonly': 'error',
-\   'linter_warnings': 'warning',
-\   'linter_errors': 'error'
-\ },
-\ }
-
-function! LightlineLinterWarnings() abort
+function! LinterStatus() abort
   let l:counts = ale#statusline#Count(bufnr(''))
+
   let l:all_errors = l:counts.error + l:counts.style_error
   let l:all_non_errors = l:counts.total - l:all_errors
-  return l:counts.total == 0 ? '' : printf('%d ◆', all_non_errors)
+
+  return l:counts.total == 0 ? '✨ all good ✨' : printf(
+        \   '😨 %dW %dE',
+        \   all_non_errors,
+        \   all_errors
+        \)
 endfunction
 
-function! LightlineLinterErrors() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-  return l:counts.total == 0 ? '' : printf('%d ✗', all_errors)
-endfunction
+set laststatus=2
+set statusline=
+set statusline+=%m
+set statusline+=\ %f
 
-function! LightlineLinterOK() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-  return l:counts.total == 0 ? '✓ ' : ''
-endfunction
-
-autocmd User ALELint call s:MaybeUpdateLightline()
-
-" Update and show lightline but only if it's visible (e.g., not in Goyo)
-function! s:MaybeUpdateLightline()
-  if exists('#lightline')
-    call lightline#update()
-  end
-endfunction
+set statusline+=%=
+set statusline+=\ %{LinterStatus()}
 
 " ----------------------------------------------------------------------------
 " NerdTree
@@ -167,10 +160,10 @@ map <Leader>n :NERDTreeFind<CR>
 " ============================
 " Fuzzy Finder Setup
 " ============================
-let g:fzf_action = {
-      \ 'enter': 'tab split',
-      \ 'ctrl-x': 'split',
-      \ 'ctrl-v': 'vsplit' }
+" let g:fzf_action = {
+"       \ 'enter': 'tab split',
+"       \ 'ctrl-x': 'split',
+"       \ 'ctrl-v': 'vsplit' }
 let g:fzf_layout = { 'down': '~40%'  }
 nnoremap <Leader><Leader> :Files<cr>
 nnoremap <Leader>f :Ag <C-R><C-W><cr>
@@ -185,12 +178,23 @@ noremap <Leader>] :Fzfc<cr>
 " Ale
 " ============================
 let g:ale_lint_delay=1000
-let g:ale_sign_error = '😱'
-let g:ale_sign_warning = '😞'
 let g:ale_linters = {
 \   'python': ['flake8', 'pylint'],
-\   'javascript': ['eslint']
+\   'javascript': ['eslint'],
+\   'vue': ['eslint']
 \}
+let g:ale_python_pylint_change_directory = 0
+
+" FIXERS
+let g:ale_fixers = {
+\    'javascript': ['eslint'],
+\    'vue': ['eslint'],
+\    'scss': ['prettier']
+\}
+let g:ale_fix_on_save = 1
+
+nnoremap ]r :ALENextWrap<CR>
+nnoremap [r :ALEPreviousWrap<CR>
 
 " ============================
 " DEOPLETE
@@ -205,25 +209,17 @@ function! s:check_back_space() abort "{{{
     return !col || getline('.')[col - 1]  =~ '\s'
 endfunction"}}}
 
-" ---------------------------
-" Jedi (Python)
-" ---------------------------
-let g:jedi#use_tabs_not_buffers = 1
-let g:jedi#show_call_signatures = "2"
-let g:jedi#goto_command = "<leader>d"
-let g:jedi#goto_assignments_command = "<leader>g"
-let g:jedi#goto_definitions_command = ""
-let g:jedi#documentation_command = "K"
-let g:jedi#usages_command = ""
-let g:jedi#completions_command = "<C-Space>"
-let g:jedi#rename_command = "<leader>r"
+" ----------------------------
+" JavaScript
+" ----------------------------
+let g:javascript_plugin_flow = 1
+let g:jsx_ext_required = 0
 
 " ============================
 " CUSTOM MAPPINGS
 " ============================
 inoremap jj <Esc>
 nnoremap <space> za
-nnoremap <Leader><Leader> :FZF<CR>
 nnoremap <CR> :noh<CR>
 
 " System
@@ -231,26 +227,20 @@ nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>o :tabo<CR>
 
-" Navigate tabs
-nnoremap <C-j> gt
-nnoremap <C-k> gT
+" Navigate buffers
+nnoremap <C-j> :bnext<CR>
+nnoremap <C-k> :bprev<CR>
 
 " Navigate splits
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 
-" Move between linting errors
-nnoremap ]r :ALENextWrap<CR>
-nnoremap [r :ALEPreviousWrap<CR>
-
 " Git blame
 nnoremap <leader>a :Gblame<cr>
 
 " Indent and formatting
-nnoremap <leader>= gg=G``
-nnoremap <leader>- gggqG``
+nnoremap <leader>= mzgg=G`z
+nnoremap <leader>- mzgggqG`z
 
-
-
-
-let python_highlight_all = 1
+" TODO
+nnoremap <leader>' :vsp /Users/yanis/Dropbox/todo.md<cr>
