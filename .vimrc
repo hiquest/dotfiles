@@ -27,13 +27,21 @@ Plug 'rafi/awesome-vim-colorschemes' " Collection of color schemes
 " Git
 Plug 'tpope/vim-fugitive'     " Git utils ( I only use annotate )
 Plug 'mhinz/vim-signify'      " Shows what is changed in a sidebar
+Plug 'junegunn/gv.vim'
 
 " Still not sure I need those
 Plug 'mhinz/vim-startify'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'ap/vim-css-color'
 
 " =========================
 " LANGUAGE-SPECIFIC PLUGINS
 " =========================
+
+Plug 'elixir-editors/vim-elixir'
+Plug 'slashmili/alchemist.vim'
+Plug 'sheerun/vim-polyglot'
+Plug 'powerman/vim-plugin-AnsiEsc'
 
 " Python
 Plug 'zchee/deoplete-jedi'
@@ -42,15 +50,17 @@ Plug 'hdima/python-syntax'
 " JavaScript
 Plug 'othree/yajs.vim'
 
+" Typescript
+Plug 'Quramy/tsuquyomi'           " Completion and navigation
+Plug 'leafgarland/typescript-vim' " Syntax
+Plug 'ianks/vim-tsx'
+
 " React
 Plug 'mxw/vim-jsx'
 
 " Vue
 Plug 'posva/vim-vue'
 Plug 'digitaltoad/vim-pug'
-
-" Typescript
-Plug 'leafgarland/typescript-vim'
 
 " Ruby
 Plug 'tpope/vim-endwise'
@@ -136,7 +146,7 @@ function! LinterStatus() abort
   let l:all_non_errors = l:counts.total - l:all_errors
 
   return l:counts.total == 0 ? '✨ all good ✨' : printf(
-        \   '😨 %dW %dE',
+        \   '😞 %dW %dE',
         \   all_non_errors,
         \   all_errors
         \)
@@ -188,6 +198,7 @@ let g:ale_python_pylint_change_directory = 0
 " FIXERS
 let g:ale_fixers = {
 \    'javascript': ['eslint'],
+\    'typescript': ['tslint'],
 \    'vue': ['eslint'],
 \    'scss': ['prettier']
 \}
@@ -224,7 +235,7 @@ nnoremap <CR> :noh<CR>
 
 " System
 nnoremap <Leader>w :w<CR>
-nnoremap <Leader>q :q<CR>
+nnoremap <Leader>q :bd<CR>
 nnoremap <Leader>o :tabo<CR>
 
 " Navigate buffers
