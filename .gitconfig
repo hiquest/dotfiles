@@ -1,9 +1,9 @@
 [user]
-	name = Ianis
-	email = janis.sci@gmail.com
+  name = Ianis
+  email = janis.sci@gmail.com
 
 [core]
-	editor = nvim
+  editor = nvim
 
 [color]
   ui = auto
@@ -45,29 +45,41 @@
   show-aliases = config --get-regexp alias
   cp = cherry-pick
   b = branch -v
+  recent = for-each-ref --sort=-committerdate --count=10 --format='%(refname:short)' refs/heads/
 
 [advice]
-	statusHints = false
-
-[diff]
-  tool = icdiff
+  statusHints = false
 
 [filter "media"]
-	required = true
-	clean = git media clean %f
-	smudge = git media smudge %f
+  required = true
+  clean = git media clean %f
+  smudge = git media smudge %f
+
 [filter "hawser"]
-	clean = git hawser clean %f
-	smudge = git hawser smudge %f
-	required = true
+  clean = git hawser clean %f
+  smudge = git hawser smudge %f
+  required = true
+
 [filter "lfs"]
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
 
 [pager]
   diff = diff-so-fancy | less --tabs=1,5 -RFX
   show = diff-so-fancy | less --tabs=1,5 -RFX
+
 [pull]
-	rebase = true
+  rebase = true
+
+[merge]
+  tool = vimdiff
+[mergetool]
+  prompt = true
+[mergetool "vimdiff"]
+  cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+[difftool]
+  prompt = false
+[diff]
+  tool = vimdiff

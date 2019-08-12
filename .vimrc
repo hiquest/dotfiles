@@ -5,10 +5,13 @@ call plug#begin('~/.vim/plugged')
 
 " Essentials
 Plug 'scrooloose/nerdtree'           " Navigation tree
+Plug 'Nopik/vim-nerdtree-direnter'   " Fix for opening files and dirs in tabs
 Plug '~/.fzf'                        " Fuzzy search
 Plug 'junegunn/fzf.vim'              " Vim ext for FZF
 Plug 'w0rp/ale'                      " Linting and fixing
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'junegunn/goyo.vim'
+Plug 'tomasr/molokai'
 
 " Easier navigation
 Plug 'roman/golden-ratio'   " Auto-expands current split
@@ -20,51 +23,23 @@ Plug 'ap/vim-buftabline'
 Plug 'tpope/vim-surround'   " Adds surrounds actions
 Plug 'tpope/vim-commentary' " Commenting
 Plug 'tmhedberg/matchit'    " extended %
-
-" Appearance
-Plug 'rafi/awesome-vim-colorschemes' " Collection of color schemes
+Plug 'ap/vim-css-color'     " Highlights colors
 
 " Git
 Plug 'tpope/vim-fugitive'     " Git utils ( I only use annotate )
 Plug 'mhinz/vim-signify'      " Shows what is changed in a sidebar
-Plug 'junegunn/gv.vim'
-
-" Still not sure I need those
-Plug 'mhinz/vim-startify'
-Plug 'AndrewRadev/splitjoin.vim'
-Plug 'ap/vim-css-color'
 
 " =========================
 " LANGUAGE-SPECIFIC PLUGINS
 " =========================
 
-Plug 'elixir-editors/vim-elixir'
-Plug 'slashmili/alchemist.vim'
-Plug 'sheerun/vim-polyglot'
-Plug 'powerman/vim-plugin-AnsiEsc'
-
-" Python
-Plug 'zchee/deoplete-jedi'
-Plug 'hdima/python-syntax'
-
-" JavaScript
-Plug 'othree/yajs.vim'
-
 " Typescript
-Plug 'Quramy/tsuquyomi'           " Completion and navigation
-Plug 'leafgarland/typescript-vim' " Syntax
-Plug 'ianks/vim-tsx'
-
-" React
-Plug 'mxw/vim-jsx'
-
-" Vue
-Plug 'posva/vim-vue'
-Plug 'digitaltoad/vim-pug'
-
-" Ruby
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-haml'
+" Plug 'Quramy/tsuquyomi'           " Completion and navigation
+" Plug 'leafgarland/typescript-vim' " Syntax
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
+" Plug 'ianks/vim-tsx'
+" Plug 'HerringtonDarkholme/yats.vim'
 
 call plug#end()
 
@@ -75,16 +50,17 @@ language en_US           " had to put this for neovim
 set clipboard^=unnamed   " Use the system register for everything
 set backspace=2          " Backspace deletes like most programs in insert mode
 set hidden
+set so=7                 " Set 7 lines to the cursor - when moving vertically using j/k
+
+" Colors and appearance
+set termguicolors
+colorscheme molokai
 
 " Folding
 set foldenable        " dont fold by default
 set foldmethod=indent " fold based on indent
 set foldlevelstart=10 " open most folds by default
 set foldnestmax=10    " 10 nested fold max
-
-" Appearance
-color OceanicNext
-set background=dark
 
 set number
 set numberwidth=5
@@ -97,28 +73,21 @@ set splitbelow
 set splitright
 set fillchars=vert:│  " Vertical sep between windows (unicode)"
 
-" DIRS
-set backupdir=~/.vim/backups
-set directory=~/.vim/swaps
-if exists("&undodir")
-  set undodir=~/.vim/undo
-endif
-set backupskip=/tmp/*,/private/tmp/* " Don’t create for certain directories
-
 " TABS
+set shiftround  " use spaces instead of tabs
 set tabstop=2
 set shiftwidth=2
-set shiftround
 set expandtab
 
 " FORMATTERS
 autocmd FileType javascript setlocal formatprg=prettier
 autocmd FileType javascript.jsx setlocal formatprg=prettier
-autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript\ --no-semi
+autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript
 autocmd FileType html setlocal formatprg=js-beautify\ --type\ html
 autocmd FileType scss setlocal formatprg=prettier\ --parser\ css
 autocmd FileType css setlocal formatprg=prettier\ --parser\ css
 autocmd FileType python setlocal formatprg=yapf
+autocmd FileType markdown setlocal formatprg=prettier\ --parser\ markdown
 
 " OMNI COMPLETION
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -165,15 +134,15 @@ set statusline+=\ %{LinterStatus()}
 " ----------------------------------------------------------------------------
 let NERDTreeShowHidden=1 " Always show dot files
 let NERDTreeQuitOnOpen=1
-map <Leader>n :NERDTreeFind<CR>
+let g:NERDTreeMapOpenInTab = '<ENTER>'
 
 " ============================
 " Fuzzy Finder Setup
 " ============================
-" let g:fzf_action = {
-"       \ 'enter': 'tab split',
-"       \ 'ctrl-x': 'split',
-"       \ 'ctrl-v': 'vsplit' }
+let g:fzf_action = {
+       \ 'enter': 'tab split',
+       \ 'ctrl-x': 'split',
+       \ 'ctrl-v': 'vsplit' }
 let g:fzf_layout = { 'down': '~40%'  }
 nnoremap <Leader><Leader> :Files<cr>
 nnoremap <Leader>f :Ag <C-R><C-W><cr>
@@ -187,60 +156,70 @@ noremap <Leader>] :Fzfc<cr>
 " ============================
 " Ale
 " ============================
-let g:ale_lint_delay=1000
+" let g:ale_lint_delay=1000
 let g:ale_linters = {
-\   'python': ['flake8', 'pylint'],
-\   'javascript': ['eslint'],
-\   'vue': ['eslint']
-\}
+      \   'python': ['flake8', 'pylint'],
+      \   'javascript': ['eslint'],
+      \   'typescript': ['tsserver', 'tslint'],
+      \   'vue': ['eslint'],
+      \   'ruby': ['standardrb'],
+      \}
 let g:ale_python_pylint_change_directory = 0
 
 " FIXERS
 let g:ale_fixers = {
-\    'javascript': ['eslint'],
-\    'typescript': ['tslint'],
-\    'vue': ['eslint'],
-\    'scss': ['prettier']
-\}
+      \    'javascript': ['eslint'],
+      \    'typescript': ['prettier', 'tslint'],
+      \    'vue': ['eslint'],
+      \    'scss': ['prettier'],
+      \    'html': ['prettier'],
+      \    'reason': ['refmt'],
+      \    'ruby': ['standardrb'],
+      \    'markdown': ['prettier'],
+      \}
 let g:ale_fix_on_save = 1
 
-nnoremap ]r :ALENextWrap<CR>
-nnoremap [r :ALEPreviousWrap<CR>
+nnoremap ]r :ALENextWrap<CR>     " move to the next ALE warning / error
+nnoremap [r :ALEPreviousWrap<CR> " move to the previous ALE warning / error
+
+" show full message of ALE
+nnoremap <leader>d :ALEDetail<cr>
 
 " ============================
 " DEOPLETE
 " ============================
 let g:deoplete#enable_at_startup = 1
 inoremap <silent><expr> <TAB>
-    \ pumvisible() ? "\<C-n>" :
-    \ <SID>check_back_space() ? "\<TAB>" :
-    \ deoplete#mappings#manual_complete()
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ deoplete#mappings#manual_complete()
 function! s:check_back_space() abort "{{{
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
 endfunction"}}}
 
-" ----------------------------
-" JavaScript
-" ----------------------------
-let g:javascript_plugin_flow = 1
-let g:jsx_ext_required = 0
+" call deoplete#custom#source('LanguageClient',
+"             \ 'min_pattern_length',
+"             \ 2)
+
 
 " ============================
 " CUSTOM MAPPINGS
 " ============================
 inoremap jj <Esc>
 nnoremap <space> za
-nnoremap <CR> :noh<CR>
+nnoremap <CR> :noh \| :only<CR>
+
+map <Leader>n :NERDTreeFind<CR>
 
 " System
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :bd<CR>
 nnoremap <Leader>o :tabo<CR>
 
-" Navigate buffers
-nnoremap <C-j> :bnext<CR>
-nnoremap <C-k> :bprev<CR>
+" Navigate tabs
+nnoremap <C-j> :tabnext<CR>
+nnoremap <C-k> :tabprev<CR>
 
 " Navigate splits
 nnoremap <C-h> <C-w>h
@@ -253,5 +232,5 @@ nnoremap <leader>a :Gblame<cr>
 nnoremap <leader>= mzgg=G`z
 nnoremap <leader>- mzgggqG`z
 
-" TODO
-nnoremap <leader>' :vsp /Users/yanis/Dropbox/todo.md<cr>
+" copy file path to the clipboard
+nnoremap <leader>p :let @+ = expand("%")<cr>
