@@ -15,6 +15,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'wellle/targets.vim'
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
+Plug 'jparise/vim-graphql'
 
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
@@ -71,6 +72,13 @@ language en_US           " had to put this for Neovim
 set clipboard^=unnamed   " Use the system register for everything
 set backspace=2          " Backspace deletes like most programs in insert mode
 set hidden
+
+" Lines and columns
+set invcursorline
+set number
+set numberwidth=5
+set textwidth=80         " line to limit to 80 chars
+set colorcolumn=+1
 set so=7                 " Set 7 lines to the cursor - when moving vertically using j/k
 
 " Colors and appearance
@@ -82,11 +90,6 @@ set foldenable        " don't fold by default
 set foldmethod=indent " fold based on indent
 set foldlevelstart=10 " open most folds by default
 set foldnestmax=10    " 10 nested fold max
-
-set number
-set numberwidth=5
-set textwidth=80  " line to limit to 80 chars
-set colorcolumn=+1
 
 " SPLITS
 set splitbelow
@@ -107,7 +110,7 @@ autocmd BufEnter *.{js,ts,jsx,tsx} :syntax sync fromstart
 autocmd FileType javascript setlocal formatprg=prettier
 autocmd FileType javascript.jsx setlocal formatprg=prettier
 autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript
-autocmd FileType html setlocal formatprg=js-beautify\ --type\ html
+autocmd FileType html setlocal formatprg=prettier\ --parser\ html
 autocmd FileType scss setlocal formatprg=prettier\ --parser\ css
 autocmd FileType css setlocal formatprg=prettier\ --parser\ css
 autocmd FileType python setlocal formatprg=yapf
@@ -166,7 +169,13 @@ set thesaurus+=/Users/yanis/thesaurus/words.txt
 " ----------------------------------------------------------------------------
 let g:LanguageClient_serverCommands = {
     \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
+    \ 'javascript': ['javascript-typescript-stdio']
     \ }
+
+nnoremap <leader>l :call LanguageClient_contextMenu()<CR>
+nnoremap K :call LanguageClient#textDocument_hover()<CR>
+nnoremap gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <leader>r :call LanguageClient#textDocument_rename()<CR>
 
 " ----------------------------------------------------------------------------
 " For Snippets
@@ -202,6 +211,11 @@ noremap <Leader>] :Fzfc<cr>
 " ============================
 " Ale
 " ============================
+
+let g:ale_completion_enabled = 1
+let g:ale_completion_tsserver_autoimport = 1
+" nnoremap gd :ALEGoToDefinitionInTab<cr>
+
 " let g:ale_lint_delay=1000
 let g:ale_linters = {
       \   'python': ['flake8', 'pylint'],
@@ -214,7 +228,7 @@ let g:ale_python_pylint_change_directory = 0
 
 " FIXERS
 let g:ale_fixers = {
-      \    'javascript': ['eslint'],
+      \    'javascript': ['prettier', 'eslint'],
       \    'typescript': ['prettier', 'tslint'],
       \    'vue': ['eslint'],
       \    'scss': ['prettier'],
@@ -261,7 +275,8 @@ let g:echodoc#type = 'virtual'
 " ============================
 inoremap jj <Esc>
 nnoremap <space> za
-nnoremap <CR> :noh \| :only<CR>
+nnoremap <CR> :noh<CR>
+nnoremap <BS> :only<CR>
 
 map - :NERDTreeToggle<CR>
 map <Leader>n :NERDTreeFind<CR>
@@ -288,7 +303,3 @@ nnoremap <leader>- mzgggqG`z
 
 " copy file path to the clipboard
 nnoremap <leader>p :let @+ = expand("%")<cr>
-
-
-
-set invcursorline
