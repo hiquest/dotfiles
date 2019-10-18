@@ -17,10 +17,10 @@ Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'jparise/vim-graphql'
 
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+" Plug 'autozimu/LanguageClient-neovim', {
+"     \ 'branch': 'next',
+"     \ 'do': 'bash install.sh',
+"     \ }
 
 " A colorscheme
 Plug 'joshdick/onedark.vim'
@@ -62,7 +62,6 @@ Plug 'HerringtonDarkholme/yats.vim'
 " Plug 'elixir-editors/vim-elixir'
 " Plug 'slashmili/alchemist.vim'
 
-
 call plug#end()
 
 " ============================
@@ -74,7 +73,7 @@ set backspace=2          " Backspace deletes like most programs in insert mode
 set hidden
 
 " Lines and columns
-set invcursorline
+" set invcursorline
 set number
 set numberwidth=5
 set textwidth=80         " line to limit to 80 chars
@@ -98,10 +97,12 @@ set fillchars=vert:│  " Vertical separator between windows (unicode)"
 
 " TABS
 set list listchars=tab:»·,trail:·,nbsp:· " display extra white space
-set shiftround  " use spaces instead of tabs
+set shiftround
 set tabstop=2
 set shiftwidth=2
-set expandtab
+set expandtab  " use spaces instead of tabs
+
+autocmd FileType markdown setlocal spell
 
 " syntax works more properly (but slower?)
 autocmd BufEnter *.{js,ts,jsx,tsx} :syntax sync fromstart
@@ -122,7 +123,7 @@ autocmd FileType scss setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType ruby setlocal omnifunc=LanguageClient#complete
+" autocmd FileType ruby setlocal omnifunc=LanguageClient#complete
 
 " -----------------
 " Ignore
@@ -160,22 +161,20 @@ set statusline+=\ %{LinterStatus()}
 " ----------------------------------------------------------------------------
 " Spelling / Dictionaries
 " ----------------------------------------------------------------------------
-" set spell spelllang=en_us
 set dictionary+=/usr/share/dict/words
 set thesaurus+=/Users/yanis/thesaurus/words.txt
 
 " ----------------------------------------------------------------------------
 " Lang Servers
 " ----------------------------------------------------------------------------
-let g:LanguageClient_serverCommands = {
-    \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
-    \ 'javascript': ['javascript-typescript-stdio']
-    \ }
+" let g:LanguageClient_serverCommands = {
+"     \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
+"     \ }
 
-nnoremap <leader>l :call LanguageClient_contextMenu()<CR>
-nnoremap K :call LanguageClient#textDocument_hover()<CR>
-nnoremap gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <leader>r :call LanguageClient#textDocument_rename()<CR>
+" nnoremap <leader>l :call LanguageClient_contextMenu()<CR>
+" nnoremap K :call LanguageClient#textDocument_hover()<CR>
+" nnoremap gd :call LanguageClient#textDocument_definition()<CR>
+" nnoremap <leader>r :call LanguageClient#textDocument_rename()<CR>
 
 " ----------------------------------------------------------------------------
 " For Snippets
@@ -303,3 +302,9 @@ nnoremap <leader>- mzgggqG`z
 
 " copy file path to the clipboard
 nnoremap <leader>p :let @+ = expand("%")<cr>
+
+" Indent with Tab
+nnoremap <Tab> >>
+nnoremap <S-Tab> <<
+vnoremap <Tab> >
+vnoremap <S-Tab> <
