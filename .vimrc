@@ -48,6 +48,9 @@ Plug 'mhinz/vim-signify'      " Shows what is changed in a sidebar
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-rails'
 
+" Python
+Plug 'deoplete-plugins/deoplete-jedi'
+
 " JavaScript
 Plug 'othree/yajs.vim'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
@@ -61,6 +64,8 @@ Plug 'HerringtonDarkholme/yats.vim'
 
 " Plug 'elixir-editors/vim-elixir'
 " Plug 'slashmili/alchemist.vim'
+
+" Plug 'plasticboy/vim-markdown'
 
 call plug#end()
 
@@ -189,6 +194,7 @@ xmap <C-k>     <Plug>(neosnippet_expand_target)
 let NERDTreeShowHidden=1 " Always show dot files
 let NERDTreeQuitOnOpen=1
 let g:NERDTreeMapOpenInTab = '<ENTER>'
+let g:NERDTreeWinPos = "right"
 
 " ============================
 " Fuzzy Finder Setup
@@ -211,33 +217,40 @@ noremap <Leader>] :Fzfc<cr>
 " Ale
 " ============================
 
-let g:ale_completion_enabled = 1
+" let g:ale_completion_enabled = 1
 let g:ale_completion_tsserver_autoimport = 1
-" nnoremap gd :ALEGoToDefinitionInTab<cr>
+nnoremap gd :ALEGoToDefinitionInTab<cr>
+nnoremap <leader>h :ALEHover<cr>
 
 " let g:ale_lint_delay=1000
 let g:ale_linters = {
-      \   'python': ['flake8', 'pylint'],
+      \   'python': ['flake8', 'pylint', 'bandid'],
       \   'javascript': ['eslint'],
       \   'typescript': ['tsserver', 'tslint'],
+      \   'typescriptreact': ['tsserver', 'tslint'],
       \   'vue': ['eslint'],
-      \   'ruby': ['standardrb'],
+      \   'ruby': ['standardrb', 'ruby', 'reek', 'rails_best_practices', 'brakeman', 'solargraph'],
+      \   'xml': ['xmllint']
       \}
 let g:ale_python_pylint_change_directory = 0
 
 " FIXERS
 let g:ale_fixers = {
+      \    'python': ['black'],
       \    'javascript': ['prettier', 'eslint'],
       \    'typescript': ['prettier', 'tslint'],
+      \    'typescriptreact': ['prettier', 'tslint'],
       \    'vue': ['eslint'],
       \    'scss': ['prettier'],
       \    'html': ['prettier'],
       \    'reason': ['refmt'],
       \    'ruby': ['standardrb'],
       \    'markdown': ['prettier'],
-      \    'elixir': ['mix_format']
+      \    'elixir': ['mix_format'],
+      \    'xml': ['xmllint'],
+      \    'json': ['prettier']
       \}
-let g:ale_fix_on_save = 1
+" let g:ale_fix_on_save = 1
 
 nnoremap ]r :ALENextWrap<CR>     " move to the next ALE warning / error
 nnoremap [r :ALEPreviousWrap<CR> " move to the previous ALE warning / error
@@ -308,3 +321,8 @@ nnoremap <Tab> >>
 nnoremap <S-Tab> <<
 vnoremap <Tab> >
 vnoremap <S-Tab> <
+
+" Select the whole file
+nmap Q ggvG
+
+let g:float_preview#docked=0
