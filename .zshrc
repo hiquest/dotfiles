@@ -22,11 +22,17 @@ source_if_exists() {
 #######################
 source_if_exists ~/z/z.sh # rupa/z
 
+
+
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+
 ###############
 ## Fuzzy Finder
 ###############
 source_if_exists ~/.fzf.zsh # Fuzzy Finder
-export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git --ignore app/assets/fonts --ignore node_modules --ignore app/assets/images --ignore "*webpack.bundle.js" -g ""'
+# export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git --ignore app/assets/fonts --ignore node_modules --ignore app/assets/images --ignore "*webpack.bundle.js" -g ""'
+export FZF_DEFAULT_COMMAND="rg --files --hidden -g '!.git/*'"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 ######################
@@ -51,14 +57,6 @@ eval "$(rbenv init -)"
 export ANDROID_HOME=/Users/yanis/Library/Android/sdk
 
 ######################
-## Google SDK
-######################
-GSDK_HOME='/Users/yanis/bin/google-cloud-sdk'
-source_if_exists "$GSDK_HOME/path.zsh.inc"
-source_if_exists "$GSDK_HOME/completion.zsh.inc"
-export PYTHONPATH="$PYTHONPATH:$GSDK_HOME/platform/google_appengine/"
-
-######################
 ## NVM - NODE MANAGER
 ######################
 nvmi() {
@@ -66,5 +64,5 @@ nvmi() {
   export NVM_DIR="$HOME/.nvm"
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-  nvm use 10.16.0  # need this for legacy project
+  nvm use 10.16.0  # need this for a legacy project
 }

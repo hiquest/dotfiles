@@ -10,17 +10,8 @@ Plug '~/.fzf'                        " Fuzzy search
 Plug 'junegunn/fzf.vim'              " Vim ext for FZF
 Plug 'w0rp/ale'                      " Linting and fixing
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } " Autocompletion
-Plug 'Shougo/echodoc.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'wellle/targets.vim'
-Plug 'Shougo/neosnippet.vim'
-Plug 'Shougo/neosnippet-snippets'
-Plug 'jparise/vim-graphql'
-
-" Plug 'autozimu/LanguageClient-neovim', {
-"     \ 'branch': 'next',
-"     \ 'do': 'bash install.sh',
-"     \ }
 
 " A colorscheme
 Plug 'joshdick/onedark.vim'
@@ -53,19 +44,11 @@ Plug 'deoplete-plugins/deoplete-jedi'
 
 " JavaScript
 Plug 'othree/yajs.vim'
-Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+" Disabled it now cause it causes issues with indentation
+" Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 
 " Typescript
 Plug 'HerringtonDarkholme/yats.vim'
-" Plug 'Quramy/tsuquyomi'           " Completion and navigation
-" Plug 'leafgarland/typescript-vim' " Syntax
-" Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
-" Plug 'ianks/vim-tsx'
-
-" Plug 'elixir-editors/vim-elixir'
-" Plug 'slashmili/alchemist.vim'
-
-" Plug 'plasticboy/vim-markdown'
 
 call plug#end()
 
@@ -80,9 +63,9 @@ set hidden
 " Lines and columns
 " set invcursorline
 set number
-set numberwidth=5
+" set numberwidth=5
 set textwidth=80         " line to limit to 80 chars
-set colorcolumn=+1
+" set colorcolumn=+1
 set so=7                 " Set 7 lines to the cursor - when moving vertically using j/k
 
 " Colors and appearance
@@ -116,6 +99,7 @@ autocmd BufEnter *.{js,ts,jsx,tsx} :syntax sync fromstart
 autocmd FileType javascript setlocal formatprg=prettier
 autocmd FileType javascript.jsx setlocal formatprg=prettier
 autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript
+autocmd FileType typescriptreact setlocal formatprg=prettier\ --parser\ typescript
 autocmd FileType html setlocal formatprg=prettier\ --parser\ html
 autocmd FileType scss setlocal formatprg=prettier\ --parser\ css
 autocmd FileType css setlocal formatprg=prettier\ --parser\ css
@@ -168,25 +152,6 @@ set statusline+=\ %{LinterStatus()}
 " ----------------------------------------------------------------------------
 set dictionary+=/usr/share/dict/words
 set thesaurus+=/Users/yanis/thesaurus/words.txt
-
-" ----------------------------------------------------------------------------
-" Lang Servers
-" ----------------------------------------------------------------------------
-" let g:LanguageClient_serverCommands = {
-"     \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
-"     \ }
-
-" nnoremap <leader>l :call LanguageClient_contextMenu()<CR>
-" nnoremap K :call LanguageClient#textDocument_hover()<CR>
-" nnoremap gd :call LanguageClient#textDocument_definition()<CR>
-" nnoremap <leader>r :call LanguageClient#textDocument_rename()<CR>
-
-" ----------------------------------------------------------------------------
-" For Snippets
-" ----------------------------------------------------------------------------
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 " ----------------------------------------------------------------------------
 " NerdTree
@@ -250,7 +215,7 @@ let g:ale_fixers = {
       \    'xml': ['xmllint'],
       \    'json': ['prettier']
       \}
-" let g:ale_fix_on_save = 1
+let g:ale_fix_on_save = 1
 
 nnoremap ]r :ALENextWrap<CR>     " move to the next ALE warning / error
 nnoremap [r :ALEPreviousWrap<CR> " move to the previous ALE warning / error
@@ -271,14 +236,9 @@ function! s:check_back_space() abort "{{{
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction"}}}
 
-" call deoplete#custom#source('LanguageClient',
-"             \ 'min_pattern_length',
-"             \ 2)
-
 " ============================
 " ECHODOC
 " ============================
-" set cmdheight=2
 let g:echodoc_enable_at_startup = 1
 let g:echodoc#type = 'virtual'
 
@@ -324,5 +284,3 @@ vnoremap <S-Tab> <
 
 " Select the whole file
 nmap Q ggvG
-
-let g:float_preview#docked=0
