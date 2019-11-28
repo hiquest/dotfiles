@@ -12,6 +12,7 @@ Plug 'w0rp/ale'                      " Linting and fixing
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } " Autocompletion
 Plug 'terryma/vim-multiple-cursors'
 Plug 'wellle/targets.vim'
+Plug 'vim-airline/vim-airline'
 
 " A colorscheme
 Plug 'joshdick/onedark.vim'
@@ -65,7 +66,7 @@ set hidden
 set number
 " set numberwidth=5
 set textwidth=80         " line to limit to 80 chars
-" set colorcolumn=+1
+set colorcolumn=+1
 set so=7                 " Set 7 lines to the cursor - when moving vertically using j/k
 
 " Colors and appearance
@@ -215,7 +216,7 @@ let g:ale_fixers = {
       \    'xml': ['xmllint'],
       \    'json': ['prettier']
       \}
-let g:ale_fix_on_save = 1
+" let g:ale_fix_on_save = 1
 
 nnoremap ]r :ALENextWrap<CR>     " move to the next ALE warning / error
 nnoremap [r :ALEPreviousWrap<CR> " move to the previous ALE warning / error
@@ -284,3 +285,6 @@ vnoremap <S-Tab> <
 
 " Select the whole file
 nmap Q ggvG
+
+
+let g:airline#extensions#tabline#enabled = 1
