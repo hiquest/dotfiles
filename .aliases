@@ -4,10 +4,27 @@
 alias ..='cd ..'
 alias x='exit'
 alias j="z"         # https://github.com/rupa/z
-alias o="open"
-alias i='ionic'
+
+# `o` with no arguments opens the current directory, otherwise opens the given
+# location
+function o() {
+	if [ $# -eq 0 ]; then
+		open .;
+	else
+		open "$@";
+	fi;
+}
+
 mkcd() {
   mkdir $@ && cd $_
+}
+
+function bs() {
+	if [ $# -eq 0 ]; then
+		brew services list;
+	else
+		brew services "$@";
+	fi;
 }
 
 # ====================
@@ -24,6 +41,14 @@ alias l='ls -lahF'
 alias v='nvim'
 alias vconf="nvim ~/.vimrc"
 alias y='yarn'
+
+function httpss() {
+  http-server --ssl \
+    -p 443 \
+    --cert ~/.localhost-ssl/localhost.crt \
+    --key ~/.localhost-ssl/localhost.key \
+    --proxy http://127.0.0.1:3000
+}
 
 # =================
 # Docker / Kubs
@@ -79,18 +104,38 @@ alias p='git push'
 alias c='git commit'
 alias cm='git commit -m'
 alias ca='git commit --amend'
+alias re='git checkout $(git recent | fzf)'  # recent branches, see .gitconfig aliases
+
+# IP addresses
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias localip="ipconfig getifaddr en0"
+
+
 
 # Special / Scripts
-alias pr='~/dotfiles/scripts/git/gh-pull-request.sh'
-alias vc='~/dotfiles/scripts/git/gh-view-commit.sh'
-alias gclean='~/dotfiles/scripts/git/git-clean-merged.sh'
+alias pr='~/projects/automate/git/gh-pull-request.sh'
+alias vc='~/projects/automate/git/gh-view-commit.sh'
+alias gclean='~/projects/automate/git/git-clean-merged.sh'
 
 # =================
-# Misc / Fun
+# Misc
+# =================
+alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
+alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+
+# Reload the shell (i.e. invoke as a login shell)
+alias reload="exec ${SHELL} -l"
+
+# Print each PATH entry on a separate line
+alias path='echo -e ${PATH//:/\\n}'
+
+# =================
+# Fun
 # =================
 
 # Lookup lyrics of song playing in iTunes
 alias ly='~/dotfiles/scripts/lyrics.sh'
+
 
 # Weather
 alias we='curl http://wttr.in/ | less'
@@ -109,6 +154,7 @@ z() {
   cd "$(_z -l 2>&1 | fzf-tmux +s --tac --query "$*" | sed 's/^[0-9,.]* *//')"
 }
 
+# Kill process
 kp() {
   local pid=$(ps -ef | sed 1d | eval "fzf ${FZF_DEFAULT_OPTS} -m --header='[kill:process]'" | awk '{print $2}')
 
@@ -118,6 +164,4 @@ kp() {
   fi
 }
 
-top10() {
-  print -l ? ${(o)history%% *} | uniq -c | sort -nr | head -n 10
-}
+alias jira="node /Users/yanistriandaphilov/projects/automate/jira/index.js"

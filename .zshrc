@@ -31,6 +31,12 @@ source_if_exists ~/.fzf.zsh # Fuzzy Finder
 # export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git --ignore app/assets/fonts --ignore node_modules --ignore app/assets/images --ignore "*webpack.bundle.js" -g ""'
 export FZF_DEFAULT_COMMAND="rg --files --hidden -g '!.git/*'"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+# Use fzf with z
+unalias z 2> /dev/null
+z() {
+  [ $# -gt 0 ] && _z "$*" && return
+  cd "$(_z -l 2>&1 | fzf-tmux +s --tac --query "$*" | sed 's/^[0-9,.]* *//')"
+}
 
 ######################
 ## ENV vars and aliases
@@ -67,4 +73,3 @@ nvmi() {
 }
 
 export PROMPT_COMMAND='echo -ne "\033]1;${PWD##*/}\007""; ':"$PROMPT_COMMAND";
-
