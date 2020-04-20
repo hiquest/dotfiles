@@ -7,7 +7,9 @@ ZSH_THEME_GIT_PROMPT_CLEAN=""
 # Custom helpers.
 #
 current_branch() {
-  git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3
+  if [ -d .git ]; then
+    git rev-parse --abbrev-ref HEAD
+  fi;
 }
 
 work_in_progress() {
