@@ -6,9 +6,11 @@ ZSH_THEME="yanis" # or 'random'
 plugins=()
 source $ZSH/oh-my-zsh.sh
 autoload -U compinit && compinit # Required by zsh-completions
+
 export TERM="xterm-256color"
 export EDITOR='nvim'
 export LANG="en_US.UTF-8"
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 #######################
 ## Helpers
@@ -21,11 +23,6 @@ source_if_exists() {
 ## Utils
 #######################
 source_if_exists ~/z/z.sh # rupa/z
-
-
-
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-
 
 ###############
 ## Fuzzy Finder
@@ -44,7 +41,7 @@ source_if_exists ~/.aliases
 ######################
 ## Custom BIN
 ######################
-export PATH="$PATH:/Users/yanis/bin"
+export PATH="$PATH:/Users/yanistriandaphilov/bin/"
 
 ######################
 ## Ruby setup
@@ -54,15 +51,20 @@ eval "$(rbenv init -)"
 ######################
 ## Android setup
 ######################
-export ANDROID_HOME=/Users/yanis/Library/Android/sdk
+export ANDROID_HOME=/Users/yanistriandaphilov/Library/Android/sdk
+export PATH=${PATH}:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools
+export JAVA_HOME=`/usr/libexec/java_home -v1.8`
 
 ######################
 ## NVM - NODE MANAGER
 ######################
 nvmi() {
-  # this is too slow to run on startup
+  # Lazy: this is too slow to run on startup
   export NVM_DIR="$HOME/.nvm"
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-  nvm use 10.16.0  # need this for a legacy project
+  nvm use $1
 }
+
+export PROMPT_COMMAND='echo -ne "\033]1;${PWD##*/}\007""; ':"$PROMPT_COMMAND";
+
