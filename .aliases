@@ -35,6 +35,8 @@ alias find='fd'
 alias ls="exa"
 alias l='ls -lahF'
 alias v='nvim'
+alias y='yarn'
+alias vnext='~/Downloads/nvim-osx64/bin/nvim'
 
 # =================
 # Docker / Kubs
@@ -101,7 +103,6 @@ alias gclean='~/projects/automate/git/git-clean-merged.sh'
 # Various automation
 # ==================
 alias jira="node /Users/yanistriandaphilov/projects/automate/jira/index.js"
-alias es="/Users/yanistriandaphilov/projects/playground/elasticsearch/es.sh"
 
 # =================
 # Fun

@@ -10,6 +10,10 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'                      " Linting and fixing
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } " Completion
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
+Plug 'honza/vim-snippets'
+Plug 'Shougo/context_filetype.vim'
 " Plug 'Shougo/echodoc.vim'
 " Plug 'autozimu/LanguageClient-neovim', {
 "     \ 'branch': 'next',
@@ -50,8 +54,8 @@ Plug 'tpope/vim-rails', { 'for': 'ruby' }
 
 " JavaScript
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
-" Disabled it now cause it causes issues with indentation
-" Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+" issues with indentation ???
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 
 " Typescript
 Plug 'HerringtonDarkholme/yats.vim'
@@ -210,7 +214,8 @@ autocmd InsertEnter * highlight  StatusLine guibg=DarkGreen guifg=gray82
 autocmd InsertLeave * highlight  StatusLine guibg=PeachPuff4 guifg=gray82
 
 " Highlight colors for `matchpairs`
-hi MatchParen guibg=gray50
+hi MatchParen guibg=gray30
+" hi! MatchParen cterm=NONE,bold gui=NONE,bold ctermbg=15 guibg=#fdf6e3 ctermfg=12 guifg=#839496
 
 " Highlight colors for tabs
 " hi TabLine guibg=yellow guifg=red
@@ -276,6 +281,30 @@ let g:deoplete#enable_at_startup = 1
 " nmap <leader>i :ALEOrganizeImports<CR>
 " }}}
 
+" ================================
+" Snippets
+" ================================
+" Plugin key-mappings.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+"imap <expr><TAB>
+" \ pumvisible() ? "\<C-n>" :
+" \ neosnippet#expandable_or_jumpable() ?
+" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif
+
+let g:neosnippet#snippets_directory = '/Users/yanistriandaphilov/.vim/plugged/vim-snippets/snippets'
 
 " Ale {{{
 let g:ale_completion_tsserver_autoimport = 1
@@ -350,6 +379,7 @@ let g:mta_filetypes = {
 " CUSTOM MAPPINGS {{{
 inoremap jj <Esc>
 nnoremap <space> za
+nnoremap <leader>c :%foldc<CR>
 nnoremap <CR> :noh<CR>
 nnoremap <BS> :only<CR>
 
@@ -362,8 +392,8 @@ nnoremap <Leader>q :bd<CR>
 nnoremap <Leader>o :tabo<CR>
 
 " Navigate tabs
-nnoremap <C-j> :tabnext<CR>
-nnoremap <C-k> :tabprev<CR>
+" nnoremap <C-j> :tabnext<CR>
+" nnoremap <C-k> :tabprev<CR>
 
 " Navigate splits
 nnoremap <C-h> <C-w>h
