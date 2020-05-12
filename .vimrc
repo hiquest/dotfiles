@@ -61,9 +61,9 @@ Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'HerringtonDarkholme/yats.vim'
 
 " Python
-Plug 'numirias/semshi', { 'for': 'python' }
+" Plug 'numirias/semshi', { 'for': 'python' }
 Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }
-Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+" Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 
 " Markdown
 " !!! THIS BREAKS gx (open the link under the cursor)
@@ -174,7 +174,7 @@ autocmd FileType scss setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+" autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 " }}}
 
 " IGNORE {{{
@@ -351,11 +351,13 @@ let g:ale_completion_tsserver_autoimport = 1
 " let g:ale_completion_enabled = 1
 nmap <leader>i :ALEOrganizeImports<CR>
 nmap gd :ALEGoToDefinitionInTab<CR>
+nmap gr :ALEFindReferences<CR>
 nmap <leader>r :ALERename<CR>
-nmap <leader>h :ALEHover<CR>
-
+nmap K :ALEHover<CR>
 " let g:ale_disable_lsp = 1
 
+
+autocmd CompleteDone * pclose
 " }}}
 
 " ============================
