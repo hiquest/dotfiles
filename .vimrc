@@ -10,33 +10,24 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'                      " Linting and fixing
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } " Completion
-Plug 'Shougo/neosnippet.vim'
-Plug 'Shougo/neosnippet-snippets'
-Plug 'honza/vim-snippets'
-Plug 'Shougo/context_filetype.vim'
-" Plug 'Shougo/echodoc.vim'
-" Plug 'autozimu/LanguageClient-neovim', {
-"     \ 'branch': 'next',
-"     \ 'do': 'bash install.sh',
-"     \ }
-" }}}
+Plug 'ncm2/float-preview.nvim'
 
 " {{{ Plugins / Pairs: matching, highlitning, auto-closing
 Plug 'andymass/vim-matchup'          " modern matchit
 Plug 'jiangmiao/auto-pairs'          " Auto-insert paired symbols
 Plug 'tpope/vim-endwise'             " Auto-closing language-specific constructs
 Plug 'alvan/vim-closetag'            " Auto-close for HTML tags
-Plug 'valloric/MatchTagAlways'       " Highlitning HTML tags
+" Plug 'valloric/MatchTagAlways'       " Highlitning HTML tags
 " }}}
 
 " Misc
 Plug 'terryma/vim-multiple-cursors'  " multiple cursors
-Plug 'wellle/targets.vim'            " additional text objects
-Plug 'junegunn/vim-peekaboo'         " the contents of registers in a sidebar
+" Plug 'wellle/targets.vim'            " additional text objects
 Plug 'machakann/vim-sandwich'        " A better vim-surround
 Plug 'tpope/vim-commentary'          " Commenting
 Plug 'norcalli/nvim-colorizer.lua'   " Highlights colors in CSS, etc.
-Plug 'joshdick/onedark.vim'          " A colorscheme
+" Plug 'joshdick/onedark.vim'          " A colorscheme
+Plug 'morhetz/gruvbox'
 
 " Git
 Plug 'tpope/vim-fugitive'     " Git utils (I mostly only use annotate)
@@ -50,7 +41,7 @@ Plug 'airblade/vim-gitgutter' " Shows what is changed in a sidebar
 Plug 'chr4/nginx.vim'
 
 " Ruby / Rails
-Plug 'tpope/vim-rails', { 'for': 'ruby' }
+Plug 'tpope/vim-rails'
 
 " JavaScript
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
@@ -62,7 +53,7 @@ Plug 'HerringtonDarkholme/yats.vim'
 
 " Python
 " Plug 'numirias/semshi', { 'for': 'python' }
-Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }
+" Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }
 " Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 
 " Markdown
@@ -71,12 +62,12 @@ Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }
 " Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 
 " Elixir
-Plug 'elixir-editors/vim-elixir'
+" Plug 'elixir-editors/vim-elixir'
 
 call plug#end()
 
-let g:netrw_browsex_viewer="open"
 
+let g:float_preview#docked = 0
 " ============================
 " SETTINGS
 " ============================
@@ -91,11 +82,12 @@ set number               " shows the line numbers on the left
 set textwidth=80         " line to limit to 80 chars
 set so=7                 " More lines until cursor starts scrolling
 set cmdheight=1          " Better display for messages
-set signcolumn=yes       " always show signcolumns
-set colorcolumn=120
+" set signcolumn=yes       " always show signcolumns
+" set colorcolumn=120
 set termguicolors        " enable true color for Vim
 
-colorscheme onedark
+colorscheme gruvbox
+" colorscheme onedark
 " set background=light
 " colorscheme onehalflight
 " }}}
@@ -104,7 +96,7 @@ colorscheme onedark
 set foldmethod=indent   " fold based on indent
 set foldlevelstart=10   " open most folds by default
 set foldnestmax=10      " 10 nested fold max
-set foldcolumn=2
+" set foldcolumn=2
 
 function! JSFolds()
   let thisline = getline(v:lnum)
@@ -151,6 +143,7 @@ set title
 let &titlestring = split(getcwd(), '/')[-1]
 " }}}
 
+" Spell
 autocmd FileType markdown setlocal spell
 
 " syntax hl works better (but slower?)
@@ -209,9 +202,7 @@ set statusline+=\ %{LinterStatus()}
 
 " HIGHLIGHTS {{{
 " Change bg color in INSERT mode
-hi StatusLine guibg=PeachPuff4 guifg=gray82
-autocmd InsertEnter * highlight  StatusLine guibg=DarkGreen guifg=gray82
-autocmd InsertLeave * highlight  StatusLine guibg=PeachPuff4 guifg=gray82
+" hi StatusLine guibg=PeachPuff2 guifg=gray82
 
 " Highlight colors for `matchpairs`
 hi MatchParen guibg=gray30
@@ -270,47 +261,7 @@ noremap <Leader>] :Fzfc<cr>
 let g:deoplete#enable_at_startup = 1
 " let g:float_preview#docked = 0
 
-" LanguageClient-neovim {{{
-
-" let g:LanguageClient_serverCommands = {
-"     \ 'typescriptreact': ['typescript-language-server', '--stdio'],
-"     \ }
-" nnoremap <silent> <leader>h :call LanguageClient#textDocument_hover()<CR>
-" nnoremap <silent> gd :call LanguageClient#textDocument_definition({'gotoCmd': 'vsplit'}) <CR>
-" nnoremap <silent> <leader>r :call LanguageClient#textDocument_rename()<CR>
-" nmap <leader>i :ALEOrganizeImports<CR>
-" }}}
-
-" ================================
-" Snippets
-" ================================
-" Plugin key-mappings.
-" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-" SuperTab like snippets behavior.
-" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-"imap <expr><TAB>
-" \ pumvisible() ? "\<C-n>" :
-" \ neosnippet#expandable_or_jumpable() ?
-" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-
-" For conceal markers.
-if has('conceal')
-  set conceallevel=2 concealcursor=niv
-endif
-
-let g:neosnippet#snippets_directory = '/Users/yanistriandaphilov/.vim/plugged/vim-snippets/snippets'
-
 " Ale {{{
-let g:ale_completion_tsserver_autoimport = 1
-" let g:ale_set_balloons = 1
-" let g:ale_lint_delay=1000
-
 let g:ale_linters = {
       \   'python': ['flake8', 'pylint'],
       \   'javascript': ['eslint'],
@@ -340,7 +291,6 @@ let g:ale_fixers = {
       \}
 
 let g:ale_fix_on_save = 1
-" let g:ale_virtualtext_cursor = 1
 
 nnoremap ]r :ALENextWrap<CR>      " move to the next ALE warning / error
 nnoremap [r :ALEPreviousWrap<CR>  " move to the previous ALE warning / error
@@ -373,10 +323,10 @@ let g:closetag_filenames = '*.html,*.xhtml,*.jsx,*.tsx'
 " ============================
 " MatchTagAlways
 " ============================
-let g:mta_filetypes = {
-    \ 'html' : 1,
-    \ 'typescriptreact': 1,
-    \}
+" let g:mta_filetypes = {
+"     \ 'html' : 1,
+"     \ 'typescriptreact': 1,
+"     \}
 
 " CUSTOM MAPPINGS {{{
 inoremap jj <Esc>
