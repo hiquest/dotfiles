@@ -102,7 +102,7 @@ alias gclean='~/projects/automate/git/git-clean-merged.sh'
 # ==================
 # Various automation
 # ==================
-alias jira="node /Users/yanistriandaphilov/projects/automate/jira/index.js"
+alias jira="node /Users/yanis/projects/automate/jira/index.js"
 
 # =================
 # Fun

@@ -27,11 +27,15 @@ Plug 'machakann/vim-sandwich'        " A better vim-surround
 Plug 'tpope/vim-commentary'          " Commenting
 Plug 'norcalli/nvim-colorizer.lua'   " Highlights colors in CSS, etc.
 " Plug 'joshdick/onedark.vim'          " A colorscheme
+" Plug 'ryanoasis/vim-devicons'
+
 Plug 'morhetz/gruvbox'
+Plug 'NLKNguyen/papercolor-theme'
 
 " Git
 Plug 'tpope/vim-fugitive'     " Git utils (I mostly only use annotate)
 Plug 'airblade/vim-gitgutter' " Shows what is changed in a sidebar
+Plug 'rhysd/git-messenger.vim' " displays commit message in a hover window
 
 " =========================
 " LANGUAGE-SPECIFIC PLUGINS
@@ -86,9 +90,9 @@ set cmdheight=1          " Better display for messages
 " set colorcolumn=120
 set termguicolors        " enable true color for Vim
 
-colorscheme gruvbox
 " colorscheme onedark
-" set background=light
+set background=dark
+colorscheme gruvbox
 " colorscheme onehalflight
 " }}}
 
@@ -342,10 +346,12 @@ map <Leader>n :NERDTreeFind<CR>
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :bd<CR>
 nnoremap <Leader>o :tabo<CR>
+" nnoremap xx :q!<CR>
+nnoremap xw :wq<CR>
 
 " Navigate tabs
-" nnoremap <C-j> :tabnext<CR>
-" nnoremap <C-k> :tabprev<CR>
+nnoremap <C-j> :tabnext<CR>
+nnoremap <C-k> :tabprev<CR>
 
 " Navigate splits
 nnoremap <C-h> <C-w>h
@@ -376,6 +382,8 @@ nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit<CR>
 nnoremap <leader>gp :Gpush<CR>
 nnoremap <leader>gl :GV!<CR>
+
+nnoremap <leader>gm :GitMessenger<CR>
 
 " map ; <Plug>(expand_region_expand)
 " map : <Plug>(expand_region_shrink)
