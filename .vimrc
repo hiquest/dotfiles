@@ -66,7 +66,8 @@ Plug 'HerringtonDarkholme/yats.vim'
 " Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 
 " Elixir
-" Plug 'elixir-editors/vim-elixir'
+Plug 'elixir-editors/vim-elixir'
+Plug 'slashmili/alchemist.vim'
 
 call plug#end()
 
@@ -79,6 +80,9 @@ let g:float_preview#docked = 0
 language en_US             " had to put this for Neovim
 set clipboard^=unnamedplus " Use the system register for everything
 " set hidden
+
+set ignorecase
+set smartcase
 
 " Colors and appearance {{{
 set number               " shows the line numbers on the left
@@ -129,6 +133,9 @@ autocmd FileType typescript setlocal foldexpr=JSFolds()
 autocmd FileType typescriptreact setlocal foldmethod=expr
 autocmd FileType typescriptreact setlocal foldexpr=JSFolds()
 " }}}
+
+
+autocmd FileType markdown setlocal formatoptions-=t
 
 " SPLITS {{{
 set splitbelow
@@ -251,9 +258,12 @@ let g:fzf_action = {
        \ 'ctrl-v': 'vsplit' }
 let g:fzf_layout = { 'down': '~40%'  }
 nnoremap <Leader><Leader> :Files<cr>
+
 nnoremap <Leader>f :Ag <C-R><C-W><cr>
 vnoremap <Leader>f y:Ag <C-R>"<cr>
+
 nnoremap <C-F> :Ag<Space>
+
 " List changed and new files
 command! Fzfc call fzf#run(fzf#wrap(
       \ {'source': 'git ls-files --exclude-standard --others --modified'}))
@@ -269,8 +279,8 @@ let g:deoplete#enable_at_startup = 1
 let g:ale_linters = {
       \   'python': ['flake8', 'pylint'],
       \   'javascript': ['eslint'],
-      \   'typescript': ['tsserver'],
-      \   'typescriptreact': ['tsserver'],
+      \   'typescript': ['tsserver', 'eslint'],
+      \   'typescriptreact': ['tsserver', 'eslint'],
       \   'vue': ['eslint'],
       \   'ruby': ['standardrb', 'ruby', 'reek', 'rails_best_practices', 'brakeman', 'solargraph'],
       \   'xml': ['xmllint']
@@ -278,20 +288,21 @@ let g:ale_linters = {
 let g:ale_python_pylint_change_directory = 0
 
 " FIXERS
+"'javascript': ['prettier'],
 let g:ale_fixers = {
       \    'python': ['yapf'],
       \    'javascript': ['prettier'],
       \    'typescript': ['prettier'],
       \    'typescriptreact': ['prettier'],
-      \    'vue': ['eslint'],
       \    'scss': ['prettier'],
       \    'html': ['prettier'],
       \    'reason': ['refmt'],
-      \    'ruby': ['standardrb'],
+      \    'ruby': ['rufo'],
       \    'markdown': ['prettier'],
       \    'elixir': ['mix_format'],
       \    'xml': ['xmllint'],
-      \    'json': ['prettier']
+      \    'json': ['prettier'],
+      \    'sql': ['pgformatter']
       \}
 
 let g:ale_fix_on_save = 1
@@ -301,15 +312,14 @@ nnoremap [r :ALEPreviousWrap<CR>  " move to the previous ALE warning / error
 nnoremap <leader>d :ALEDetail<cr> " show full message of ALE
 
 " LSP / TSServer
-let g:ale_completion_tsserver_autoimport = 1
+let g:ale_completion_autoimport = 1
 " let g:ale_completion_enabled = 1
 nmap <leader>i :ALEOrganizeImports<CR>
-nmap gd :ALEGoToDefinitionInTab<CR>
+nmap gd :ALEGoToDefinition -tab<CR>
 nmap gr :ALEFindReferences<CR>
 nmap <leader>r :ALERename<CR>
 nmap K :ALEHover<CR>
 " let g:ale_disable_lsp = 1
-
 
 autocmd CompleteDone * pclose
 " }}}
@@ -324,14 +334,6 @@ lua require'colorizer'.setup()
 " ============================
 let g:closetag_filenames = '*.html,*.xhtml,*.jsx,*.tsx'
 
-" ============================
-" MatchTagAlways
-" ============================
-" let g:mta_filetypes = {
-"     \ 'html' : 1,
-"     \ 'typescriptreact': 1,
-"     \}
-
 " CUSTOM MAPPINGS {{{
 inoremap jj <Esc>
 nnoremap <space> za
@@ -344,10 +346,11 @@ map <Leader>n :NERDTreeFind<CR>
 
 " System
 nnoremap <Leader>w :w<CR>
+nnoremap <Leader>x :wq<CR>
 nnoremap <Leader>q :bd<CR>
 nnoremap <Leader>o :tabo<CR>
 " nnoremap xx :q!<CR>
-nnoremap xw :wq<CR>
+" nnoremap xw :wq<CR>
 
 " Navigate tabs
 nnoremap <C-j> :tabnext<CR>
@@ -368,23 +371,11 @@ nnoremap <leader>- mzgggqG`z
 nnoremap <leader>p :let @+ = expand("%")<cr>
 
 " Select the whole file
-nmap Q ggvG
-
-" I want all my function keys mappings in one place
-nmap <F8> :Vista!!<CR>
-nmap <F10> :ALEFix<CR>
+nmap Q ggVG
 
 " Remap arrow keys to buffer switching
 nnoremap <Left> :tabprevious<CR>
 nnoremap <Right> :tabnext<CR>
 
-nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gc :Gcommit<CR>
-nnoremap <leader>gp :Gpush<CR>
-nnoremap <leader>gl :GV!<CR>
-
 nnoremap <leader>gm :GitMessenger<CR>
-
-" map ; <Plug>(expand_region_expand)
-" map : <Plug>(expand_region_shrink)
 " }}}
