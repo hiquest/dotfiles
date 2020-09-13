@@ -57,9 +57,9 @@ eval "$(rbenv init -)"
 ######################
 ## Android setup
 ######################
-export ANDROID_HOME=/Users/yanistriandaphilov/Library/Android/sdk
-export PATH=${PATH}:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools
-export JAVA_HOME=`/usr/libexec/java_home -v1.8`
+# export ANDROID_HOME=/Users/yanistriandaphilov/Library/Android/sdk
+# export PATH=${PATH}:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools
+# export JAVA_HOME=`/usr/libexec/java_home -v1.8`
 
 ######################
 ## NVM - NODE MANAGER
