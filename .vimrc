@@ -8,14 +8,16 @@ Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'           " Navigation tree
 Plug 'Nopik/vim-nerdtree-direnter'   " Fix for opening files and directories in tabs
 Plug 'jiangmiao/auto-pairs'          " Auto-insert paired symbols
+Plug 'machakann/vim-highlightedyank' " highlights whatever you just yanked
+Plug 'tpope/vim-commentary'          " commenting
+Plug 'machakann/vim-sandwich'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-Plug 'morhetz/gruvbox' " colorscheme
+" Plug 'morhetz/gruvbox' " colorscheme
+Plug 'ayu-theme/ayu-vim' " or other package manager
 
 Plug 'itchyny/lightline.vim'
-
-Plug 'tpope/vim-commentary' " commenting
 
 " Plug 'tpope/vim-endwise'             " Auto-closing language-specific constructs
 " Plug 'alvan/vim-closetag'            " Auto-close for HTML tags
@@ -40,6 +42,10 @@ Plug 'maxmellon/vim-jsx-pretty' " JS and JSX syntax
 " Plug 'godlygeek/tabular'
 " Plug 'plasticboy/vim-markdown'
 
+" evaluating
+Plug 'beloglazov/vim-online-thesaurus'
+Plug 'liuchengxu/vista.vim'
+
 call plug#end()
 
 " =================
@@ -50,7 +56,13 @@ set clipboard^=unnamedplus " Use the system register for everything
 let mapleader = "\<Space>"
 set shiftround tabstop=2 shiftwidth=2 expandtab  " use spaces instead of tabs
 set splitbelow splitright
-colorscheme gruvbox
+
+
+set termguicolors       " enable true colors support
+" let ayucolor="light"  " for light version of theme
+" let ayucolor="mirage" " for mirage version of theme
+let ayucolor="dark"     " for dark version of theme
+colorscheme ayu
 
 autocmd FileType markdown setlocal spell
 
