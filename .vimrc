@@ -7,7 +7,6 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'           " Navigation tree
 Plug 'Nopik/vim-nerdtree-direnter'   " Fix for opening files and directories in tabs
-Plug 'jiangmiao/auto-pairs'          " Auto-insert paired symbols
 Plug 'machakann/vim-highlightedyank' " highlights whatever you just yanked
 Plug 'tpope/vim-commentary'          " commenting
 Plug 'machakann/vim-sandwich'
@@ -19,6 +18,8 @@ Plug 'ayu-theme/ayu-vim' " or other package manager
 
 Plug 'itchyny/lightline.vim'
 
+Plug 'andymass/vim-matchup'
+Plug 'jiangmiao/auto-pairs'          " Auto-insert paired symbols
 " Plug 'tpope/vim-endwise'             " Auto-closing language-specific constructs
 " Plug 'alvan/vim-closetag'            " Auto-close for HTML tags
 
