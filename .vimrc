@@ -3,49 +3,45 @@
 " =================
 call plug#begin('~/.vim/plugged')
 
+" === EXTENSIONS ===
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'scrooloose/nerdtree'           " Navigation tree
-Plug 'Nopik/vim-nerdtree-direnter'   " Fix for opening files and directories in tabs
 Plug 'machakann/vim-highlightedyank' " highlights whatever you just yanked
 Plug 'tpope/vim-commentary'          " commenting
 Plug 'machakann/vim-sandwich'
-
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-" Plug 'morhetz/gruvbox' " colorscheme
-Plug 'ayu-theme/ayu-vim' " or other package manager
-
-Plug 'itchyny/lightline.vim'
-
 Plug 'andymass/vim-matchup'
 Plug 'jiangmiao/auto-pairs'          " Auto-insert paired symbols
-" Plug 'tpope/vim-endwise'             " Auto-closing language-specific constructs
-" Plug 'alvan/vim-closetag'            " Auto-close for HTML tags
+" Plug 'github/copilot.vim'
+Plug 'tpope/vim-endwise'             " Auto-closing language-specific constructs
+Plug 'alvan/vim-closetag'            " Auto-close for HTML tags
+Plug 'preservim/nerdtree'
+Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
 
-" Git
+" main one
+Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+" 9000+ Snippets
+Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
+
+" === VISUAL ===
+Plug 'sainnhe/everforest' " colorscheme
+Plug 'itchyny/lightline.vim'
+
+" === Git ===
 Plug 'tpope/vim-fugitive'     " Git utils (I mostly only use annotate)
 Plug 'airblade/vim-gitgutter' " Shows what is changed in a sidebar
 
-" *** JavaScript ***
-" Plug 'pangloss/vim-javascript'    " JavaScript support ⭐3.4K
-" Plug 'othree/yajs.vim', { 'for': 'javascript' }  " ⭐670
+" === MISC ===
+Plug 'plasticboy/vim-markdown'
+Plug 'shime/vim-livedown'
 
-" *** TypeScript ***
-Plug 'HerringtonDarkholme/yats.vim' " Syntax ⭐500
-" Plug 'leafgarland/typescript-vim' " TypeScript syntax ⭐1.6K
-
-" *** JSX ***
-Plug 'maxmellon/vim-jsx-pretty' " JS and JSX syntax
-" https://github.com/ianks/vim-tsx
-
-" *** Markdown ***
-" Plug 'godlygeek/tabular'
-" Plug 'plasticboy/vim-markdown'
-
-" evaluating
-Plug 'beloglazov/vim-online-thesaurus'
-Plug 'liuchengxu/vista.vim'
+" requires nvim > 0.5
+" Plug 'kyazdani42/nvim-web-devicons' " for file icons
+" Plug 'kyazdani42/nvim-tree.lua'
+" Plug 'hrsh7th/nvim-compe'
+" Plug 'hrsh7th/vim-vsnip'
+Plug 'neovim/nvim-lspconfig'
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Plug 'mhartington/formatter.nvim'
 
 call plug#end()
 
@@ -57,13 +53,22 @@ set clipboard^=unnamedplus " Use the system register for everything
 let mapleader = "\<Space>"
 set shiftround tabstop=2 shiftwidth=2 expandtab  " use spaces instead of tabs
 set splitbelow splitright
+set completeopt=menuone,noselect " required by nvim-compe
 
+" Important!!
+if has('termguicolors')
+  set termguicolors
+endif
 
-set termguicolors       " enable true colors support
-" let ayucolor="light"  " for light version of theme
-" let ayucolor="mirage" " for mirage version of theme
-let ayucolor="dark"     " for dark version of theme
-colorscheme ayu
+" For dark version.
+set background=dark
+
+" Set contrast.
+" This configuration option should be placed before `colorscheme everforest`.
+" Available values: 'hard', 'medium'(default), 'soft'
+let g:everforest_background = 'medium'
+
+colorscheme everforest
 
 autocmd FileType markdown setlocal spell
 
@@ -83,25 +88,9 @@ let g:lightline = {
 \ 'colorscheme': 'wombat',
 \ 'active': {
 \   'left': [ [ 'mode', 'paste' ],
-\             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
-\ },
-\ 'component_function': {
-\   'cocstatus': 'coc#status'
-\ },
+\             [ 'readonly', 'filename', 'modified' ] ]
 \ }
-
-  " Use auocmd to force lightline update.
-  autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
-
-" ----------------------------------------------------------------------------
-" NerdTree
-" ----------------------------------------------------------------------------
-let NERDTreeShowHidden=1 " Always show dot files
-let NERDTreeQuitOnOpen=1
-let g:NERDTreeMapOpenInTab = '<ENTER>'
-let g:NERDTreeWinPos = "right"
-map <Leader>- :NERDTreeToggle<CR>
-map <Leader>n :NERDTreeFind<CR>
+\ }
 
 " =================
 " FZF
@@ -123,147 +112,61 @@ nnoremap <C-F> :Rg<Space>
 command! Fzfc call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard --others --modified'}))
 
 " =================
-" COC.VIM
+" LSP
 " =================
-set cmdheight=2
-set updatetime=300
-set shortmess+=c
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
+lua << EOF
+local lspconfig = require("lspconfig")
+local coq = require "coq" -- add this
 
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+local buf_map = function(bufnr, mode, lhs, rhs, opts)
+    vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts or {
+        silent = true,
+    })
+end
 
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+lspconfig.tsserver.setup(coq.lsp_ensure_capabilities({
+    on_attach = function(client, bufnr)
+      vim.cmd("command! LspDef lua vim.lsp.buf.definition()")
+      vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting()")
+      vim.cmd("command! LspCodeAction lua vim.lsp.buf.code_action()")
+      vim.cmd("command! LspHover lua vim.lsp.buf.hover()")
+      vim.cmd("command! LspRename lua vim.lsp.buf.rename()")
+      vim.cmd("command! LspRefs lua vim.lsp.buf.references()")
+      vim.cmd("command! LspTypeDef lua vim.lsp.buf.type_definition()")
+      vim.cmd("command! LspImplementation lua vim.lsp.buf.implementation()")
+      vim.cmd("command! LspDiagPrev lua vim.diagnostic.goto_prev()")
+      vim.cmd("command! LspDiagNext lua vim.diagnostic.goto_next()")
+      vim.cmd("command! LspDiagLine lua vim.diagnostic.open_float()")
+      vim.cmd("command! LspSignatureHelp lua vim.lsp.buf.signature_help()")
 
-" Use <c-space> to trigger completion.
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
+      buf_map(bufnr, "n", "gd", ":LspDef<CR>")
+      buf_map(bufnr, "n", "<Leader>r", ":LspRename<CR>")
+      buf_map(bufnr, "n", "K", ":LspHover<CR>")
+      buf_map(bufnr, "n", "[g", ":LspDiagPrev<CR>")
+      buf_map(bufnr, "n", "]g", ":LspDiagNext<CR>")
+      buf_map(bufnr, "n", "<Leader>0", ":LspCodeAction<CR>")
+      buf_map(bufnr, "n", "<Leader>a", ":LspDiagLine<CR>")
+      buf_map(bufnr, "i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>")
+      if client.resolved_capabilities.document_formatting then
+          vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
+      end
+    end,
+}))
+EOF
 
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" position. Coc only does snippet and additional edit on confirm.
-" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
-if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-else
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
+" =================
+" NERDTree
+" =================
+let g:NERDTreeWinPos = "right"
+nnoremap <Leader>n :NERDTreeFind<cr>
 
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Symbol renaming.
-nmap <leader>r <Plug>(coc-rename)
-
-" Formatting selected code.
-" xmap <leader>f  <Plug>(coc-format-selected)
-" nmap <leader>f  <Plug>(coc-format-selected)
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setlocal formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>0  <Plug>(coc-codeaction-selected)
-nmap <leader>0  <Plug>(coc-codeaction-selected)
-
-" Remap keys for applying codeAction to the current buffer.
-nmap <leader>8  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nmap <leader>9  <Plug>(coc-fix-current)
-
-" Map function and class text objects
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
-
-" Use CTRL-S for selections ranges.
-" Requires 'textDocument/selectionRange' support of language server.
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
-
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-" ==== MY COC VIM STUFF ===
-nmap <leader>i :CocCommand tsserver.organizeImports<cr>
-
-
-" Prettier
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-
-
-" =========================
-" ======== Snippets =======
-" =========================
-" Use <C-l> for trigger snippet expand.
-imap <C-l> <Plug>(coc-snippets-expand)
-
-" Use <C-j> for select text for visual placeholder of snippet.
-vmap <C-j> <Plug>(coc-snippets-select)
-
-" Use <C-j> for jump to next placeholder, it's default of coc.nvim
-let g:coc_snippet_next = '<c-j>'
-
-" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-let g:coc_snippet_prev = '<c-k>'
-
+" =================
+" Vim prettier
+" =================
+" Allow auto formatting for files without "@format" or "@prettier" tag
+let g:prettier#autoformat = 1
+let g:prettier#autoformat_require_pragma = 0
+let g:prettier#exec_cmd_async = 1
 
 " =================
 " MY CUSTOM MAPPINGS
@@ -292,8 +195,3 @@ nnoremap <leader>p :let @+ = expand("%")<cr>
 nnoremap Q ggVG
 
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-
-" =================
-" MY CUSTOM ABBREVIATIONS
-" =================
-iabbrev adn and
