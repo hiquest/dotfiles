@@ -1,30 +1,19 @@
 # =================
-# Navigation/system
+# Navigation
 # =================
 alias ..='cd ..'
 alias x='exit'
 alias j="z"         # https://github.com/rupa/z
 
-# `o` with no arguments opens the current directory, otherwise opens the given
-# location
-function o() {
-	if [ $# -eq 0 ]; then
-		open .;
-	else
-		open "$@";
-	fi;
-}
+# =================
+# AI
+# =================
+alias q="node ~/projects/nicechat/dist/index.js"
+alias qco="nicechat chat claude-opus"
+alias qcs="nicechat chat claude-sonnet"
 
 mkcd() {
   mkdir $@ && cd $_
-}
-
-function bs() {
-	if [ $# -eq 0 ]; then
-		brew services list;
-	else
-		brew services "$@";
-	fi;
 }
 
 # ====================
@@ -32,55 +21,18 @@ function bs() {
 # ====================
 alias cat='bat'
 alias find='fd'
-alias ls="exa"
 alias l='ls -lahF'
 alias v='nvim'
 alias y='yarn'
 alias vnext='~/Downloads/nvim-osx64/bin/nvim'
 
 # =================
-# Docker / Kubs
-# =================
-alias d='docker'
-alias doc='docker-compose'
-alias k='kubectl'
-
-# =================
 # Rails
 # =================
 alias b='bundle'
-alias be='bundle exec'
-alias r='rails'
-alias rs='rails server'
-alias rs1='rails server -p 3001'
-alias rs2='rails server -p 3002'
-alias rs3='rails server -p 3003'
-alias rs4='rails server -p 3004'
-alias rs5='rails server -p 3005'
-alias rc='rails console'
+alias rs='bin/rails server'
+alias rc='bin/rails console'
 alias rdm='bundle exec rake db:migrate'
-wps() {
-  if [ -f ./bin/webpack-dev-server ]; then
-    ./bin/webpack-dev-server
-  elif [ -f ./script/webpack-dev-server ]; then
-    ./script/webpack-dev-server
-  else
-    npm start
-  fi
-}
-
-# =================
-# Django
-# =================
-dj() {
-  if [ -f ./manage.py ]; then
-    python ./manage.py $*
-  elif [ -f ./app/manage.py ]; then
-    python ./app/manage.py $*
-  else
-    echo 'manage.py not found'
-  fi
-}
 
 # =================
 # Git
@@ -93,20 +45,41 @@ alias p='git push'
 alias c='git commit'
 alias cm='git commit -m'
 alias ca='git commit --amend'
-alias re='git checkout $(git recent | fzf)'  # recent branches, see .gitconfig aliases
-# Specials / Scripts
-alias pr='~/projects/automate/git/gh-pull-request.sh'
-alias vc='~/projects/automate/git/gh-view-commit.sh'
-alias gclean='~/projects/automate/git/git-clean-merged.sh'
+alias re='git checkout $(git recent | fzf)' # recent branches, see .gitconfig aliases
 
-# ==================
-# Various automation
-# ==================
-alias jira="node /Users/yanis/projects/automate/jira/index.js"
+# view commit, eg: vc 1234567
+vc() {
+  if [ -z "$1" ]; then
+    echo "Usage: vc <commit-hash>"
+    return 1
+  fi
+
+  local commit_hash=$1
+  local repo_url=$(git config --get remote.origin.url)
+
+  echo "repo_url: $repo_url"
+
+  if [[ $repo_url == *.git ]]; then
+    repo_url=${repo_url%.git}
+  fi
+
+  echo "repo_url: $repo_url"
+
+  if [[ $repo_url == git@* ]]; then
+    repo_url=${repo_url/git@/https:\/\/}
+    repo_url=${repo_url/:/\//}
+  fi
+
+  local commit_url="$repo_url/commit/$commit_hash"
+
+  echo "Opening $commit_url"
+  open "$commit_url"
+}
 
 # =================
-# Fun
+# Personal
 # =================
 
-# Lookup lyrics of song playing in iTunes
-alias ly='~/dotfiles/scripts/lyrics.sh'
+cn() {
+  open "https://app.candlapp.com/api/authors/fbn?name=$*"
+}
