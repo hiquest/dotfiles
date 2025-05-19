@@ -9,27 +9,26 @@ Plug 'junegunn/fzf.vim'
 Plug 'machakann/vim-highlightedyank' " highlights whatever you just yanked
 Plug 'tpope/vim-commentary'          " commenting
 Plug 'machakann/vim-sandwich'
-Plug 'andymass/vim-matchup'
 Plug 'jiangmiao/auto-pairs'          " Auto-insert paired symbols
-" Plug 'github/copilot.vim'
+Plug 'github/copilot.vim'
 Plug 'tpope/vim-endwise'             " Auto-closing language-specific constructs
 Plug 'alvan/vim-closetag'            " Auto-close for HTML tags
 Plug 'preservim/nerdtree'
 
 " === VISUAL ===
 Plug 'sainnhe/everforest' " colorscheme
-Plug 'itchyny/lightline.vim'
+Plug 'vim-airline/vim-airline'
 
 " === Git ===
 Plug 'tpope/vim-fugitive'     " Git utils (I mostly only use annotate)
 Plug 'airblade/vim-gitgutter' " Shows what is changed in a sidebar
 
-" === MISC ===
-Plug 'plasticboy/vim-markdown'
-Plug 'shime/vim-livedown'
-Plug 'HerringtonDarkholme/yats.vim'
-
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+Plug 'nvim-treesitter/nvim-treesitter'
+
+" Ruby
+Plug 'vim-ruby/vim-ruby'
 
 call plug#end()
 
@@ -72,17 +71,6 @@ autocmd FileType vim setlocal foldmethod=marker
 
 let g:endwise_no_mappings=1
 
-" -------------------------------------
-"  Lightline
-" -------------------------------------
-let g:lightline = {
-\ 'colorscheme': 'wombat',
-\ 'active': {
-\   'left': [ [ 'mode', 'paste' ],
-\             [ 'readonly', 'filename', 'modified' ] ]
-\ }
-\ }
-
 " =================
 " FZF
 " =================
@@ -103,6 +91,15 @@ nnoremap <C-F> :Rg<Space>
 command! Fzfc call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard --others --modified'}))
 
 " =================
+" Copilot
+" =================
+imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
+let g:copilot_no_tab_map = v:true
+
+let g:copilot_filetypes = {
+\ 'markdown': v:true }
+
+"" =================
 " NERDTree
 " =================
 let g:NERDTreeWinPos = "right"
@@ -126,6 +123,8 @@ set updatetime=300
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 
+set signcolumn=yes
+
 " " Always show the signcolumn, otherwise it would shift the text each time
 " " diagnostics appear/become resolved.
 " if has("nvim-0.5.0") || has("patch-8.1.1564")
@@ -139,21 +138,21 @@ set shortmess+=c
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-function! s:check_back_space() abort
+function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
 inoremap <silent><expr> <c-space> coc#refresh()
 
-" Make <CR> auto-select the first completion item and notify coc.nvim to
-" format on enter, <cr> could be remapped by other vim plugin
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
@@ -168,15 +167,13 @@ nmap <silent> gd <Plug>(coc-definition)
 " nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <silent> K :call ShowDocumentation()<CR>
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
     call CocActionAsync('doHover')
   else
-    execute '!' . &keywordprg . " " . expand('<cword>')
+    call feedkeys('K', 'in')
   endif
 endfunction
 
@@ -198,28 +195,32 @@ augroup mygroup
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
-" Applying codeAction to the selected region.
+" Applying code actions to the selected code block
 " Example: `<leader>aap` for current paragraph
-" xmap <leader>a  <Plug>(coc-codeaction-selected)
-" nmap <leader>a  <Plug>(coc-codeaction-selected)
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
 
-" Remap keys for applying codeAction to the current buffer.
-" nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nmap <leader>0  :CocAction<cr>
+" Remap keys for applying code actions at the cursor position
+nmap <leader>ac  <Plug>(coc-codeaction-cursor)
+" Remap keys for apply code actions affect whole buffer
+nmap <leader>as  <Plug>(coc-codeaction-source)
+" Apply the most preferred quickfix action to fix diagnostic on the current line
+nmap <leader>af  <Plug>(coc-fix-current)
 
-" Run the Code Lens action on the current line.
-nmap <leader>9  <Plug>(coc-codelens-action)
+" Rename
+nmap <leader>2  <Plug>(coc-rename)
 
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocActionAsync('format')
+" Remap keys for applying refactor code actions
+nmap <silent> <leader>re <Plug>(coc-codeaction-refactor)
+xmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
+nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
 
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+" Run the Code Lens action on the current line
+nmap <leader>cl  <Plug>(coc-codelens-action)
 
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
-nmap <leader>i :OR<cr>
+" organize imports
+command! -nargs=0 OR :call CocActionAsync('runCommand', 'editor.action.organizeImport')
+nmap <leader>i :OR<CR>
 
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
@@ -244,9 +245,10 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 " " Resume latest coc list.
 " nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
+lua require('init')
 
 " =================
-" MY CUSTOM MAPPINGS
+" MAPPINGS
 " =================
 inoremap jj <esc>
 nnoremap <leader>w :w<CR>
@@ -262,13 +264,11 @@ nnoremap <silent><leader>o :tabo<CR>
 " Fold/unfold
 nnoremap - za
 
-" Git blame
-nnoremap <leader>a :Gblame<cr>
-
 " copy file path to the clipboard
 nnoremap <leader>p :let @+ = expand("%")<cr>
 
-" Select the whole file
+" Select entire file
 nnoremap Q ggVG
 
-nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+" Git blame
+nnoremap <leader>5 :Git blame<cr>
