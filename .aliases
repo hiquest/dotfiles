@@ -25,6 +25,7 @@ alias l='ls -lahF'
 alias v='nvim'
 alias y='yarn'
 alias vnext='~/Downloads/nvim-osx64/bin/nvim'
+alias d="docker"
 
 # =================
 # Rails
