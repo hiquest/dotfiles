@@ -245,7 +245,7 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 " " Resume latest coc list.
 " nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
-lua require('init')
+" lua require('init')
 
 " =================
 " MAPPINGS

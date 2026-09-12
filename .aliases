@@ -5,6 +5,9 @@ alias ..='cd ..'
 alias x='exit'
 alias j="z"         # https://github.com/rupa/z
 
+
+alias t="tmux"
+
 # =================
 # AI
 # =================
@@ -48,33 +51,42 @@ alias cm='git commit -m'
 alias ca='git commit --amend'
 alias re='git checkout $(git recent | fzf)' # recent branches, see .gitconfig aliases
 
+# =================
+# Nicechat
+# =================
+alias sonnet="q chat sonnet"
+alias grokf="q chat grokf"
+alias g3="q chat g3"
+
 # view commit, eg: vc 1234567
 vc() {
-  if [ -z "$1" ]; then
-    echo "Usage: vc <commit-hash>"
-    return 1
-  fi
+	if [ -z "$1" ]; then
+		echo "Usage: vc <commit-hash>"
+		return 1
+	fi
 
-  local commit_hash=$1
-  local repo_url=$(git config --get remote.origin.url)
+	local commit_hash="$1"
+	local repo_url
+	repo_url="$(git config --get remote.origin.url)"
 
-  echo "repo_url: $repo_url"
+	if [ -z "$repo_url" ]; then
+		echo "Not a git repository, or no remote.origin.url is set"
+		return 1
+	fi
 
-  if [[ $repo_url == *.git ]]; then
-    repo_url=${repo_url%.git}
-  fi
+	repo_url="${repo_url%.git}"
 
-  echo "repo_url: $repo_url"
+	case "$repo_url" in
+		git@*:* )
+			repo_url="${repo_url#git@}"
+			repo_url="https://${repo_url/:/\/}"
+			repo_url="${repo_url//\\\///}"
+			;;
+	esac
 
-  if [[ $repo_url == git@* ]]; then
-    repo_url=${repo_url/git@/https:\/\/}
-    repo_url=${repo_url/:/\//}
-  fi
-
-  local commit_url="$repo_url/commit/$commit_hash"
-
-  echo "Opening $commit_url"
-  open "$commit_url"
+	local commit_url="${repo_url}/commit/${commit_hash}"
+	echo "Opening $commit_url"
+	open "$commit_url"
 }
 
 # =================
@@ -84,3 +96,9 @@ vc() {
 cn() {
   open "https://app.candlapp.com/api/authors/fbn?name=$*"
 }
+
+# =================
+# mt
+# =================
+alias mt="~/projects/mt/scripts/mt.sh"
+alias mts="~/projects/mt/scripts/mt_sync.sh"

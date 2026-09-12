@@ -6,11 +6,11 @@ ZSH_THEME_GIT_PROMPT_CLEAN=""
 #
 # Custom helpers.
 #
-current_branch() {
-  if [ -d .git ]; then
-    git rev-parse --abbrev-ref HEAD
-  fi;
-}
+# current_branch() {
+#   if [ -d .git ]; then
+#     git rev-parse --abbrev-ref HEAD
+#   fi;
+# }
 
 work_in_progress() {
   if $(git log -n 1 2>/dev/null | grep -q -c "\-\-wip\-\-"); then
@@ -18,12 +18,12 @@ work_in_progress() {
   fi
 }
 
-git_custom_status() {
-  local cb=$(current_branch)
-  if [ -n "$cb" ]; then
-    echo "$(parse_git_dirty)%{$fg_bold[yellow]%}$(work_in_progress)%{$reset_color%}$ZSH_THEME_GIT_PROMPT_PREFIX$(current_branch)$ZSH_THEME_GIT_PROMPT_SUFFIX"
-  fi
-}
+# git_custom_status() {
+#   local cb=$(current_branch)
+#   if [ -n "$cb" ]; then
+#     echo "$(parse_git_dirty)%{$fg_bold[yellow]%}$(work_in_progress)%{$reset_color%}$ZSH_THEME_GIT_PROMPT_PREFIX$(current_branch)$ZSH_THEME_GIT_PROMPT_SUFFIX"
+#   fi
+# }
 
 rbenv_version() {
   echo "%{$fg[red]%}[$(rbenv version | sed -e 's/ (set.*$//')]%{$reset_color%}"
@@ -73,6 +73,6 @@ ZSH_THEME_RVM_PROMPT_PREFIX="%{$fg[red]%}["
 ZSH_THEME_RVM_PROMPT_SUFFIX="]%{$reset_color%}"
 
 # Combine it all into a final right-side prompt
-RPS1='$(git_custom_status) $(rbenv_version) $(node_version)$EPS1'
+RPS1='$(rbenv_version) $(node_version)$EPS1'
 
 PROMPT="%{$fg[cyan]%}[%~% ]%(?.%{$fg[green]%}.%{$fg[red]%})%B$%b "
